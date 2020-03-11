@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Inventory",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EnabledByDefault": true,
+  "CanContainContent": true,
+  "IsBetaVersion": false,
+  "Installed": false,
+	"Modules": [
+		{
+			"Name": "Inventory",
+			"Type": "Runtime",
+			"LoadingPhase" : "Default"
+		},
+		{
+			"Name": "InventoryEditor",
+			"Type": "Editor",
+			"LoadingPhase" : "PostEngineInit"
+		}
+	]
+}
