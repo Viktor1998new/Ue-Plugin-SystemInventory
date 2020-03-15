@@ -17,7 +17,7 @@ struct INVENTORY_API FInventorySlot
 		TSubclassOf<AItemActor> ClassItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FIntPoint LocationSlot;
+		FIntPoint PositionSlot;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString ItemData;
@@ -46,6 +46,7 @@ public:
 	UPROPERTY(BlueprintReadOnly, Replicated)
 		float CurrentMassa;
 
+
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
@@ -55,28 +56,39 @@ protected:
 public:
 
 	/*Adding a slot
-	  Use only Server*/
+	  Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddSlot(FInventorySlot NewSlot, int& Index);
+		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int& Index);
 
 	/*Adding an item
-	 Use only Server*/
+	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
 		bool AddActorItem(AItemActor* Item, int& Index);
 
 	/*Adding an item
-	 Use only Server*/
+	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
 		bool AddClassItem(TSubclassOf<AItemActor> Item, int Count, const FString& Data, int& Index);
 
+	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
 	UFUNCTION(BlueprintCallable)
 		bool FindFreeSlot(FIntPoint Size,FIntPoint &ReturnPosition);
 
+	/*search function for an item by class or class child*/
 	UFUNCTION(BlueprintCallable)
 		bool FindItem(TSubclassOf<AItemActor> ClassItem ,bool Child,int& Index);
 
+	/*Removing an item
+	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
 		bool RemoveItem(int Index, int count);
 
+	/*the function sends an item from the current inventory to another one
+	 Use only in Server*/
+	UFUNCTION(BlueprintCallable)
+		bool SendItem(int Index, class UInventoryComponent* ToIntentory, int Count, bool FindSlot , FIntPoint Position);
 
+	/*the function checks whether the element can be placed in this position*/
+	UFUNCTION(BlueprintCallable)
+		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index);
 };

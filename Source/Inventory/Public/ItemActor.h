@@ -38,8 +38,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		FItemData ItemData;
 
-
-
 	// Sets default values for this actor's properties
 	AItemActor();
 
