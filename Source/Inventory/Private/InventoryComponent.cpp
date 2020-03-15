@@ -162,10 +162,10 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 			bool IsAdd = true;
 
 			int ItemIndex;
-			if (IsPositionFree(FIntPoint(X,Y),Size,ItemIndex)){
+			if (!IsPositionFree(FIntPoint(X,Y),Size,ItemIndex)){
+
 				X += Items[ItemIndex].PositionSlot.X + (Items[ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1);
 				IsAdd = false;
-				break;
 			}
 
 			if (IsAdd) {
@@ -181,7 +181,6 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 				if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
 					if (Y + (Size.Y - 1) > MaxSlot.Y - 1) {
 						return false;
-						break;
 					}
 				}
 
@@ -189,8 +188,6 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 			}
 			
 		}
-
-		return true;
 	}
 	else {
 		
@@ -325,6 +322,19 @@ bool UInventoryComponent::SendItem(int Index, UInventoryComponent* ToIntentory, 
 
 bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index)
 {
+
+	if (Position.X + (Size.X - 1) > MaxSlot.X)
+	{
+		return false;
+	}
+
+	if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
+		if (Position.Y + (Size.Y - 1) > MaxSlot.Y)
+		{
+			return false;
+		}
+	}
+
 	for (int i = 0; i < Items.Num(); i++)
 	{
 		if (IsValid(Items[i].ClassItem)) {
