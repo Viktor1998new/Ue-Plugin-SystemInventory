@@ -46,6 +46,8 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 			if (FInventoryModule::Get().GetSettings()->StackItems == false) {
 				NewSlot.Count = 1;
+			}else if(NewSlot.ClassItem.GetDefaultObject()->ItemData.StackItem == false){
+				NewSlot.Count = 1;
 			}
 
 			if (FInventoryModule::Get().GetSettings()->MassItems == true) {
@@ -59,6 +61,9 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 		Index = AddIndex;
 
 		if (FInventoryModule::Get().GetSettings()->StackItems == false) {
+			NewSlot.Count = 1;
+		}
+		else if (NewSlot.ClassItem.GetDefaultObject()->ItemData.StackItem == false) {
 			NewSlot.Count = 1;
 		}
 
@@ -88,35 +93,37 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 	AItemActor* DefaultItem = Item.GetDefaultObject();
 
 	if (FInventoryModule::Get().GetSettings()->StackItems == true) {
-		
-		if (DefaultItem->ItemData.NoneData == true) {
 
-			int FindIndex = 0;
+		if (DefaultItem->ItemData.StackItem == true) {
+			if (DefaultItem->ItemData.NoneData == true) {
 
-			if (DefaultItem->ItemData.StackItem == true && FindItem(Item, false, FindIndex)) {
+				int FindIndex = 0;
 
-				Items[FindIndex].Count += Count;
+				if (DefaultItem->ItemData.StackItem == true && FindItem(Item, false, FindIndex)) {
 
-				if (FInventoryModule::Get().GetSettings()->MassItems == true) {
-					CurrentMassa += DefaultItem->ItemData.MassItem * Count;
-				}
-
-				Index = FindIndex;
-				return true;
-			}
-		}
-		else {
-			for (int i = 0; i < Items.Num(); i++)
-			{
-				if (Items[i].ClassItem == Item && Items[i].ItemData == Data) {
-					Items[i].Count += Count;
+					Items[FindIndex].Count += Count;
 
 					if (FInventoryModule::Get().GetSettings()->MassItems == true) {
 						CurrentMassa += DefaultItem->ItemData.MassItem * Count;
 					}
 
-					Index = i;
+					Index = FindIndex;
 					return true;
+				}
+			}
+			else {
+				for (int i = 0; i < Items.Num(); i++)
+				{
+					if (Items[i].ClassItem == Item && Items[i].ItemData == Data) {
+						Items[i].Count += Count;
+
+						if (FInventoryModule::Get().GetSettings()->MassItems == true) {
+							CurrentMassa += DefaultItem->ItemData.MassItem * Count;
+						}
+
+						Index = i;
+						return true;
+					}
 				}
 			}
 		}
@@ -148,80 +155,48 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 {
 	if (Items.Num() == 0 && Size.X > MaxSlot.X && Size.Y > MaxSlot.Y) {
 		ReturnPosition = FIntPoint::ZeroValue;
-		UE_LOG(LogInventory, Warning, TEXT("None Item"));
 		return true;
 	}
 
-	if (FInventoryModule::Get().GetSettings()->SizeSlot == true) {
+	int X = 0, Y = 0;
 
-		int Y = 0;
-		int X = 0;
+	bool IsNoFree = true;
 
-		while (Y < MaxSlot.Y)
-		{
-			bool IsAdd = true;
+	while (IsNoFree) {
 
-			int ItemIndex;
-			if (!IsPositionFree(FIntPoint(X,Y),Size,ItemIndex)){
+		int ItemIndex;
 
-				X += Items[ItemIndex].PositionSlot.X + (Items[ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1);
-				IsAdd = false;
-			}
+		IsNoFree = !IsPositionFree(FIntPoint(X, Y), Size, ItemIndex);
 
-			if (IsAdd) {
-				ReturnPosition.X = X;
-				ReturnPosition.Y = Y;
-				return true;
-			}
-
-			if (X + (Size.X - 1) >= MaxSlot.X)
-			{
-				X = 0;
-				
-				if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
-					if (Y + (Size.Y - 1) > MaxSlot.Y - 1) {
-						return false;
-					}
-				}
-
-				Y++;
-			}
+		if (IsNoFree) {
 			
-		}
-	}
-	else {
-		
-		int Y = 0;
-		int X = 0;
+			if (FInventoryModule::Get().GetSettings()->SizeSlot == true) {
 
-		for (int i = 0; i < Items.Num(); i++)
-		{
-			if (Items[i].PositionSlot.X == X && Items[i].PositionSlot.Y == Y) {
-
-				if (X > MaxSlot.X) {
-					i = 0;
-					X = 0;
-					
-					if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
-						if (Y > MaxSlot.Y) {
-							return false;
-						}
-					}
-
-					Y++;
-				}
-				else
-				{
-					X++;
-				}
+				X = Items[ItemIndex].PositionSlot.X + Items[ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
+			}
+			else {
+				X++;
 			}
 		}
-		ReturnPosition.X = X;
-		ReturnPosition.Y = Y;
-		return true;
+
+		if (X + (Size.X - 1) > MaxSlot.X) {
+			X = 0;
+
+			if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
+				if (Y + (Size.Y - 1) > MaxSlot.Y)
+				{
+					return false;
+				}
+			}
+
+			Y++;
+		}
+
 	}
 
-	return false;
+	ReturnPosition = FIntPoint(X, Y);
+	return true;
+
 }
 
 bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child, int& Index)
@@ -325,12 +300,14 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 
 	if (Position.X + (Size.X - 1) > MaxSlot.X)
 	{
+		Index = -1;
 		return false;
 	}
 
 	if (FInventoryModule::Get().GetSettings()->LimitSlotY == true) {
 		if (Position.Y + (Size.Y - 1) > MaxSlot.Y)
 		{
+			Index = -1;
 			return false;
 		}
 	}
@@ -339,9 +316,11 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 	{
 		if (IsValid(Items[i].ClassItem)) {
 			if (FInventoryModule::Get().GetSettings()->SizeSlot == true) {
-				if (Position.X >= Items[i].PositionSlot.X ? Position.X <= Items[i].PositionSlot.X + (Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1) : Position.X + (Size.X - 1) >= Items[i].PositionSlot.X) {
-					if (Position.Y >= Items[i].PositionSlot.Y ? Position.Y <= Items[i].PositionSlot.Y + (Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y - 1) : Position.Y + (Size.Y - 1) >= Items[i].PositionSlot.Y) {
-						Position.X += Items[i].PositionSlot.X + (Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1);
+				
+				FIntPoint SizeItem = FIntPoint(Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1, Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y - 1);
+
+				if (Position.X >= Items[i].PositionSlot.X ? Position.X <= Items[i].PositionSlot.X + SizeItem.X : Position.X + (Size.X - 1) >= Items[i].PositionSlot.X) {
+					if (Position.Y >= Items[i].PositionSlot.Y ? Position.Y <= Items[i].PositionSlot.Y + SizeItem.Y : Position.Y + (Size.Y - 1) >= Items[i].PositionSlot.Y) {
 						Index = i;
 						return false;
 					}
