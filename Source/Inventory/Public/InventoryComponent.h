@@ -8,6 +8,10 @@
 #include "ItemActor.h"
 #include "InventoryComponent.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int, Index);
+
 USTRUCT(BlueprintType)
 struct INVENTORY_API FInventorySlot
 {
@@ -91,4 +95,14 @@ public:
 	/*the function checks whether the element can be placed in this position*/
 	UFUNCTION(BlueprintCallable)
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index);
+
+	UPROPERTY(BlueprintAssignable)
+		FOnAddItem OnAddItem;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnRemoveItem OnRemoveItem;
+
+	//UFUNCTION(Client, Reliable)
+	//	void ClientRPC_EventAddItem(int Index);
+
 };

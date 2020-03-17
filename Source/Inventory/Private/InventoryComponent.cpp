@@ -19,8 +19,8 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UInventoryComponent, Items);
-	DOREPLIFETIME(UInventoryComponent, CurrentMassa);
+	DOREPLIFETIME_CONDITION(UInventoryComponent, Items, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UInventoryComponent, CurrentMassa, COND_OwnerOnly);
 }
 
 // Called when the game starts
@@ -78,7 +78,7 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 bool UInventoryComponent::AddActorItem(AItemActor* Item, int& Index)
 {
-	if (!IsValid(Item) && !GIsServer)
+	if (!IsValid(Item) || !GIsServer)
 		return false;
 
 	return AddClassItem(Item->GetClass(), 1, Item->GetData(), Index);
@@ -87,7 +87,7 @@ bool UInventoryComponent::AddActorItem(AItemActor* Item, int& Index)
 
 bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, const FString& Data, int& Index)
 {
-	if (!IsValid(Item) && !GIsServer && Count == 0)
+	if (!IsValid(Item) || !GIsServer || Count == 0)
 		return false;
 	
 	AItemActor* DefaultItem = Item.GetDefaultObject();
@@ -108,6 +108,9 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 					}
 
 					Index = FindIndex;
+						
+					OnAddItem.Broadcast(FindIndex);
+
 					return true;
 				}
 			}
@@ -122,6 +125,9 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 						}
 
 						Index = i;
+						
+						OnAddItem.Broadcast(Index);
+
 						return true;
 					}
 				}
@@ -145,6 +151,9 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 			CurrentMassa += DefaultItem->ItemData.MassItem * Count;
 		}
 		Index = IndexAdd;
+
+		OnAddItem.Broadcast(IndexAdd);
+		
 		return true;
 	}
 
@@ -248,7 +257,9 @@ bool UInventoryComponent::RemoveItem(int Index, int Count) {
 		if (FInventoryModule::Get().GetSettings()->MassItems == true)
 			CurrentMassa -= Items[Index].ClassItem.GetDefaultObject()->ItemData.MassItem;
 
+		OnRemoveItem.Broadcast(Index);
 		Items.RemoveAt(Index);
+
 		return true;
 	}
 	return false;
