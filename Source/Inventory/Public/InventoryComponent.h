@@ -9,6 +9,7 @@
 #include "InventoryComponent.generated.h"
 
 
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int, Index);
 
@@ -30,7 +31,14 @@ struct INVENTORY_API FInventorySlot
 		int Count;
 };
 
-UCLASS(config = Engine, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UENUM()
+enum ETypeSetItem
+{
+	Add,
+	Remove
+};
+
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORY_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -41,7 +49,7 @@ class INVENTORY_API UInventoryComponent : public UActorComponent
 
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
 		TArray<FInventorySlot> Items;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
@@ -50,6 +58,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, Replicated)
 		float CurrentMassa;
 
+	UPROPERTY(BlueprintAssignable)
+		FOnAddItem OnAddItem;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnRemoveItem OnRemoveItem;
+
+	int32 ItemIndex;
+
+	ETypeSetItem TypeSetItem;
 
 	// Sets default values for this component's properties
 	UInventoryComponent();
@@ -96,13 +113,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index);
 
-	UPROPERTY(BlueprintAssignable)
-		FOnAddItem OnAddItem;
+	UFUNCTION()
+		void OnRep_SetItems();
 
-	UPROPERTY(BlueprintAssignable)
-		FOnRemoveItem OnRemoveItem;
-
-	//UFUNCTION(Client, Reliable)
-	//	void ClientRPC_EventAddItem(int Index);
+	UFUNCTION(Client, Reliable)
+		void ClientRPC_EventSetItem(int Index, ETypeSetItem Type);
 
 };

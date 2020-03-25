@@ -23,6 +23,12 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	DOREPLIFETIME_CONDITION(UInventoryComponent, CurrentMassa, COND_OwnerOnly);
 }
 
+void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int Index, ETypeSetItem Type)
+{
+	ItemIndex = Index;
+	TypeSetItem = Type;
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
@@ -87,6 +93,7 @@ bool UInventoryComponent::AddActorItem(AItemActor* Item, int& Index)
 
 bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, const FString& Data, int& Index)
 {
+
 	if (!IsValid(Item) || !GIsServer || Count == 0)
 		return false;
 	
@@ -110,7 +117,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 					Index = FindIndex;
 						
 					OnAddItem.Broadcast(FindIndex);
-
+					ClientRPC_EventSetItem(FindIndex, ETypeSetItem::Add);
 					return true;
 				}
 			}
@@ -128,6 +135,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 						
 						OnAddItem.Broadcast(Index);
 
+						ClientRPC_EventSetItem(i, ETypeSetItem::Add);
 						return true;
 					}
 				}
@@ -153,7 +161,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 		Index = IndexAdd;
 
 		OnAddItem.Broadcast(IndexAdd);
-		
+		ClientRPC_EventSetItem(IndexAdd, ETypeSetItem::Add);
 		return true;
 	}
 
@@ -173,15 +181,15 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 
 	while (IsNoFree) {
 
-		int ItemIndex;
+		int L_ItemIndex;
 
-		IsNoFree = !IsPositionFree(FIntPoint(X, Y), Size, ItemIndex);
+		IsNoFree = !IsPositionFree(FIntPoint(X, Y), Size, L_ItemIndex);
 
 		if (IsNoFree) {
 			
 			if (FInventoryModule::Get().GetSettings()->SizeSlot == true) {
 
-				X = Items[ItemIndex].PositionSlot.X + Items[ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
+				X = Items[L_ItemIndex].PositionSlot.X + Items[L_ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
 			}
 			else {
 				X++;
@@ -234,21 +242,28 @@ bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child
 
 bool UInventoryComponent::RemoveItem(int Index, int Count) {
 
-	if (!Items.IsValidIndex(Index) && !GIsServer) {
+	if (!Items.IsValidIndex(Index) || !GIsServer || Items.Num() == 0) {
 		return false;
 	}
+
 	if (FInventoryModule::Get().GetSettings()->StackItems == true) {
-		if (Items[Index].Count > Count) {
+		
+		if (Items[Index].Count >= Count) {
 
 			if (FInventoryModule::Get().GetSettings()->MassItems == true)
 				CurrentMassa -= Items[Index].ClassItem.GetDefaultObject()->ItemData.MassItem * Count;
 
+			OnRemoveItem.Broadcast(Index);
+			ClientRPC_EventSetItem(Index, ETypeSetItem::Remove);
+
 			if (Items[Index].Count - Count == 0) {
+				
 				Items.RemoveAt(Index);
 			}
 			else {
 				Items[Index].Count -= Count;
 			}
+
 			return true;
 		}
 	}
@@ -347,6 +362,22 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 	}
 
 	return true;
+}
+
+void UInventoryComponent::OnRep_SetItems()
+{
+	
+	switch (TypeSetItem)
+	{
+	case ETypeSetItem::Add:
+		OnAddItem.Broadcast(ItemIndex);
+
+		break;
+
+	case ETypeSetItem::Remove:
+		OnRemoveItem.Broadcast(ItemIndex);
+		break;
+	}
 }
 
 #if WITH_EDITOR
