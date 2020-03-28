@@ -23,7 +23,7 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	DOREPLIFETIME_CONDITION(UInventoryComponent, CurrentMassa, COND_OwnerOnly);
 }
 
-void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int Index, ETypeSetItem Type)
+void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, ETypeSetItem Type)
 {
 	ItemIndex = Index;
 	TypeSetItem = Type;
@@ -35,7 +35,7 @@ void UInventoryComponent::BeginPlay()
 
 }
 
-bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int& Index)
+bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index)
 {
 
 	if (!IsValid(NewSlot.ClassItem) && !GIsServer && NewSlot.Count >= 0)
@@ -47,7 +47,7 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 		if (FindFreeSlot(NewSlot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, NewPosition)) {
 			NewSlot.PositionSlot = NewPosition;
-			int AddIndex = Items.Add(NewSlot);
+			int32 AddIndex = Items.Add(NewSlot);
 			Index = AddIndex;
 
 			if (FInventoryModule::Get().GetSettings()->StackItems == false) {
@@ -63,7 +63,7 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 		}
 	}
 	else {
-		int AddIndex = Items.Add(NewSlot);
+		int32 AddIndex = Items.Add(NewSlot);
 		Index = AddIndex;
 
 		if (FInventoryModule::Get().GetSettings()->StackItems == false) {
@@ -82,7 +82,7 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 	return false;
 }
 
-bool UInventoryComponent::AddActorItem(AItemActor* Item, int& Index)
+bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
 {
 	if (!IsValid(Item) || !GIsServer)
 		return false;
@@ -91,7 +91,7 @@ bool UInventoryComponent::AddActorItem(AItemActor* Item, int& Index)
 
 }
 
-bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, const FString& Data, int& Index)
+bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int32 Count, const FString& Data, int32& Index)
 {
 
 	if (!IsValid(Item) || !GIsServer || Count == 0)
@@ -104,7 +104,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 		if (DefaultItem->ItemData.StackItem == true) {
 			if (DefaultItem->ItemData.NoneData == true) {
 
-				int FindIndex = 0;
+				int32 FindIndex = 0;
 
 				if (DefaultItem->ItemData.StackItem == true && FindItem(Item, false, FindIndex)) {
 
@@ -122,7 +122,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 				}
 			}
 			else {
-				for (int i = 0; i < Items.Num(); i++)
+				for (int32 i = 0; i < Items.Num(); i++)
 				{
 					if (Items[i].ClassItem == Item && Items[i].ItemData == Data) {
 						Items[i].Count += Count;
@@ -153,7 +153,7 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int Count, c
 			NewSlot.ItemData = Data;
 		
 		NewSlot.PositionSlot = NewPosition;
-		int IndexAdd = Items.Add(NewSlot);
+		int32 IndexAdd = Items.Add(NewSlot);
 
 		if (FInventoryModule::Get().GetSettings()->MassItems == true) {
 			CurrentMassa += DefaultItem->ItemData.MassItem * Count;
@@ -175,7 +175,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 		return true;
 	}
 
-	int X = 0, Y = 0;
+	int32 X = 0, Y = 0;
 
 	bool IsNoFree = true;
 
@@ -216,7 +216,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 
 }
 
-bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child, int& Index)
+bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child, int32& Index)
 {
 	if (!IsValid(ClassItem))
 		return false;
@@ -240,7 +240,7 @@ bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child
 	return false;
 }
 
-bool UInventoryComponent::RemoveItem(int Index, int Count) {
+bool UInventoryComponent::RemoveItem(int32 Index, int32 Count) {
 
 	if (!Items.IsValidIndex(Index) || !GIsServer || Items.Num() == 0) {
 		return false;
@@ -280,7 +280,7 @@ bool UInventoryComponent::RemoveItem(int Index, int Count) {
 	return false;
 }
 
-bool UInventoryComponent::SendItem(int Index, UInventoryComponent* ToIntentory, int Count, bool FindSlot, FIntPoint Position)
+bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory, int32 Count, bool FindSlot, FIntPoint Position)
 {
 	if (!GIsServer)
 		return true;
@@ -306,7 +306,7 @@ bool UInventoryComponent::SendItem(int Index, UInventoryComponent* ToIntentory, 
 		}
 		else{
 			
-			int FindIndex;
+			int32 FindIndex;
 			FInventorySlot NewStot = Items[Index];
 			if (RemoveItem(Index, Count)) {
 				if (ToIntentory->IsPositionFree(Position, NewStot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, FindIndex)) {
@@ -321,7 +321,7 @@ bool UInventoryComponent::SendItem(int Index, UInventoryComponent* ToIntentory, 
 	return false;
 }
 
-bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index)
+bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index)
 {
 
 	if (Position.X + (Size.X - 1) > MaxSlot.X)

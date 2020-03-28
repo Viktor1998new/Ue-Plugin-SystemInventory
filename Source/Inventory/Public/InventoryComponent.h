@@ -8,10 +8,8 @@
 #include "ItemActor.h"
 #include "InventoryComponent.generated.h"
 
-
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int, Index);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
 
 USTRUCT(BlueprintType)
 struct INVENTORY_API FInventorySlot
@@ -79,17 +77,17 @@ public:
 	/*Adding a slot
 	  Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int& Index);
+		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
 
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddActorItem(AItemActor* Item, int& Index);
+		bool AddActorItem(AItemActor* Item, int32& Index);
 
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddClassItem(TSubclassOf<AItemActor> Item, int Count, const FString& Data, int& Index);
+		bool AddClassItem(TSubclassOf<AItemActor> Item, int32 Count, const FString& Data, int32& Index);
 
 	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
 	UFUNCTION(BlueprintCallable)
@@ -97,26 +95,26 @@ public:
 
 	/*search function for an item by class or class child*/
 	UFUNCTION(BlueprintCallable)
-		bool FindItem(TSubclassOf<AItemActor> ClassItem ,bool Child,int& Index);
+		bool FindItem(TSubclassOf<AItemActor> ClassItem ,bool Child,int32& Index);
 
 	/*Removing an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool RemoveItem(int Index, int count);
+		bool RemoveItem(int32 Index, int32 count);
 
 	/*the function sends an item from the current inventory to another one
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool SendItem(int Index, class UInventoryComponent* ToIntentory, int Count, bool FindSlot , FIntPoint Position);
+		bool SendItem(int32 Index, class UInventoryComponent* ToIntentory, int32 Count, bool FindSlot , FIntPoint Position);
 
 	/*the function checks whether the element can be placed in this position*/
 	UFUNCTION(BlueprintCallable)
-		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int &Index);
+		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
 
 	UFUNCTION()
 		void OnRep_SetItems();
 
 	UFUNCTION(Client, Reliable)
-		void ClientRPC_EventSetItem(int Index, ETypeSetItem Type);
+		void ClientRPC_EventSetItem(int32 Index, ETypeSetItem Type);
 
 };
