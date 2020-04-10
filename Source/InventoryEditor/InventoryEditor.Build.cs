@@ -16,6 +16,7 @@ public class InventoryEditor : ModuleRules
 				"Kismet",
 				"EditorStyle",
 				"Slate",
+				"UMG",
 				"SlateCore"
 			}
 		);

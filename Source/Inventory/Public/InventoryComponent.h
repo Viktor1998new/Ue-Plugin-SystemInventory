@@ -4,12 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Inventory.h"
 #include "ItemActor.h"
 #include "InventoryComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
+class UInventorySettings;
 
 USTRUCT(BlueprintType)
 struct INVENTORY_API FInventorySlot
@@ -33,8 +31,14 @@ UENUM()
 enum ETypeSetItem
 {
 	Add,
-	Remove
+	Remove,
+	SetCount,
+	SetPosition
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORY_API UInventoryComponent : public UActorComponent
@@ -46,6 +50,9 @@ class INVENTORY_API UInventoryComponent : public UActorComponent
 #endif
 
 public:
+
+	UFUNCTION(BlueprintPure)
+		static UInventorySettings* GetInventorySetting();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
 		TArray<FInventorySlot> Items;
@@ -62,14 +69,16 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FOnRemoveItem OnRemoveItem;
 
-	int32 ItemIndex;
-
-	ETypeSetItem TypeSetItem;
+		FNewDataSlot NewDataSlot;
 
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
 protected:
+
+	ETypeSetItem TypeSetItem;
+
+	int32 ItemIndex;
 	// Called when the game starts
 	virtual void BeginPlay() override;
 public:
@@ -111,10 +120,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
 
+	UFUNCTION(BlueprintCallable)
+		bool DropItem(int32 IndexItem,UInventoryComponent* ToInventory, int32 ToIndex, FIntPoint ToPosition);
+
 	UFUNCTION()
 		void OnRep_SetItems();
 
 	UFUNCTION(Client, Reliable)
-		void ClientRPC_EventSetItem(int32 Index, ETypeSetItem Type);
+		void ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
 };
