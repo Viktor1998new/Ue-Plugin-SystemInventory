@@ -7,7 +7,6 @@ UInventorySettings::UInventorySettings(const FObjectInitializer& ObjectInitializ
 	: Super(ObjectInitializer)
 {
 	SizeSlot = false;
-	PositionSlot = true;
 	StackItems = true;
 	MassItems = false;
 	LimitSlotY = true;

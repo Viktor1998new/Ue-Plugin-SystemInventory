@@ -54,7 +54,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		static UInventorySettings* GetInventorySetting();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
 		TArray<FInventorySlot> Items;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
@@ -84,6 +84,7 @@ protected:
 public:
 
 	/*Adding a slot
+	 * @param NewSlot - The new active state of the component
 	  Use only in Server*/
 	UFUNCTION(BlueprintCallable)
 		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);

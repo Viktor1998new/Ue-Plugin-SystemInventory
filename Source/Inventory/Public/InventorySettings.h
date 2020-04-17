@@ -25,9 +25,6 @@ public:
         bool SizeSlot;
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
-        bool PositionSlot;
-
-    UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
         bool StackItems;
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")

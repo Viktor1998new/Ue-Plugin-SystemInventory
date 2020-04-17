@@ -30,7 +30,7 @@ void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FIn
 	ItemIndex = Index;
 	TypeSetItem = Type;
 
-	if (Type == ETypeSetItem::Remove || Type == ETypeSetItem::SetCount || Type == ETypeSetItem::SetPosition) {
+	if (Type != ETypeSetItem::Add) {
 		OnRemoveItem.Broadcast(Index);
 		NewDataSlot.Broadcast(Index, NewData, Type);
 	}
@@ -168,9 +168,6 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item,int32 Count,
 
 bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition)
 {
-	if (GetInventorySetting()->PositionSlot == false)
-		return true;
-
 	if (Items.Num() == 0 && Size.X > MaxSlot.X && Size.Y > MaxSlot.Y) {
 		ReturnPosition = FIntPoint::ZeroValue;
 		return true;
@@ -202,8 +199,10 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 		if (IsNoFree) {
 			
 			if (GetInventorySetting()->SizeSlot == true) {
-				
-				X = Items[L_ItemIndex].PositionSlot.X + Items[L_ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
+				if (Items.IsValidIndex(L_ItemIndex))
+					X = Items[L_ItemIndex].PositionSlot.X + Items[L_ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
+				else
+					X++;
 			}
 			else {
 				X++;
@@ -313,12 +312,13 @@ bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory
 		else{
 			
 			int32 FindIndex;
-			FInventorySlot NewStot = Items[Index];
+			FInventorySlot NewSlot = Items[Index];
 			if (RemoveItem(Index, Count)) {
-				if (ToIntentory->IsPositionFree(Position, NewStot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, FindIndex)) {
-					NewStot.Count = Count;
+				if (ToIntentory->IsPositionFree(Position, NewSlot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, FindIndex)) {
+					NewSlot.PositionSlot = Position;
+					NewSlot.Count = Count;
 					int AddIndex;
-					ToIntentory->AddSlot(NewStot,false,AddIndex);
+					ToIntentory->AddSlot(NewSlot,false,AddIndex);
 					return true;
 				}
 			}
@@ -330,18 +330,14 @@ bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory
 
 bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index)
 {
-
-	if (GetInventorySetting()->PositionSlot == false)
-		return true;
-
-	if (Position.X + (Size.X - 1) > MaxSlot.X)
+	if (Position.X + Size.X > MaxSlot.X)
 	{
 		Index = -1;
 		return false;
 	}
 
 	if (GetInventorySetting()->LimitSlotY == true) {
-		if (Position.Y + (Size.Y - 1) > MaxSlot.Y)
+		if (Position.Y + Size.Y > MaxSlot.Y)
 		{
 			Index = -1;
 			return false;
@@ -384,7 +380,8 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToI
 		if (GetInventorySetting()->StackItems == true) {
 			if (ToIndex != -1 && IndexItem != ToIndex) {
 				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true) {
-					if (Items[IndexItem].ClassItem == Items[ToIndex].ClassItem) {
+					if (Items[IndexItem].ClassItem == Items[ToIndex].ClassItem && Items[IndexItem].ItemData == Items[ToIndex].ItemData) {
+
 						
 						Items[IndexItem].Count--;
 						Items[ToIndex].Count++;
@@ -449,7 +446,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToI
 		if (GetInventorySetting()->StackItems == true) {
 			if (ToIndex != -1) {
 				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true) {
-					if (Items[IndexItem].ClassItem == ToInventory->Items[ToIndex].ClassItem) {
+					if (Items[IndexItem].ClassItem == ToInventory->Items[ToIndex].ClassItem && Items[IndexItem].ItemData == ToInventory->Items[ToIndex].ItemData) {
 						
 						Items[IndexItem].Count--;
 						

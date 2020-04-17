@@ -48,11 +48,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 
 	if (IsValid(Inventory)) {
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
-
-		for (int32 SlotIndex = 0; SlotIndex < Slots.Num(); SlotIndex++)
-		{
-			RemoveChildAt(SlotIndex);
-		}
+		ClearChildren();
 	}
 
 	if(IsValid(NewInventory)){

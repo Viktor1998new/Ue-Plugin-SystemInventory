@@ -93,7 +93,7 @@ public:
 		return DataSlot;
 	}
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintPure)
 	int32 GetItemIndex() const {
 		return IndexItem;
 	}
