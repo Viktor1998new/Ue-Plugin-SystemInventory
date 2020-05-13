@@ -175,14 +175,14 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 
 	int32 X = 0, Y = 0;
 
-	bool IsNoFree = true;
+	bool IsNoFree;
 
-	while (IsNoFree) {
-
+	do {
+		
 		if (X + (Size.X - 1) > (MaxSlot.X - 1)) {
 			X = 0;
 
-			if (GetInventorySetting()->LimitSlotY == true)  {
+			if (GetInventorySetting()->LimitSlotY == true) {
 				if (Y + (Size.Y - 1) > (MaxSlot.Y - 1))
 				{
 					return false;
@@ -197,7 +197,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 		IsNoFree = !IsPositionFree(FIntPoint(X, Y), Size, L_ItemIndex);
 
 		if (IsNoFree) {
-			
+
 			if (GetInventorySetting()->SizeSlot == true) {
 				if (Items.IsValidIndex(L_ItemIndex))
 					X = Items[L_ItemIndex].PositionSlot.X + Items[L_ItemIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X;
@@ -209,7 +209,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint &ReturnPosition
 			}
 		}
 
-	}
+	} while (IsNoFree);
 
 	ReturnPosition = FIntPoint(X, Y);
 	return true;
@@ -344,7 +344,7 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 		}
 	}
 
-	for (int i = 0; i < Items.Num(); i++)
+	for (int32 i = 0; i < Items.Num(); i++)
 	{
 		if (IsValid(Items[i].ClassItem)) {
 			if (GetInventorySetting()->SizeSlot == true) {
@@ -503,7 +503,7 @@ void UInventoryComponent::PostEditChangeProperty(FPropertyChangedEvent& Property
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	//UE_LOG(RHLogGeneral, Warning, TEXT("EditSetting"));
-	
+
 	if (GetInventorySetting()->MassItems == true) {
 		float NewMass = 0;
 

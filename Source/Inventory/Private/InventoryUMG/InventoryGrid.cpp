@@ -3,8 +3,6 @@
 #include "InventoryGrid.h"
 #include "InventoryGridSlot.h"
 
-
-
 #define LOCTEXT_NAMESPACE "UMG"
 
 UInventoryGrid::UInventoryGrid(const FObjectInitializer& ObjectInitializer)
@@ -68,7 +66,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 			}
 		}
 
-		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
+		for (int32 SlotIndex = 0; Inventory->Items.Num(); SlotIndex++)
 		{
 			AddSlot(SlotIndex);
 		}
@@ -166,11 +164,6 @@ void UInventoryGrid::OnSlotRemoved(UPanelSlot* inSlot)
 			MyPanel->RemoveSlot(Widget.ToSharedRef());
 		}
 	}
-}
-
-UWidget* UInventoryGrid::CreateContent(){
-
-	return CreateWidget<UUserWidget>(GetOwningPlayer(), ContentItemSlot);
 }
 
 TSharedRef<SWidget> UInventoryGrid::RebuildWidget()

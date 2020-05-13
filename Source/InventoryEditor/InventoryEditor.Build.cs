@@ -6,6 +6,8 @@ public class InventoryEditor : ModuleRules
 {
 	public InventoryEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
 		PrivateDependencyModuleNames.AddRange(
 			new string[] {
 				"Inventory",

@@ -11,9 +11,9 @@
 	"MarketplaceURL": "",
 	"SupportURL": "",
 	"EnabledByDefault": true,
-  "CanContainContent": true,
-  "IsBetaVersion": false,
-  "Installed": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
 	"Modules": [
 		{
 			"Name": "Inventory",

@@ -10,9 +10,7 @@
 #include "InventoryGrid.generated.h"
 
 class UInventoryGridSlot;
-/**
- * 
- */
+
 UCLASS()
 class INVENTORY_API UInventoryGrid : public UPanelWidget
 {
@@ -32,7 +30,7 @@ public:
 		TSubclassOf<UUserWidget> ContentNoneSlot;
 
 	UPROPERTY(EditAnywhere)
-		int32 SizeSlot = 32;
+		float SizeSlot = 32;
 
 #if WITH_EDITOR
 	virtual const FText GetPaletteCategory() override;
@@ -53,7 +51,6 @@ public:
 	UFUNCTION(BlueprintPure)
 		int32 GetSlotAtItem(int32 ItemIndex);
 
-
 protected:
 	
 	void AddNoneSlot(FIntPoint Position);
@@ -64,12 +61,6 @@ protected:
 	
 	UFUNCTION()
 		void Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
-
-	UFUNCTION(BlueprintCallable)
-		virtual UWidget* CreateContent();
-
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "CreateContent"))
-		void ReceiveCreateContent(UWidget*& Content);
 
 	virtual void BeginDestroy() override;
 

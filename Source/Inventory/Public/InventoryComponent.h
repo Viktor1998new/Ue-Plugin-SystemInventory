@@ -40,7 +40,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INVENTORY_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -54,14 +54,14 @@ public:
 	UFUNCTION(BlueprintPure)
 		static UInventorySettings* GetInventorySetting();
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
+	UPROPERTY(VisibleInstanceOnly,BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
 		TArray<FInventorySlot> Items;
 	
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated)
+		float CurrentMassa;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
 		FIntPoint MaxSlot;
-
-	UPROPERTY(BlueprintReadOnly, Replicated)
-		float CurrentMassa;
 
 	UPROPERTY(BlueprintAssignable)
 		FOnAddItem OnAddItem;
