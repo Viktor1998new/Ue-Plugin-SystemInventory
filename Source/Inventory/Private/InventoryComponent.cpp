@@ -2,7 +2,7 @@
 
 #include "InventoryComponent.h"
 #include "Inventory.h"
-#include "UnrealNetwork.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()

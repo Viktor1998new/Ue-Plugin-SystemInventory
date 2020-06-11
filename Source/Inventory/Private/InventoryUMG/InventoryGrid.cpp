@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "InventoryGrid.h"
-#include "InventoryGridSlot.h"
+#include "InventoryUMG/InventoryGrid.h"
+#include "InventoryUMG/InventoryGridSlot.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -66,7 +66,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 			}
 		}
 
-		for (int32 SlotIndex = 0; Inventory->Items.Num(); SlotIndex++)
+		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
 		{
 			AddSlot(SlotIndex);
 		}

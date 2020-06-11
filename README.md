@@ -1,4 +1,4 @@
-# Ue4Plugin-SystemInventory (Unreal engine 4.23 ... 4.25)
+# Ue4Plugin-SystemInventory (Unreal engine 4.25)
 
 the demo version of the "inventory System" 
 is suitable for genres: Horror, RPG, Shooter. 
