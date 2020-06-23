@@ -12,6 +12,9 @@ struct INVENTORY_API FItemData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FText NameItem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UTexture2D * ImageItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
