@@ -1,0 +1,14 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-Inventory.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"A:\Project\mold\Intermediate\Build\Win64\MoldEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
+"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
+"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Default.rc2.res"
+/OUT:"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.lib"
+/INCLUDE:IMPLEMENT_MODULE_Inventory
