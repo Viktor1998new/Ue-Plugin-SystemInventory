@@ -5,9 +5,8 @@
 #include "Widgets/Layout/SConstraintCanvas.h"
 #include "Layout/Margin.h"
 #include "Components/PanelSlot.h"
+#include "Inventory/InventoryComponent.h"
 #include "InventoryGridSlot.generated.h"
-
-struct FInventorySlot;
 
 USTRUCT(BlueprintType)
 struct FSlotTransformData

@@ -29,7 +29,7 @@
 /wd4244
 /wd4838
 /I .
-/I A:\Project\mold\Plugins\Inventory\Source\Inventory\Private
+/I A:\Project\Advent\Plugins\Inventory\Source\Inventory\Private
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -542,11 +542,11 @@
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\ClothingSystemRuntimeInterface
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I Runtime\ClothingSystemRuntimeInterface
-/I A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory
-/I A:\Project\mold\Plugins\Inventory\Source
-/I A:\Project\mold\Plugins\Inventory\Source\Inventory\Classes
-/I A:\Project\mold\Plugins\Inventory\Source\Inventory\Public
-/I A:\Project\mold\Plugins\Inventory\Source\Inventory
+/I A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory
+/I A:\Project\Advent\Plugins\Inventory\Source
+/I A:\Project\Advent\Plugins\Inventory\Source\Inventory\Classes
+/I A:\Project\Advent\Plugins\Inventory\Source\Inventory\Public
+/I A:\Project\Advent\Plugins\Inventory\Source\Inventory
 /I ThirdParty\PhysX3\PxShared\include
 /I ThirdParty\PhysX3\PxShared\include\cudamanager
 /I ThirdParty\PhysX3\PxShared\include\filebuf
@@ -576,12 +576,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"A:\Project\mold\Intermediate\Build\Win64\MoldEditor\Development\Engine\SharedPCH.Engine.h"
-/Yu"A:\Project\mold\Intermediate\Build\Win64\MoldEditor\Development\Engine\SharedPCH.Engine.h"
-/Fp"A:\Project\mold\Intermediate\Build\Win64\MoldEditor\Development\Engine\SharedPCH.Engine.h.pch"
-"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp"
-/FI"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h"
-/Fo"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
+/FI"A:\Project\Advent\Intermediate\Build\Win64\AdventEditor\Development\Engine\SharedPCH.Engine.h"
+/Yu"A:\Project\Advent\Intermediate\Build\Win64\AdventEditor\Development\Engine\SharedPCH.Engine.h"
+/Fp"A:\Project\Advent\Intermediate\Build\Win64\AdventEditor\Development\Engine\SharedPCH.Engine.h.pch"
+"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp"
+/FI"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h"
+/Fo"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
 /TP
 /GR-
 /W4

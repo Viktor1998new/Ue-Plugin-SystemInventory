@@ -56,19 +56,26 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 		Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 
 		if (IsValid(ContentNoneSlot)) {
-
-			for (int32 Y = 0; Y < Inventory->MaxSlot.Y; Y++)
-			{
-				for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
+		
+			if (Inventory->MaxSlot != FIntPoint::ZeroValue) {
+			
+				for (int32 Y = 0; Y < Inventory->MaxSlot.Y; Y++)
 				{
-					AddNoneSlot(FIntPoint(X, Y));
+					for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
+					{
+						AddNoneSlot(FIntPoint(X, Y));
+					}
 				}
 			}
 		}
 
-		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
-		{
-			AddSlot(SlotIndex);
+		if (Inventory->Items.IsValidIndex(0)) {
+			
+			for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
+			{
+				if(IsValid(Inventory->Items[SlotIndex].ClassItem))
+					AddSlot(SlotIndex);
+			}
 		}
 	}
 }

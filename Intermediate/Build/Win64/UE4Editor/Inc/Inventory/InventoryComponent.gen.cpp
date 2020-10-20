@@ -422,6 +422,15 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 		*(UInventorySettings**)Z_Param__Result=UInventoryComponent::GetInventorySetting();
 		P_NATIVE_END;
 	}
+#if WITH_EDITOR
+	DEFINE_FUNCTION(UInventoryComponent::execRecalculationMass)
+	{
+		P_FINISH;
+		P_NATIVE_BEGIN;
+		P_THIS->RecalculationMass();
+		P_NATIVE_END;
+	}
+#endif //WITH_EDITOR
 	static FName NAME_UInventoryComponent_ClientRPC_EventSetItem = FName(TEXT("ClientRPC_EventSetItem"));
 	void UInventoryComponent::ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
 	{
@@ -445,6 +454,9 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 			{ "GetInventorySetting", &UInventoryComponent::execGetInventorySetting },
 			{ "IsPositionFree", &UInventoryComponent::execIsPositionFree },
 			{ "OnRep_SetItems", &UInventoryComponent::execOnRep_SetItems },
+#if WITH_EDITOR
+			{ "RecalculationMass", &UInventoryComponent::execRecalculationMass },
+#endif // WITH_EDITOR
 			{ "RemoveItem", &UInventoryComponent::execRemoveItem },
 			{ "SendItem", &UInventoryComponent::execSendItem },
 		};
@@ -919,6 +931,32 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 		}
 		return ReturnFunction;
 	}
+#if WITH_EDITOR
+	struct Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics
+	{
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
+#endif
+		static const UE4CodeGen_Private::FFunctionParams FuncParams;
+	};
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics::Function_MetaDataParams[] = {
+		{ "Comment", "// Only Edit\n" },
+		{ "ModuleRelativePath", "Classes/Inventory/InventoryComponent.h" },
+		{ "ToolTip", "Only Edit" },
+	};
+#endif
+	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UInventoryComponent, nullptr, "RecalculationMass", nullptr, nullptr, 0, nullptr, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x24020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics::Function_MetaDataParams)) };
+	UFunction* Z_Construct_UFunction_UInventoryComponent_RecalculationMass()
+	{
+		static UFunction* ReturnFunction = nullptr;
+		if (!ReturnFunction)
+		{
+			UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UInventoryComponent_RecalculationMass_Statics::FuncParams);
+		}
+		return ReturnFunction;
+	}
+#endif //WITH_EDITOR
 	struct Z_Construct_UFunction_UInventoryComponent_RemoveItem_Statics
 	{
 		struct InventoryComponent_eventRemoveItem_Parms
@@ -1089,14 +1127,19 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 		{ &Z_Construct_UFunction_UInventoryComponent_GetInventorySetting, "GetInventorySetting" }, // 1664978471
 		{ &Z_Construct_UFunction_UInventoryComponent_IsPositionFree, "IsPositionFree" }, // 82118344
 		{ &Z_Construct_UFunction_UInventoryComponent_OnRep_SetItems, "OnRep_SetItems" }, // 464282423
+#if WITH_EDITOR
+		{ &Z_Construct_UFunction_UInventoryComponent_RecalculationMass, "RecalculationMass" }, // 1968729836
+#endif //WITH_EDITOR
 		{ &Z_Construct_UFunction_UInventoryComponent_RemoveItem, "RemoveItem" }, // 3301132351
 		{ &Z_Construct_UFunction_UInventoryComponent_SendItem, "SendItem" }, // 2467610113
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryComponent_Statics::Class_MetaDataParams[] = {
 		{ "BlueprintSpawnableComponent", "" },
+		{ "BlueprintType", "true" },
 		{ "ClassGroupNames", "Custom" },
 		{ "IncludePath", "Inventory/InventoryComponent.h" },
+		{ "IsBlueprintBase", "true" },
 		{ "ModuleRelativePath", "Classes/Inventory/InventoryComponent.h" },
 	};
 #endif
@@ -1132,8 +1175,8 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 		{ "ModuleRelativePath", "Classes/Inventory/InventoryComponent.h" },
 	};
 #endif
-	const UE4CodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items = { "Items", "OnRep_SetItems", (EPropertyFlags)0x0010000100020835, UE4CodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryComponent, Items), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_MetaData)) };
-	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_Inner = { "Items", nullptr, (EPropertyFlags)0x0000000000020000, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UScriptStruct_FInventorySlot, METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items = { "Items", "OnRep_SetItems", (EPropertyFlags)0x0010000100000835, UE4CodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryComponent, Items), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_MetaData)) };
+	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UClass_UInventoryComponent_Statics::NewProp_Items_Inner = { "Items", nullptr, (EPropertyFlags)0x0000000000000000, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UScriptStruct_FInventorySlot, METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UInventoryComponent_Statics::PropPointers[] = {
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryComponent_Statics::NewProp_OnRemoveItem,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryComponent_Statics::NewProp_OnAddItem,
@@ -1169,7 +1212,7 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFInventorySlot
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UInventoryComponent, 619851907);
+	IMPLEMENT_CLASS(UInventoryComponent, 2430663173);
 	template<> INVENTORY_API UClass* StaticClass<UInventoryComponent>()
 	{
 		return UInventoryComponent::StaticClass();

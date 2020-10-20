@@ -2,6 +2,7 @@
 
 #include "Inventory/InventoryComponent.h"
 #include "Inventory.h"
+#include "InventorySettings.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
@@ -365,6 +366,52 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 	return true;
 }
 
+
+bool UInventoryComponent::IsPositionFreeDrop(FIntPoint Position, int32 DropIndex)
+{
+	FIntPoint Size = Items[DropIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
+
+	if (Position.X + Size.X > MaxSlot.X)
+	{
+		return false;
+	}
+
+	if (GetInventorySetting()->LimitSlotY == true) {
+		if (Position.Y + Size.Y > MaxSlot.Y)
+		{
+			return false;
+		}
+	}
+
+	for (int32 i = 0; i < Items.Num(); i++)
+	{
+		if (i == DropIndex) {
+			if (Items[i].Count == 1)
+				continue;
+		}
+
+		if (IsValid(Items[i].ClassItem)) {
+			if (GetInventorySetting()->SizeSlot == true) {
+
+				FIntPoint SizeItem = FIntPoint(Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1, Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y - 1);
+
+				if (Position.X >= Items[i].PositionSlot.X ? Position.X <= Items[i].PositionSlot.X + SizeItem.X : Position.X + (Size.X - 1) >= Items[i].PositionSlot.X) {
+					if (Position.Y >= Items[i].PositionSlot.Y ? Position.Y <= Items[i].PositionSlot.Y + SizeItem.Y : Position.Y + (Size.Y - 1) >= Items[i].PositionSlot.Y) {
+						return false;
+					}
+				}
+			}
+			else {
+				if (Position.X == Items[i].PositionSlot.X && Position.Y == Items[i].PositionSlot.Y) {
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
 bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToInventory = nullptr, int32 ToIndex = -1, FIntPoint ToPosition = FIntPoint::ZeroValue)
 {
 	if (!GIsServer)
@@ -402,8 +449,8 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToI
 		if (ToIndex == -1) {
 			if (GetInventorySetting()->StackItems == true) {
 				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true && Items[IndexItem].Count != 1) {
-					int32 ItemPosition;
-					if (IsPositionFree(ToPosition, Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.SizeSlot, ItemPosition)) {
+					
+					if (IsPositionFreeDrop(ToPosition, IndexItem)) {
 						FInventorySlot Newslot = Items[IndexItem];
 						Newslot.Count = 1;
 						Newslot.PositionSlot = ToPosition;
@@ -428,8 +475,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToI
 				}
 			}
 
-			int32 ItemPosition;
-			if (IsPositionFree(ToPosition, Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.SizeSlot, ItemPosition)) {
+			if (IsPositionFreeDrop(ToPosition, IndexItem)) {
 				Items[IndexItem].PositionSlot = ToPosition;
 				NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
 				ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
@@ -497,3 +543,15 @@ UInventorySettings* UInventoryComponent::GetInventorySetting()
 {
 	return FInventoryModule::Get().GetSettings();
 }
+
+#if WITH_EDITOR
+void UInventoryComponent::RecalculationMass() {
+	
+	CurrentMassa = 0;
+
+	for (auto Element : Items) {
+		if(IsValid(Element.ClassItem))
+			CurrentMassa += Element.ClassItem.GetDefaultObject()->ItemData.MassItem * Element.Count;
+	}
+}
+#endif

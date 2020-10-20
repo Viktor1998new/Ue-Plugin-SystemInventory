@@ -40,7 +40,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
 class INVENTORY_API UInventoryComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -50,7 +50,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		static UInventorySettings* GetInventorySetting();
 
-	UPROPERTY(VisibleInstanceOnly,BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
 		TArray<FInventorySlot> Items;
 	
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated)
@@ -69,6 +69,10 @@ public:
 
 	// Sets default values for this component's properties
 	UInventoryComponent();
+
+private:
+	
+	bool IsPositionFreeDrop(FIntPoint Position, int32 DropIndex);
 
 protected:
 
@@ -125,4 +129,9 @@ public:
 	UFUNCTION(Client, Reliable)
 		void ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
+#if WITH_EDITOR
+	// Only Edit
+	UFUNCTION(BlueprintCallable)
+		void RecalculationMass();
+#endif
 };

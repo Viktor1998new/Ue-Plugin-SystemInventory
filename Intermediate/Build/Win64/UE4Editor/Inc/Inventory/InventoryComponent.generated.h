@@ -18,14 +18,14 @@ class UInventorySettings;
 #endif
 #define INVENTORY_InventoryComponent_generated_h
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_15_GENERATED_BODY \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_15_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FInventorySlot_Statics; \
 	static class UScriptStruct* StaticStruct();
 
 
 template<> INVENTORY_API UScriptStruct* StaticStruct<struct FInventorySlot>();
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_41_DELEGATE \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_41_DELEGATE \
 struct _Script_Inventory_eventNewDataSlot_Parms \
 { \
 	int32 Index; \
@@ -42,7 +42,7 @@ static inline void FNewDataSlot_DelegateWrapper(const FMulticastScriptDelegate& 
 }
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_40_DELEGATE \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_40_DELEGATE \
 struct _Script_Inventory_eventOnRemoveItem_Parms \
 { \
 	int32 Index; \
@@ -55,7 +55,7 @@ static inline void FOnRemoveItem_DelegateWrapper(const FMulticastScriptDelegate&
 }
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_39_DELEGATE \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_39_DELEGATE \
 struct _Script_Inventory_eventOnAddItem_Parms \
 { \
 	int32 Index; \
@@ -68,8 +68,8 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 }
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS \
 	virtual void ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type); \
  \
 	DECLARE_FUNCTION(execClientRPC_EventSetItem); \
@@ -86,7 +86,7 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	DECLARE_FUNCTION(execGetInventorySetting);
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS_NO_PURE_DECLS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual void ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type); \
  \
 	DECLARE_FUNCTION(execClientRPC_EventSetItem); \
@@ -103,7 +103,22 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	DECLARE_FUNCTION(execGetInventorySetting);
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EVENT_PARMS \
+#if WITH_EDITOR
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS \
+ \
+	DECLARE_FUNCTION(execRecalculationMass);
+
+
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
+ \
+	DECLARE_FUNCTION(execRecalculationMass);
+
+
+#else
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS
+#endif //WITH_EDITOR
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EVENT_PARMS \
 	struct InventoryComponent_eventClientRPC_EventSetItem_Parms \
 	{ \
 		int32 Index; \
@@ -112,8 +127,8 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	};
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS_NO_PURE_DECLS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUInventoryComponent(); \
 	friend struct Z_Construct_UClass_UInventoryComponent_Statics; \
@@ -131,7 +146,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS \
 private: \
 	static void StaticRegisterNativesUInventoryComponent(); \
 	friend struct Z_Construct_UClass_UInventoryComponent_Statics; \
@@ -149,7 +164,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_STANDARD_CONSTRUCTORS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UInventoryComponent(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UInventoryComponent) \
@@ -162,7 +177,7 @@ private: \
 public:
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_ENHANCED_CONSTRUCTORS \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API UInventoryComponent(UInventoryComponent&&); \
@@ -173,33 +188,35 @@ DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UInventoryComponent); \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UInventoryComponent)
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_43_PROLOG \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EVENT_PARMS
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_43_PROLOG \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EVENT_PARMS
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_GENERATED_BODY_LEGACY \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_STANDARD_CONSTRUCTORS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_GENERATED_BODY \
+#define Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS_NO_PURE_DECLS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS_NO_PURE_DECLS \
-	mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_ENHANCED_CONSTRUCTORS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_PRIVATE_PROPERTY_OFFSET \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_SPARSE_DATA \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_RPC_WRAPPERS_NO_PURE_DECLS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_CALLBACK_WRAPPERS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_INCLASS_NO_PURE_DECLS \
+	Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_46_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -207,7 +224,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> INVENTORY_API UClass* StaticClass<class UInventoryComponent>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID mold_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h
+#define CURRENT_FILE_ID Advent_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h
 
 
 #define FOREACH_ENUM_ETYPESETITEM(op) \

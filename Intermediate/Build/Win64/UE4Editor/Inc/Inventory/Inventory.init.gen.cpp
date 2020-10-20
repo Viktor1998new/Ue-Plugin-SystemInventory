@@ -29,7 +29,7 @@ void EmptyLinkFunctionForGeneratedCodeInventory_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xF66C2E1D,
+				0xB148998C,
 				0x940824D7,
 				METADATA_PARAMS(nullptr, 0)
 			};

@@ -33,9 +33,9 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN
-"A:\Project\mold\Intermediate\Build\Win64\MoldEditor\Development\Engine\SharedPCH.Engine.h.obj"
-"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\InventoryEditor.cpp.obj"
-"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Default.rc2.res"
+"A:\Project\Advent\Intermediate\Build\Win64\AdventEditor\Development\Engine\SharedPCH.Engine.h.obj"
+"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\InventoryEditor.cpp.obj"
+"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Default.rc2.res"
 "delayimp.lib"
 "wininet.lib"
 "rpcrt4.lib"
@@ -60,7 +60,7 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.lib"
+"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.lib"
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\Core\UE4Editor-Core.lib"
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\CoreUObject\UE4Editor-CoreUObject.lib"
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\Engine\UE4Editor-Engine.lib"
@@ -70,8 +70,8 @@
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\Slate\UE4Editor-Slate.lib"
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\UMG\UE4Editor-UMG.lib"
 "A:\Program Files\Epic Games\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Development\SlateCore\UE4Editor-SlateCore.lib"
-/OUT:"A:\Project\mold\Plugins\Inventory\Binaries\Win64\UE4Editor-InventoryEditor.dll"
-/IMPLIB:"A:\Project\mold\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\UE4Editor-InventoryEditor.suppressed.lib"
-/PDB:"A:\Project\mold\Plugins\Inventory\Binaries\Win64\UE4Editor-InventoryEditor.pdb"
+/OUT:"A:\Project\Advent\Plugins\Inventory\Binaries\Win64\UE4Editor-InventoryEditor.dll"
+/IMPLIB:"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\UE4Editor-InventoryEditor.suppressed.lib"
+/PDB:"A:\Project\Advent\Plugins\Inventory\Binaries\Win64\UE4Editor-InventoryEditor.pdb"
 /ignore:4078
 /INCLUDE:IMPLEMENT_MODULE_InventoryEditor
