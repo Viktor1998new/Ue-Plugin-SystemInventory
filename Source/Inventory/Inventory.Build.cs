@@ -29,7 +29,7 @@ public class Inventory : ModuleRules
 			}
 			);
 
-	//	PublicDefinitions.Add("OSC_EDITOR_BUILD=0");
+		PublicDefinitions.Add("MASSAITEM=0");
 
 
 	}

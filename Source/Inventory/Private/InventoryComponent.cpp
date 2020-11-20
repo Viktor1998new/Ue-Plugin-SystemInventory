@@ -5,6 +5,29 @@
 #include "InventorySettings.h"
 #include "Net/UnrealNetwork.h"
 
+bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
+	
+	if (FInventoryModule::Get().GetSettings()->SizeSlot == true) {
+		
+		FIntPoint SizeItem = FIntPoint(ClassItem.GetDefaultObject()->ItemData.SizeSlot.X, ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y);
+		
+		SizeItem -= 1;
+		Size -= 1;
+
+		if (Position.X >= PositionSlot.X ? Position.X <= PositionSlot.X + SizeItem.X : Position.X + Size.X >= PositionSlot.X) {
+			if (Position.Y >= PositionSlot.Y ? Position.Y <= PositionSlot.Y + SizeItem.Y : Position.Y + Size.Y >= PositionSlot.Y) {
+				return true;
+			}
+		}
+	}
+	else {
+		if (Position.X == PositionSlot.X && Position.Y == PositionSlot.Y) {
+			return true;
+		}
+	}
+
+	return false;
+}
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -343,22 +366,9 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 	for (int32 i = 0; i < Items.Num(); i++)
 	{
 		if (IsValid(Items[i].ClassItem)) {
-			if (GetInventorySetting()->SizeSlot == true) {
-
-				FIntPoint SizeItem = FIntPoint(Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1, Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y - 1);
-
-				if (Position.X >= Items[i].PositionSlot.X ? Position.X <= Items[i].PositionSlot.X + SizeItem.X : Position.X + (Size.X - 1) >= Items[i].PositionSlot.X) {
-					if (Position.Y >= Items[i].PositionSlot.Y ? Position.Y <= Items[i].PositionSlot.Y + SizeItem.Y : Position.Y + (Size.Y - 1) >= Items[i].PositionSlot.Y) {
-						Index = i;
-						return false;
-					}
-				}
-			}
-			else {
-				if (Position.X == Items[i].PositionSlot.X && Position.Y == Items[i].PositionSlot.Y) {
-					Index = i;
-					return false;
-				}
+			if (Items[i].IsPosition(Position, Size)) {
+				Index = i;
+				return false;
 			}
 		}
 	}
@@ -385,30 +395,13 @@ bool UInventoryComponent::IsPositionFreeDrop(FIntPoint Position, int32 DropIndex
 
 	for (int32 i = 0; i < Items.Num(); i++)
 	{
-		if (i == DropIndex) {
-			if (Items[i].Count == 1)
-				continue;
-		}
+		if (i == DropIndex && Items[i].Count == 1)
+			continue;
 
-		if (IsValid(Items[i].ClassItem)) {
-			if (GetInventorySetting()->SizeSlot == true) {
-
-				FIntPoint SizeItem = FIntPoint(Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X - 1, Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y - 1);
-
-				if (Position.X >= Items[i].PositionSlot.X ? Position.X <= Items[i].PositionSlot.X + SizeItem.X : Position.X + (Size.X - 1) >= Items[i].PositionSlot.X) {
-					if (Position.Y >= Items[i].PositionSlot.Y ? Position.Y <= Items[i].PositionSlot.Y + SizeItem.Y : Position.Y + (Size.Y - 1) >= Items[i].PositionSlot.Y) {
-						return false;
-					}
-				}
-			}
-			else {
-				if (Position.X == Items[i].PositionSlot.X && Position.Y == Items[i].PositionSlot.Y) {
-					return false;
-				}
-			}
+		if (Items[i].IsPosition(Position, Size)) {
+			return false;
 		}
 	}
-
 	return true;
 }
 

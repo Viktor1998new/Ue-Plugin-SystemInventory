@@ -25,6 +25,8 @@ struct INVENTORY_API FInventorySlot
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Count;
+
+	bool IsPosition(FIntPoint Position, FIntPoint Size);
 };
 
 UENUM()
