@@ -14,6 +14,7 @@ void EmptyLinkFunctionForGeneratedCodeInventory_init() {}
 	INVENTORY_API UFunction* Z_Construct_UDelegateFunction_Inventory_OnAddItem__DelegateSignature();
 	INVENTORY_API UFunction* Z_Construct_UDelegateFunction_Inventory_OnRemoveItem__DelegateSignature();
 	INVENTORY_API UFunction* Z_Construct_UDelegateFunction_Inventory_NewDataSlot__DelegateSignature();
+	INVENTORY_API UFunction* Z_Construct_UDelegateFunction_Inventory_OnChangedSlot__DelegateSignature();
 	UPackage* Z_Construct_UPackage__Script_Inventory()
 	{
 		static UPackage* ReturnPackage = nullptr;
@@ -23,14 +24,15 @@ void EmptyLinkFunctionForGeneratedCodeInventory_init() {}
 				(UObject* (*)())Z_Construct_UDelegateFunction_Inventory_OnAddItem__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Inventory_OnRemoveItem__DelegateSignature,
 				(UObject* (*)())Z_Construct_UDelegateFunction_Inventory_NewDataSlot__DelegateSignature,
+				(UObject* (*)())Z_Construct_UDelegateFunction_Inventory_OnChangedSlot__DelegateSignature,
 			};
 			static const UE4CodeGen_Private::FPackageParams PackageParams = {
 				"/Script/Inventory",
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xB148998C,
-				0x940824D7,
+				0xB99983C2,
+				0x6D90061E,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

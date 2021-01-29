@@ -32,25 +32,25 @@ void EmptyLinkFunctionForGeneratedCodeInventorySettings() {}
 		static const UE4CodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_LimitSlotY_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
 #endif
-		static void NewProp_LimitSlotY_SetBit(void* Obj);
-		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_LimitSlotY;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_MassItems_MetaData[];
-#endif
-		static void NewProp_MassItems_SetBit(void* Obj);
-		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_MassItems;
+		static void NewProp_SizeSlot_SetBit(void* Obj);
+		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_SizeSlot;
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_StackItems_MetaData[];
 #endif
 		static void NewProp_StackItems_SetBit(void* Obj);
 		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_StackItems;
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_MassItems_MetaData[];
 #endif
-		static void NewProp_SizeSlot_SetBit(void* Obj);
-		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_SizeSlot;
+		static void NewProp_MassItems_SetBit(void* Obj);
+		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_MassItems;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_LimitSlotY_MetaData[];
+#endif
+		static void NewProp_LimitSlotY_SetBit(void* Obj);
+		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_LimitSlotY;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UE4CodeGen_Private::FClassParams ClassParams;
@@ -67,27 +67,16 @@ void EmptyLinkFunctionForGeneratedCodeInventorySettings() {}
 	};
 #endif
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData[] = {
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData[] = {
 		{ "Category", "InventorySettings" },
 		{ "ModuleRelativePath", "Public/InventorySettings.h" },
 	};
 #endif
-	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_SetBit(void* Obj)
+	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_SetBit(void* Obj)
 	{
-		((UInventorySettings*)Obj)->LimitSlotY = 1;
+		((UInventorySettings*)Obj)->SizeSlot = 1;
 	}
-	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY = { "LimitSlotY", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData[] = {
-		{ "Category", "InventorySettings" },
-		{ "ModuleRelativePath", "Public/InventorySettings.h" },
-	};
-#endif
-	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_SetBit(void* Obj)
-	{
-		((UInventorySettings*)Obj)->MassItems = 1;
-	}
-	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems = { "MassItems", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData)) };
+	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData)) };
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems_MetaData[] = {
 		{ "Category", "InventorySettings" },
@@ -100,21 +89,32 @@ void EmptyLinkFunctionForGeneratedCodeInventorySettings() {}
 	}
 	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems = { "StackItems", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems_MetaData)) };
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData[] = {
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData[] = {
 		{ "Category", "InventorySettings" },
 		{ "ModuleRelativePath", "Public/InventorySettings.h" },
 	};
 #endif
-	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_SetBit(void* Obj)
+	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_SetBit(void* Obj)
 	{
-		((UInventorySettings*)Obj)->SizeSlot = 1;
+		((UInventorySettings*)Obj)->MassItems = 1;
 	}
-	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot_MetaData)) };
+	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems = { "MassItems", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData[] = {
+		{ "Category", "InventorySettings" },
+		{ "ModuleRelativePath", "Public/InventorySettings.h" },
+	};
+#endif
+	void Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_SetBit(void* Obj)
+	{
+		((UInventorySettings*)Obj)->LimitSlotY = 1;
+	}
+	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY = { "LimitSlotY", nullptr, (EPropertyFlags)0x0010000000004015, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(UInventorySettings), &Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_SetBit, METADATA_PARAMS(Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY_MetaData)) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UInventorySettings_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_SizeSlot,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_StackItems,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_MassItems,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventorySettings_Statics::NewProp_LimitSlotY,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_UInventorySettings_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UInventorySettings>::IsAbstract,
@@ -143,7 +143,7 @@ void EmptyLinkFunctionForGeneratedCodeInventorySettings() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UInventorySettings, 3636593059);
+	IMPLEMENT_CLASS(UInventorySettings, 1472413115);
 	template<> INVENTORY_API UClass* StaticClass<UInventorySettings>()
 	{
 		return UInventorySettings::StaticClass();

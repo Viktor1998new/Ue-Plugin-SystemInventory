@@ -6,10 +6,11 @@
 /NAME:"UE4Editor-Inventory.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"A:\Project\Advent\Intermediate\Build\Win64\AdventEditor\Development\Engine\SharedPCH.Engine.h.obj"
-"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\InventoryComponent.cpp.obj"
-"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
-"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
-"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Default.rc2.res"
-/OUT:"A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.lib"
+"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\InventoryGrid.cpp.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\InventoryGridSlot.cpp.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Default.rc2.res"
+/OUT:"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.lib"
 /INCLUDE:IMPLEMENT_MODULE_Inventory

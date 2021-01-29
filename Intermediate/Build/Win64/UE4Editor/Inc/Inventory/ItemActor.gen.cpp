@@ -15,8 +15,8 @@ void EmptyLinkFunctionForGeneratedCodeItemActor() {}
 // Cross Module References
 	INVENTORY_API UScriptStruct* Z_Construct_UScriptStruct_FItemData();
 	UPackage* Z_Construct_UPackage__Script_Inventory();
-	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FIntPoint();
 	ENGINE_API UClass* Z_Construct_UClass_UTexture2D_NoRegister();
+	COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FIntPoint();
 	INVENTORY_API UClass* Z_Construct_UClass_AItemActor_NoRegister();
 	INVENTORY_API UClass* Z_Construct_UClass_AItemActor();
 	ENGINE_API UClass* Z_Construct_UClass_AActor();
@@ -50,31 +50,31 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFItemData
 #endif
 		static void* NewStructOps();
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_NoneData_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_NameItem_MetaData[];
 #endif
-		static void NewProp_NoneData_SetBit(void* Obj);
-		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_NoneData;
+		static const UE4CodeGen_Private::FTextPropertyParams NewProp_NameItem;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ImageItem_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ImageItem;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FStructPropertyParams NewProp_SizeSlot;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_MassItem_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_MassItem;
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_StackItem_MetaData[];
 #endif
 		static void NewProp_StackItem_SetBit(void* Obj);
 		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_StackItem;
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_MassItem_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_NoneData_MetaData[];
 #endif
-		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_MassItem;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FStructPropertyParams NewProp_SizeSlot;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ImageItem_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ImageItem;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_NameItem_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FTextPropertyParams NewProp_NameItem;
+		static void NewProp_NoneData_SetBit(void* Obj);
+		static const UE4CodeGen_Private::FBoolPropertyParams NewProp_NoneData;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const UE4CodeGen_Private::FStructParams ReturnStructParams;
 	};
@@ -89,16 +89,33 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFItemData
 		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FItemData>();
 	}
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData[] = {
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData[] = {
 		{ "Category", "ItemData" },
 		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
 	};
 #endif
-	void Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_SetBit(void* Obj)
-	{
-		((FItemData*)Obj)->NoneData = 1;
-	}
-	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData = { "NoneData", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(FItemData), &Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_SetBit, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData)) };
+	const UE4CodeGen_Private::FTextPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem = { "NameItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, NameItem), METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData[] = {
+		{ "Category", "ItemData" },
+		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
+	};
+#endif
+	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem = { "ImageItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, ImageItem), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData[] = {
+		{ "Category", "ItemData" },
+		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
+	};
+#endif
+	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, SizeSlot), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData[] = {
+		{ "Category", "ItemData" },
+		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem = { "MassItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, MassItem), METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData)) };
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem_MetaData[] = {
 		{ "Category", "ItemData" },
@@ -111,40 +128,23 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFItemData
 	}
 	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem = { "StackItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(FItemData), &Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem_SetBit, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem_MetaData)) };
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData[] = {
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData[] = {
 		{ "Category", "ItemData" },
 		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
 	};
 #endif
-	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem = { "MassItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, MassItem), METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData[] = {
-		{ "Category", "ItemData" },
-		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, SizeSlot), Z_Construct_UScriptStruct_FIntPoint, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData[] = {
-		{ "Category", "ItemData" },
-		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem = { "ImageItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, ImageItem), Z_Construct_UClass_UTexture2D_NoRegister, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData[] = {
-		{ "Category", "ItemData" },
-		{ "ModuleRelativePath", "Classes/Inventory/ItemActor.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FTextPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem = { "NameItem", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Text, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(FItemData, NameItem), METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem_MetaData)) };
+	void Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_SetBit(void* Obj)
+	{
+		((FItemData*)Obj)->NoneData = 1;
+	}
+	const UE4CodeGen_Private::FBoolPropertyParams Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData = { "NoneData", nullptr, (EPropertyFlags)0x0010000000000005, UE4CodeGen_Private::EPropertyGenFlags::Bool | UE4CodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, 1, sizeof(bool), sizeof(FItemData), &Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_SetBit, METADATA_PARAMS(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData, UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData_MetaData)) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FItemData_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NameItem,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_ImageItem,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_SizeSlot,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_MassItem,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_StackItem,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FItemData_Statics::NewProp_NoneData,
 	};
 	const UE4CodeGen_Private::FStructParams Z_Construct_UScriptStruct_FItemData_Statics::ReturnStructParams = {
 		(UObject* (*)())Z_Construct_UPackage__Script_Inventory,
@@ -174,7 +174,7 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFItemData
 		}
 		return ReturnStruct;
 	}
-	uint32 Get_Z_Construct_UScriptStruct_FItemData_Hash() { return 2471557663U; }
+	uint32 Get_Z_Construct_UScriptStruct_FItemData_Hash() { return 3094159846U; }
 	DEFINE_FUNCTION(AItemActor::execGetData)
 	{
 		P_FINISH;
@@ -425,7 +425,7 @@ static struct FScriptStruct_Inventory_StaticRegisterNativesFItemData
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(AItemActor, 2267829325);
+	IMPLEMENT_CLASS(AItemActor, 4198412424);
 	template<> INVENTORY_API UClass* StaticClass<AItemActor>()
 	{
 		return AItemActor::StaticClass();

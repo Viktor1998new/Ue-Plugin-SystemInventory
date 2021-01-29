@@ -1,0 +1,13 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-InventoryEditor-0004.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\InventoryEditor.cpp.obj"
+"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Default.rc2.res"
+/OUT:"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\UE4Editor-InventoryEditor-0004.lib"
+/INCLUDE:IMPLEMENT_MODULE_InventoryEditor

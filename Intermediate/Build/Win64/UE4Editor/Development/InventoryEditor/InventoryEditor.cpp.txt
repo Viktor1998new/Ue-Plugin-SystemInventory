@@ -1,9 +1,9 @@
-A:\Project\Advent\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Definitions.InventoryEditor.h
-A:\Project\Advent\Plugins\Inventory\Source\Inventory\Public\Inventory.h
-A:\Project\Advent\Plugins\Inventory\Source\InventoryEditor\Private\InventoryEditorStyle.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyle.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBorderBrush.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBoxBrush.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateColorBrush.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateImageBrush.h
-A:\Program Files\Epic Games\UE_4.25\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyleRegistry.h
+D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Definitions.InventoryEditor.h
+D:\Project\Aplha\Plugins\Inventory\Source\Inventory\Public\Inventory.h
+D:\Project\Aplha\Plugins\Inventory\Source\InventoryEditor\Private\InventoryEditorStyle.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyle.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBorderBrush.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBoxBrush.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateColorBrush.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateImageBrush.h
+D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyleRegistry.h

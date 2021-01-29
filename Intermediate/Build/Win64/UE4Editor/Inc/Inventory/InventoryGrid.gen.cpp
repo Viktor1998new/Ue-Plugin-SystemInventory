@@ -17,11 +17,11 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 	INVENTORY_API UClass* Z_Construct_UClass_UInventoryGrid();
 	UMG_API UClass* Z_Construct_UClass_UPanelWidget();
 	UPackage* Z_Construct_UPackage__Script_Inventory();
-	INVENTORY_API UEnum* Z_Construct_UEnum_Inventory_ETypeSetItem();
 	INVENTORY_API UScriptStruct* Z_Construct_UScriptStruct_FInventorySlot();
+	INVENTORY_API UEnum* Z_Construct_UEnum_Inventory_ETypeSetItem();
 	INVENTORY_API UClass* Z_Construct_UClass_UInventoryComponent_NoRegister();
-	INVENTORY_API UClass* Z_Construct_UClass_UInventoryGridSlot_NoRegister();
 	UMG_API UClass* Z_Construct_UClass_UWidget_NoRegister();
+	INVENTORY_API UClass* Z_Construct_UClass_UInventoryGridSlot_NoRegister();
 	COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
 	UMG_API UClass* Z_Construct_UClass_UUserWidget_NoRegister();
 // End Cross Module References
@@ -86,22 +86,22 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 			FInventorySlot NewData;
 			TEnumAsByte<ETypeSetItem> Type;
 		};
-		static const UE4CodeGen_Private::FBytePropertyParams NewProp_Type;
-		static const UE4CodeGen_Private::FStructPropertyParams NewProp_NewData;
 		static const UE4CodeGen_Private::FIntPropertyParams NewProp_Index;
+		static const UE4CodeGen_Private::FStructPropertyParams NewProp_NewData;
+		static const UE4CodeGen_Private::FBytePropertyParams NewProp_Type;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
 #endif
 		static const UE4CodeGen_Private::FFunctionParams FuncParams;
 	};
-	const UE4CodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Type = { "Type", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventEvent_NewDataSlot_Parms, Type), Z_Construct_UEnum_Inventory_ETypeSetItem, METADATA_PARAMS(nullptr, 0) };
-	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_NewData = { "NewData", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventEvent_NewDataSlot_Parms, NewData), Z_Construct_UScriptStruct_FInventorySlot, METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Index = { "Index", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventEvent_NewDataSlot_Parms, Index), METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FStructPropertyParams Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_NewData = { "NewData", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventEvent_NewDataSlot_Parms, NewData), Z_Construct_UScriptStruct_FInventorySlot, METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FBytePropertyParams Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Type = { "Type", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventEvent_NewDataSlot_Parms, Type), Z_Construct_UEnum_Inventory_ETypeSetItem, METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Type,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_NewData,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Index,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_NewData,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::NewProp_Type,
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot_Statics::Function_MetaDataParams[] = {
@@ -165,19 +165,19 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 			int32 ItemIndex;
 			int32 ReturnValue;
 		};
-		static const UE4CodeGen_Private::FIntPropertyParams NewProp_ReturnValue;
 		static const UE4CodeGen_Private::FIntPropertyParams NewProp_ItemIndex;
+		static const UE4CodeGen_Private::FIntPropertyParams NewProp_ReturnValue;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
 #endif
 		static const UE4CodeGen_Private::FFunctionParams FuncParams;
 	};
-	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventGetSlotAtItem_Parms, ReturnValue), METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ItemIndex = { "ItemIndex", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventGetSlotAtItem_Parms, ItemIndex), METADATA_PARAMS(nullptr, 0) };
+	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventGetSlotAtItem_Parms, ReturnValue), METADATA_PARAMS(nullptr, 0) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ItemIndex,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::Function_MetaDataParams[] = {
@@ -242,13 +242,13 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 			UInventoryGridSlot* ReturnValue;
 		};
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
-#if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_Widget_MetaData[];
 #endif
 		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_Widget;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ReturnValue_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
@@ -256,20 +256,20 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		static const UE4CodeGen_Private::FFunctionParams FuncParams;
 	};
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData[] = {
-		{ "EditInline", "true" },
-	};
-#endif
-	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventSlotAsInventorySlot_Parms, ReturnValue), Z_Construct_UClass_UInventoryGridSlot_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData)) };
-#if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_Widget_MetaData[] = {
 		{ "EditInline", "true" },
 	};
 #endif
 	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_Widget = { "Widget", nullptr, (EPropertyFlags)0x0010000000080080, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventSlotAsInventorySlot_Parms, Widget), Z_Construct_UClass_UWidget_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_Widget_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_Widget_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData[] = {
+		{ "EditInline", "true" },
+	};
+#endif
+	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000080588, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventSlotAsInventorySlot_Parms, ReturnValue), Z_Construct_UClass_UInventoryGridSlot_NoRegister, METADATA_PARAMS(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue_MetaData)) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_Widget,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::NewProp_ReturnValue,
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot_Statics::Function_MetaDataParams[] = {
@@ -299,25 +299,25 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		static const UE4CodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ItemSlots_Inner_MetaData[];
 #endif
-		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_SizeSlot;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ContentNoneSlot_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FClassPropertyParams NewProp_ContentNoneSlot;
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ContentItemSlot_MetaData[];
-#endif
-		static const UE4CodeGen_Private::FClassPropertyParams NewProp_ContentItemSlot;
+		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ItemSlots_Inner;
 #if WITH_METADATA
 		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ItemSlots_MetaData[];
 #endif
 		static const UE4CodeGen_Private::FArrayPropertyParams NewProp_ItemSlots;
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ItemSlots_Inner_MetaData[];
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ContentItemSlot_MetaData[];
 #endif
-		static const UE4CodeGen_Private::FObjectPropertyParams NewProp_ItemSlots_Inner;
+		static const UE4CodeGen_Private::FClassPropertyParams NewProp_ContentItemSlot;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_ContentNoneSlot_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FClassPropertyParams NewProp_ContentNoneSlot;
+#if WITH_METADATA
+		static const UE4CodeGen_Private::FMetaDataPairParam NewProp_SizeSlot_MetaData[];
+#endif
+		static const UE4CodeGen_Private::FFloatPropertyParams NewProp_SizeSlot;
 		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
 		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
 		static const UE4CodeGen_Private::FClassParams ClassParams;
@@ -327,11 +327,11 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		(UObject* (*)())Z_Construct_UPackage__Script_Inventory,
 	};
 	const FClassFunctionLinkInfo Z_Construct_UClass_UInventoryGrid_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot, "Event_NewDataSlot" }, // 1016211526
+		{ &Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot, "Event_NewDataSlot" }, // 1464863420
 		{ &Z_Construct_UFunction_UInventoryGrid_GetInventory, "GetInventory" }, // 514349697
-		{ &Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem, "GetSlotAtItem" }, // 1832035133
+		{ &Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem, "GetSlotAtItem" }, // 1473815355
 		{ &Z_Construct_UFunction_UInventoryGrid_SetInventory, "SetInventory" }, // 3470154787
-		{ &Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot, "SlotAsInventorySlot" }, // 4004238295
+		{ &Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot, "SlotAsInventorySlot" }, // 311312809
 	};
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::Class_MetaDataParams[] = {
@@ -340,26 +340,12 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 	};
 #endif
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData[] = {
-		{ "Category", "InventoryGrid" },
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData[] = {
+		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
 	};
 #endif
-	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000000001, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, SizeSlot), METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData[] = {
-		{ "Category", "InventoryGrid" },
-		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FClassPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot = { "ContentNoneSlot", nullptr, (EPropertyFlags)0x0014000000000001, UE4CodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, ContentNoneSlot), Z_Construct_UClass_UUserWidget_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData)) };
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData[] = {
-		{ "Category", "InventoryGrid" },
-		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FClassPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot = { "ContentItemSlot", nullptr, (EPropertyFlags)0x0014000000000001, UE4CodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, ContentItemSlot), Z_Construct_UClass_UUserWidget_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData)) };
+	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner = { "ItemSlots", nullptr, (EPropertyFlags)0x0002000000080008, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UInventoryGridSlot_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData)) };
 #if WITH_METADATA
 	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_MetaData[] = {
 		{ "EditInline", "true" },
@@ -368,18 +354,32 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 #endif
 	const UE4CodeGen_Private::FArrayPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots = { "ItemSlots", nullptr, (EPropertyFlags)0x0010008000000008, UE4CodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, ItemSlots), EArrayPropertyFlags::None, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_MetaData)) };
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData[] = {
-		{ "EditInline", "true" },
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData[] = {
+		{ "Category", "InventoryGrid" },
 		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
 	};
 #endif
-	const UE4CodeGen_Private::FObjectPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner = { "ItemSlots", nullptr, (EPropertyFlags)0x0002000000080008, UE4CodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, 1, 0, Z_Construct_UClass_UInventoryGridSlot_NoRegister, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner_MetaData)) };
+	const UE4CodeGen_Private::FClassPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot = { "ContentItemSlot", nullptr, (EPropertyFlags)0x0014000000000001, UE4CodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, ContentItemSlot), Z_Construct_UClass_UUserWidget_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData[] = {
+		{ "Category", "InventoryGrid" },
+		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
+	};
+#endif
+	const UE4CodeGen_Private::FClassPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot = { "ContentNoneSlot", nullptr, (EPropertyFlags)0x0014000000000001, UE4CodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, ContentNoneSlot), Z_Construct_UClass_UUserWidget_NoRegister, Z_Construct_UClass_UClass, METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot_MetaData)) };
+#if WITH_METADATA
+	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData[] = {
+		{ "Category", "InventoryGrid" },
+		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
+	};
+#endif
+	const UE4CodeGen_Private::FFloatPropertyParams Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot = { "SizeSlot", nullptr, (EPropertyFlags)0x0010000000000001, UE4CodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(UInventoryGrid, SizeSlot), METADATA_PARAMS(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData, UE_ARRAY_COUNT(Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot_MetaData)) };
 	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UInventoryGrid_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots,
 		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots_Inner,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ItemSlots,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentItemSlot,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_ContentNoneSlot,
+		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UInventoryGrid_Statics::NewProp_SizeSlot,
 	};
 	const FCppClassTypeInfoStatic Z_Construct_UClass_UInventoryGrid_Statics::StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UInventoryGrid>::IsAbstract,
@@ -408,7 +408,7 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UInventoryGrid, 2891906009);
+	IMPLEMENT_CLASS(UInventoryGrid, 4262066923);
 	template<> INVENTORY_API UClass* StaticClass<UInventoryGrid>()
 	{
 		return UInventoryGrid::StaticClass();
