@@ -28,21 +28,28 @@ public:
 /**
  * The Slot for the UBorderSlot, contains the widget displayed in a border's single slot
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangedSlot, int32, Index, FInventorySlot, Slot);
+
 UCLASS()
 class INVENTORY_API UInventoryGridSlot : public UPanelSlot
 {
     GENERATED_UCLASS_BODY()
 
 public:
-	FSlotTransformData Transform;
-	
-	FInventorySlot DataSlot;
 
-	int32 IndexItem;
+	UPROPERTY()
+		FSlotTransformData Transform;
 
-	FIntPoint SlotPosition;
+	UPROPERTY()
+		int32 IndexItem;
+
+	UPROPERTY(BlueprintReadOnly)
+		FIntPoint SlotPosition;
 
 	int32 ZOrder = 0;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnChangedSlot OnChangedSlot;
 
     void BuildSlot(TSharedRef<SConstraintCanvas> GridPanel);
 
@@ -53,21 +60,6 @@ public:
 	void SetZOrder(int32 InZOrder);
 
 	void SetIndexItem(int32 NewIndex);
-
-	UFUNCTION(BlueprintPure)
-	FInventorySlot GetDataSlot() const {
-		return DataSlot;
-	}
-
-	UFUNCTION(BlueprintPure)
-	int32 GetItemIndex() const {
-		return IndexItem;
-	}
-
-	UFUNCTION(BlueprintPure)
-	FIntPoint GetPosition() const {
-		return SlotPosition;
-	}
 
 private:
     SConstraintCanvas::FSlot* Slot;

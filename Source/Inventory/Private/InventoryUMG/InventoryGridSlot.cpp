@@ -57,8 +57,10 @@ void UInventoryGridSlot::SetZOrder(int32 InZOrder)
 void UInventoryGridSlot::SetIndexItem(int32 NewIndex)
 {
 	UInventoryGrid* ParentPanel = Cast<UInventoryGrid>(Parent);
+	FInventorySlot L_Slot = ParentPanel->Inventory->Items[NewIndex];
+	FIntPoint L_SlotSize = L_Slot.ClassItem.GetDefaultObject()->ItemData.SizeSlot;
 	IndexItem = NewIndex;
-	DataSlot = ParentPanel->Inventory->Items[NewIndex];
-	SetPosition(FVector2D(ParentPanel->Inventory->Items[NewIndex].PositionSlot.X * ParentPanel->SizeSlot, ParentPanel->Inventory->Items[NewIndex].PositionSlot.Y * ParentPanel->SizeSlot));
-	SetSize(FVector2D(DataSlot.ClassItem.GetDefaultObject()->ItemData.SizeSlot.X * ParentPanel->SizeSlot, DataSlot.ClassItem.GetDefaultObject()->ItemData.SizeSlot.Y * ParentPanel->SizeSlot));
+	SetPosition(FVector2D(L_Slot.PositionSlot.X * ParentPanel->SizeSlot, L_Slot.PositionSlot.Y * ParentPanel->SizeSlot));
+	SetSize(FVector2D(L_SlotSize.X * ParentPanel->SizeSlot, L_SlotSize.Y * ParentPanel->SizeSlot));
+	OnChangedSlot.Broadcast(NewIndex, L_Slot);
 }
