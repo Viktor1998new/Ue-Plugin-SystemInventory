@@ -47,10 +47,6 @@ public:
 			return Inventory;
 	};
 
-	
-	UFUNCTION(BlueprintPure)
-		int32 GetSlotAtItem(int32 ItemIndex);
-
 protected:
 	
 	void AddNoneSlot(FIntPoint Position);

@@ -13,27 +13,27 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define INVENTORY_ItemActor_generated_h
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_12_GENERATED_BODY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_12_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FItemData_Statics; \
 	static class UScriptStruct* StaticStruct();
 
 
 template<> INVENTORY_API UScriptStruct* StaticStruct<struct FItemData>();
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execGetData); \
 	DECLARE_FUNCTION(execSetData);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execGetData); \
 	DECLARE_FUNCTION(execSetData);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_EVENT_PARMS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_EVENT_PARMS \
 	struct ItemActor_eventReceiveGetData_Parms \
 	{ \
 		FString Data; \
@@ -44,8 +44,8 @@ template<> INVENTORY_API UScriptStruct* StaticStruct<struct FItemData>();
 	};
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAItemActor(); \
 	friend struct Z_Construct_UClass_AItemActor_Statics; \
@@ -54,7 +54,7 @@ public: \
 	DECLARE_SERIALIZER(AItemActor)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS \
 private: \
 	static void StaticRegisterNativesAItemActor(); \
 	friend struct Z_Construct_UClass_AItemActor_Statics; \
@@ -63,7 +63,7 @@ public: \
 	DECLARE_SERIALIZER(AItemActor)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_STANDARD_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API AItemActor(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(AItemActor) \
@@ -76,7 +76,7 @@ private: \
 public:
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_ENHANCED_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API AItemActor(AItemActor&&); \
@@ -87,33 +87,33 @@ DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(AItemActor); \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(AItemActor)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_33_PROLOG \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_EVENT_PARMS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_33_PROLOG \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_EVENT_PARMS
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_GENERATED_BODY_LEGACY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_STANDARD_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_GENERATED_BODY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_ENHANCED_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_RPC_WRAPPERS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_CALLBACK_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_INCLASS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h_36_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -121,7 +121,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> INVENTORY_API UClass* StaticClass<class AItemActor>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h
+#define CURRENT_FILE_ID MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_ItemActor_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

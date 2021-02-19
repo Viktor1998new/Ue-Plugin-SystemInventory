@@ -1,4 +1,4 @@
-// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
+﻿// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "Inventory.h"
 #include "InventoryEditorStyle.h"
@@ -11,7 +11,6 @@ class FInventoryEditorModule
 	: public IModuleInterface
 {
 public:
-
 	//FInventoryEditorModule();
 
 	virtual void StartupModule() override
@@ -22,7 +21,7 @@ public:
 
 	virtual void ShutdownModule() override
 	{
-		
+	
 	}
 };
 

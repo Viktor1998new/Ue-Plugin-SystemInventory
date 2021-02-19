@@ -19,7 +19,8 @@ public class InventoryEditor : ModuleRules
 				"EditorStyle",
 				"Slate",
 				"UMG",
-				"SlateCore"
+				"SlateCore",
+				"MainFrame"
 			}
 		);
 

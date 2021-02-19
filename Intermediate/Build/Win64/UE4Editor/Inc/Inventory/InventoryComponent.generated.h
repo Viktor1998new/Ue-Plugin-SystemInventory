@@ -9,8 +9,8 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 struct FInventorySlot;
-class UInventoryComponent;
 struct FIntPoint;
+class UInventoryComponent;
 class AItemActor;
 class UInventorySettings;
 #ifdef INVENTORY_InventoryComponent_generated_h
@@ -18,14 +18,14 @@ class UInventorySettings;
 #endif
 #define INVENTORY_InventoryComponent_generated_h
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_15_GENERATED_BODY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_15_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FInventorySlot_Statics; \
 	static class UScriptStruct* StaticStruct();
 
 
 template<> INVENTORY_API UScriptStruct* StaticStruct<struct FInventorySlot>();
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_43_DELEGATE \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_43_DELEGATE \
 struct _Script_Inventory_eventNewDataSlot_Parms \
 { \
 	int32 Index; \
@@ -42,7 +42,7 @@ static inline void FNewDataSlot_DelegateWrapper(const FMulticastScriptDelegate& 
 }
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_42_DELEGATE \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_42_DELEGATE \
 struct _Script_Inventory_eventOnRemoveItem_Parms \
 { \
 	int32 Index; \
@@ -55,7 +55,7 @@ static inline void FOnRemoveItem_DelegateWrapper(const FMulticastScriptDelegate&
 }
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_41_DELEGATE \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_41_DELEGATE \
 struct _Script_Inventory_eventOnAddItem_Parms \
 { \
 	int32 Index; \
@@ -68,8 +68,8 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 }
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS \
 	virtual void ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type); \
  \
 	DECLARE_FUNCTION(execClientRPC_EventSetItem); \
@@ -81,12 +81,13 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	DECLARE_FUNCTION(execFindItem); \
 	DECLARE_FUNCTION(execFindFreeSlot); \
 	DECLARE_FUNCTION(execAddClassItem); \
+	DECLARE_FUNCTION(execSetSlot); \
 	DECLARE_FUNCTION(execAddActorItem); \
 	DECLARE_FUNCTION(execAddSlot); \
 	DECLARE_FUNCTION(execGetInventorySetting);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
 	virtual void ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type); \
  \
 	DECLARE_FUNCTION(execClientRPC_EventSetItem); \
@@ -98,27 +99,28 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	DECLARE_FUNCTION(execFindItem); \
 	DECLARE_FUNCTION(execFindFreeSlot); \
 	DECLARE_FUNCTION(execAddClassItem); \
+	DECLARE_FUNCTION(execSetSlot); \
 	DECLARE_FUNCTION(execAddActorItem); \
 	DECLARE_FUNCTION(execAddSlot); \
 	DECLARE_FUNCTION(execGetInventorySetting);
 
 
 #if WITH_EDITOR
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execRecalculationMass);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execRecalculationMass);
 
 
 #else
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS
 #endif //WITH_EDITOR
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EVENT_PARMS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EVENT_PARMS \
 	struct InventoryComponent_eventClientRPC_EventSetItem_Parms \
 	{ \
 		int32 Index; \
@@ -127,8 +129,8 @@ static inline void FOnAddItem_DelegateWrapper(const FMulticastScriptDelegate& On
 	};
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUInventoryComponent(); \
 	friend struct Z_Construct_UClass_UInventoryComponent_Statics; \
@@ -146,7 +148,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS \
 private: \
 	static void StaticRegisterNativesUInventoryComponent(); \
 	friend struct Z_Construct_UClass_UInventoryComponent_Statics; \
@@ -164,7 +166,7 @@ public: \
 	NO_API virtual void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const override;
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_STANDARD_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UInventoryComponent(const FObjectInitializer& ObjectInitializer); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UInventoryComponent) \
@@ -177,7 +179,7 @@ private: \
 public:
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_ENHANCED_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	NO_API UInventoryComponent(UInventoryComponent&&); \
@@ -188,35 +190,35 @@ DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UInventoryComponent); \
 	DEFINE_DEFAULT_CONSTRUCTOR_CALL(UInventoryComponent)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_45_PROLOG \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EVENT_PARMS
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_45_PROLOG \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EVENT_PARMS
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_GENERATED_BODY_LEGACY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_STANDARD_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_GENERATED_BODY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_ENHANCED_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_RPC_WRAPPERS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_EDITOR_ONLY_RPC_WRAPPERS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_CALLBACK_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_INCLASS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h_48_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -224,12 +226,12 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> INVENTORY_API UClass* StaticClass<class UInventoryComponent>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID Aplha_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h
+#define CURRENT_FILE_ID MyProject_Plugins_Inventory_Source_Inventory_Classes_Inventory_InventoryComponent_h
 
 
 #define FOREACH_ENUM_ETYPESETITEM(op) \
 	op(Add) \
 	op(Remove) \
-	op(SetCount) \
+	op(ChangeSlot) \
 	op(SetPosition) 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

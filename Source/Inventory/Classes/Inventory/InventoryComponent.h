@@ -24,7 +24,7 @@ struct INVENTORY_API FInventorySlot
 		FString ItemData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int Count;
+		int32 Count;
 
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
 };
@@ -34,7 +34,7 @@ enum ETypeSetItem
 {
 	Add,
 	Remove,
-	SetCount,
+	ChangeSlot,
 	SetPosition
 };
 
@@ -72,10 +72,6 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-private:
-	
-	bool IsPositionFreeDrop(FIntPoint Position, int32 DropIndex);
-
 protected:
 
 	ETypeSetItem TypeSetItem;
@@ -94,6 +90,11 @@ public:
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
 		bool AddActorItem(AItemActor* Item, int32& Index);
+
+	/*Adding an item
+	 Use only in Server*/
+	UFUNCTION(BlueprintCallable)
+		bool SetSlot(int32 Index, FInventorySlot NewValue);
 
 	/*Adding an item
 	 Use only in Server*/
@@ -123,7 +124,7 @@ public:
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
 
 	UFUNCTION(BlueprintCallable)
-		bool DropItem(int32 IndexItem,UInventoryComponent* ToInventory, int32 ToIndex, FIntPoint ToPosition);
+		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition);
 
 	UFUNCTION()
 		void OnRep_SetItems();

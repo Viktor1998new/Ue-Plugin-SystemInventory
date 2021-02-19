@@ -31,8 +31,8 @@ void EmptyLinkFunctionForGeneratedCodeInventory_init() {}
 				SingletonFuncArray,
 				UE_ARRAY_COUNT(SingletonFuncArray),
 				PKG_CompiledIn | 0x00000000,
-				0xB99983C2,
-				0x6D90061E,
+				0x515F520D,
+				0x606DD60B,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

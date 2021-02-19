@@ -29,18 +29,6 @@ UInventoryGridSlot* UInventoryGrid::SlotAsInventorySlot(UWidget* Widget) {
 	return nullptr;
 }
 
-int32 UInventoryGrid::GetSlotAtItem(int32 ItemIndex)
-{
-	for (int32 SlotIndex = 0; SlotIndex < ItemSlots.Num(); SlotIndex++)
-	{
-		if (ItemSlots[SlotIndex]->IndexItem == ItemIndex) {
-			return SlotIndex;
-		}
-	}
-
-	return -1;
-}
-
 void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 {
 
@@ -100,56 +88,49 @@ UInventoryGridSlot* UInventoryGrid::AddSlot(int32 IndexItem)
 
 void UInventoryGrid::RemoveSlot(int32 IndexItem)
 {
-	RemoveChildAt(GetSlotAtItem(IndexItem));
+	RemoveChildAt(Slots.Find(ItemSlots[IndexItem]));
 }
 
 void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
 {
-
 	TArray<FInventorySlot> L_Items = Inventory->Items;
-	int32 LastIndex = ItemSlots.Num();
+	TMap<int32, UInventoryGridSlot*> L_ItemSlots;
 
 	switch (Type)
 	{
-	case Add:
-		AddSlot(Index);
-		break;
+		case Add:
+			AddSlot(Index);
+			break;
 
-	case Remove:
-
-		LastIndex--;
-		RemoveChild(ItemSlots[LastIndex]->Content);
+		case Remove:
 		
-		if (GIsClient)
-			L_Items.RemoveAt(Index);
+			RemoveChild(ItemSlots.Last(0)->Content);
 
-		if (!L_Items.IsValidIndex(0))
-			return;
+			if (GIsClient)
+				L_Items.RemoveAt(Index);
 
-		for (int32 i = 0; i < ItemSlots.Num(); i++)
-		{
-			if (L_Items.IsValidIndex(i))
+			if (!L_Items.IsValidIndex(0))
+				return;
+
+			for (int32 SlotIndex = Index; SlotIndex < L_Items.Num(); SlotIndex++)
 			{
-				FIntPoint L_SlotPosition = L_Items[i].PositionSlot * SizeSlot;
-				FIntPoint L_SlotSize = L_Items[i].ClassItem.GetDefaultObject()->ItemData.SizeSlot * SizeSlot;
-				UInventoryGridSlot* CurrentSlot = ItemSlots[i];
+				FIntPoint Size = L_Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
 
-				CurrentSlot->IndexItem = i;
-				CurrentSlot->SetPosition(L_SlotPosition);
-				CurrentSlot->SetSize(FVector2D(L_SlotSize));
-				CurrentSlot->OnChangedSlot.Broadcast(i, L_Items[i]);
+				ItemSlots[SlotIndex]->IndexItem = SlotIndex;
+				ItemSlots[SlotIndex]->SetPosition(FVector2D(L_Items[SlotIndex].PositionSlot.X * SizeSlot, L_Items[SlotIndex].PositionSlot.Y * SizeSlot));
+				ItemSlots[SlotIndex]->SetSize(FVector2D(Size.X * SizeSlot, Size.Y * SizeSlot));
+				ItemSlots[SlotIndex]->OnChangedSlot.Broadcast(SlotIndex, L_Items[SlotIndex]);
 			}
-		}
+			break;
 
-		break;
-	case SetCount:
-		ItemSlots[GetSlotAtItem(Index)]->OnChangedSlot.Broadcast(Index, L_Items[Index]);
-		break;
+		case ChangeSlot:
+			ItemSlots[Index]->OnChangedSlot.Broadcast(Index, Inventory->Items[Index]);
+			ItemSlots[Index]->SetPosition(FVector2D(NewData.PositionSlot.X * SizeSlot, NewData.PositionSlot.Y * SizeSlot));
+			break;
 
-	case SetPosition:
-		UInventoryGridSlot* ItemSlot = ItemSlots[GetSlotAtItem(Index)];
-		ItemSlot->SetPosition(FVector2D(NewData.PositionSlot.X * SizeSlot, NewData.PositionSlot.Y * SizeSlot));
-		break;
+		case SetPosition:
+			ItemSlots[Index]->SetPosition(FVector2D(NewData.PositionSlot.X * SizeSlot, NewData.PositionSlot.Y * SizeSlot));
+			break;
 	}
 }
 

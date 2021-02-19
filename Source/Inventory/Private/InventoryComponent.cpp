@@ -60,6 +60,43 @@ void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FIn
 	}
 }
 
+bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
+
+	if (!GIsServer || !IsValid(NewValue.ClassItem) || !Items.IsValidIndex(Index) || NewValue.Count <= 0)
+		return false;
+
+	if (Items[Index].ClassItem != NewValue.ClassItem || Items[Index].PositionSlot != NewValue.PositionSlot)
+	{
+		for (int32 i = 0; i < Items.Num(); i++)
+		{
+			if (GetInventorySetting()->StackItems == true) 
+				if (i == Index)
+					continue;
+
+			if (IsValid(Items[i].ClassItem)) {
+				if (Items[i].IsPosition(NewValue.PositionSlot, NewValue.ClassItem.GetDefaultObject()->ItemData.SizeSlot)) {
+					Index = i;
+					return false;
+				}
+			}
+		}
+	}
+	
+	if (GetInventorySetting()->MassItems == true) {
+		if (Items[Index].ClassItem != NewValue.ClassItem || Items[Index].Count != NewValue.Count) {
+			CurrentMassa -= Items[Index].ClassItem.GetDefaultObject()->ItemData.MassItem * Items[Index].Count;
+			CurrentMassa += NewValue.ClassItem.GetDefaultObject()->ItemData.MassItem * NewValue.Count;
+		}
+	}
+	
+	Items[Index] = NewValue;
+
+	NewDataSlot.Broadcast(Index, Items[Index], ETypeSetItem::ChangeSlot);
+	ClientRPC_EventSetItem(Index, Items[Index], ETypeSetItem::ChangeSlot);
+
+	return true;
+}
+
 bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index)
 {
 	if (!IsValid(NewSlot.ClassItem) && !GIsServer && NewSlot.Count >= 0)
@@ -132,9 +169,9 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item, int32 Count
 					}
 
 					Index = FindIndex;
-					NewDataSlot.Broadcast(Index, Items[FindIndex], ETypeSetItem::SetCount);
+					NewDataSlot.Broadcast(Index, Items[FindIndex], ETypeSetItem::ChangeSlot);
 					OnAddItem.Broadcast(FindIndex);
-					ClientRPC_EventSetItem(FindIndex, Items[FindIndex], ETypeSetItem::SetCount);
+					ClientRPC_EventSetItem(FindIndex, Items[FindIndex], ETypeSetItem::ChangeSlot);
 					return true;
 				}
 			}
@@ -149,9 +186,9 @@ bool UInventoryComponent::AddClassItem(TSubclassOf<AItemActor> Item, int32 Count
 						}
 
 						Index = i;
-						NewDataSlot.Broadcast(i, Items[i], ETypeSetItem::SetCount);
+						NewDataSlot.Broadcast(i, Items[i], ETypeSetItem::ChangeSlot);
 						OnAddItem.Broadcast(i);
-						ClientRPC_EventSetItem(i, Items[i], ETypeSetItem::SetCount);
+						ClientRPC_EventSetItem(i, Items[i], ETypeSetItem::ChangeSlot);
 						return true;
 					}
 				}
@@ -211,7 +248,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 			Y++;
 		}
 
-		int L_ItemIndex;
+		int32 L_ItemIndex;
 
 		IsNoFree = !IsPositionFree(FIntPoint(X, Y), Size, L_ItemIndex);
 
@@ -240,7 +277,7 @@ bool UInventoryComponent::FindItem(TSubclassOf<AItemActor> ClassItem, bool Child
 	if (!IsValid(ClassItem))
 		return false;
 
-	for (int i = 0; i < Items.Num(); i++)
+	for (int32 i = 0; i < Items.Num(); i++)
 	{
 		if (Child) {
 			if (Items[i].ClassItem->IsChildOf(ClassItem)) {
@@ -282,9 +319,9 @@ bool UInventoryComponent::RemoveItem(int32 Index, int32 Count) {
 
 				Items[Index].Count -= Count;
 
-				NewDataSlot.Broadcast(Index, Items[Index], ETypeSetItem::SetCount);
+				NewDataSlot.Broadcast(Index, Items[Index], ETypeSetItem::ChangeSlot);
 
-				ClientRPC_EventSetItem(Index, Items[Index], ETypeSetItem::SetCount);
+				ClientRPC_EventSetItem(Index, Items[Index], ETypeSetItem::ChangeSlot);
 			}
 
 			return true;
@@ -306,45 +343,31 @@ bool UInventoryComponent::RemoveItem(int32 Index, int32 Count) {
 
 bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory, int32 Count, bool FindSlot, FIntPoint Position)
 {
-	if (!GIsServer || ToIntentory == this)
+	if(!GIsServer || !IsValid(ToIntentory)|| !Items.IsValidIndex(Index) || this == ToIntentory || Items[Index].Count < Count)
 		return false;
 
-	if (IsValid(ToIntentory)) {
-		if (FindSlot) {
+	FInventorySlot NewStot = Items[Index];
+	FIntPoint NewPosition = Position;
+	int32 FindIndex;
 
-			FInventorySlot NewStot = Items[Index];
-
-			if (RemoveItem(Index, Count)) {
-
-				FIntPoint NewPosition;
-
-				if (ToIntentory->FindFreeSlot(NewStot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, NewPosition)) {
-
-					NewStot.Count = Count;
-					NewStot.PositionSlot = NewPosition;
-					int AddIndex;
-					ToIntentory->AddSlot(NewStot, false, AddIndex);
-					return true;
-				}
-			}
-		}
-		else {
-
-			int32 FindIndex;
-			FInventorySlot NewSlot = Items[Index];
-			if (RemoveItem(Index, Count)) {
-				if (ToIntentory->IsPositionFree(Position, NewSlot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, FindIndex)) {
-					NewSlot.PositionSlot = Position;
-					NewSlot.Count = Count;
-					int AddIndex;
-					ToIntentory->AddSlot(NewSlot, false, AddIndex);
-					return true;
-				}
-			}
-		}
+	if (FindSlot)
+	{
+		if (!ToIntentory->FindFreeSlot(NewStot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, NewPosition)) 
+			return false;
+	}
+	else
+	{
+		if (!ToIntentory->IsPositionFree(NewPosition, NewStot.ClassItem.GetDefaultObject()->ItemData.SizeSlot, FindIndex))
+			return false;
 	}
 
-	return false;
+	RemoveItem(Index, Count);
+
+	NewStot.Count = Count;
+	NewStot.PositionSlot = NewPosition;
+	int32 AddIndex;
+	ToIntentory->AddSlot(NewStot, false, AddIndex);
+	return true;
 }
 
 bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int32& Index)
@@ -377,143 +400,85 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 }
 
 
-bool UInventoryComponent::IsPositionFreeDrop(FIntPoint Position, int32 DropIndex)
+bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = -1, int32 Count = 1, FIntPoint ToPosition = FIntPoint::ZeroValue)
 {
-	FIntPoint Size = Items[DropIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
-
-	if (Position.X + Size.X > MaxSlot.X)
-	{
+	if (!GIsServer || !Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[ItemIndex].Count || ToPosition.X + Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.SizeSlot.X > MaxSlot.X)
 		return false;
-	}
+
+	FIntPoint Size = Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
 
 	if (GetInventorySetting()->LimitSlotY == true) {
-		if (Position.Y + Size.Y > MaxSlot.Y)
+		if (ToPosition.Y + Size.Y > MaxSlot.Y)
 		{
 			return false;
 		}
 	}
 
-	for (int32 i = 0; i < Items.Num(); i++)
-	{
-		if (i == DropIndex && Items[i].Count == 1)
-			continue;
+	if (ToIndex == -1) {
+		for (int32 i = 0; i < Items.Num(); i++)
+		{
+			if (GetInventorySetting()->StackItems == true)
+				if (i == IndexItem && Items[i].Count == Count)
+					continue;
 
-		if (Items[i].IsPosition(Position, Size)) {
-			return false;
+			if (Items[i].IsPosition(ToPosition, Size)) {
+				return false;
+			}
 		}
-	}
-	return true;
-}
-
-bool UInventoryComponent::DropItem(int32 IndexItem = 0, UInventoryComponent* ToInventory = nullptr, int32 ToIndex = -1, FIntPoint ToPosition = FIntPoint::ZeroValue)
-{
-	if (!GIsServer)
-		return false;
-
-	if (!IsValid(ToInventory)) {
 
 		if (GetInventorySetting()->StackItems == true) {
-			if (ToIndex != -1 && IndexItem != ToIndex) {
-				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true) {
-					if (Items[IndexItem].ClassItem == Items[ToIndex].ClassItem && Items[IndexItem].ItemData == Items[ToIndex].ItemData) {
+			if (Items[IndexItem].Count != 1) {
 
+				FInventorySlot Newslot = Items[IndexItem];
+				Newslot.Count = Count;
+				Newslot.PositionSlot = ToPosition;
 
-						Items[IndexItem].Count--;
-						Items[ToIndex].Count++;
+				Items[IndexItem].Count -= Count;
 
-						NewDataSlot.Broadcast(ToIndex, Items[ToIndex], ETypeSetItem::SetCount);
-						ClientRPC_EventSetItem(ToIndex, Items[ToIndex], ETypeSetItem::SetCount);
-
-						if (Items[IndexItem].Count == 0) {
-							NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-							ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-							Items.RemoveAt(IndexItem);
-
-						}
-						else {
-							NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-							ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-						}
-						return true;
-					}
+				if (Items[IndexItem].Count == 0) {
+					NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+					ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+					Items.RemoveAt(IndexItem);
 				}
-			}
-		}
-		if (ToIndex == -1) {
-			if (GetInventorySetting()->StackItems == true) {
-				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true && Items[IndexItem].Count != 1) {
-					
-					if (IsPositionFreeDrop(ToPosition, IndexItem)) {
-						FInventorySlot Newslot = Items[IndexItem];
-						Newslot.Count = 1;
-						Newslot.PositionSlot = ToPosition;
-
-						Items[IndexItem].Count--;
-
-						if (Items[IndexItem].Count == 0) {
-							NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-							ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-							Items.RemoveAt(IndexItem);
-						}
-						else {
-							NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-							ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-						}
-
-						int32 NewIndex = Items.Add(Newslot);
-						NewDataSlot.Broadcast(NewIndex, Items[NewIndex], ETypeSetItem::Add);
-						ClientRPC_EventSetItem(NewIndex, Items[NewIndex], ETypeSetItem::Add);
-						return true;
-					}
+				else {
+					NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+					ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
 				}
-			}
 
-			if (IsPositionFreeDrop(ToPosition, IndexItem)) {
-				Items[IndexItem].PositionSlot = ToPosition;
-				NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
-				ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
+				int32 NewIndex = Items.Add(Newslot);
+				NewDataSlot.Broadcast(NewIndex, Items[NewIndex], ETypeSetItem::Add);
+				ClientRPC_EventSetItem(NewIndex, Items[NewIndex], ETypeSetItem::Add);
 				return true;
 			}
 		}
+		
+		Items[IndexItem].PositionSlot = ToPosition;
+		NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
+		ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
+		return true;
+
 	}
 	else {
 		if (GetInventorySetting()->StackItems == true) {
-			if (ToIndex != -1) {
-				if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true) {
-					if (Items[IndexItem].ClassItem == ToInventory->Items[ToIndex].ClassItem && Items[IndexItem].ItemData == ToInventory->Items[ToIndex].ItemData) {
 
-						Items[IndexItem].Count--;
+			if (Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.StackItem == true && IndexItem != ToIndex && Items[IndexItem].ClassItem == Items[ToIndex].ClassItem && Items[IndexItem].ItemData == Items[ToIndex].ItemData) {
 
-						ToInventory->Items[ToIndex].Count++;
+				Items[IndexItem].Count -= Count;
+				Items[ToIndex].Count += Count;
 
-						ToInventory->NewDataSlot.Broadcast(ToIndex, ToInventory->Items[ToIndex], ETypeSetItem::SetCount);
-						ToInventory->ClientRPC_EventSetItem(ToIndex, ToInventory->Items[ToIndex], ETypeSetItem::SetCount);
+				NewDataSlot.Broadcast(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+				ClientRPC_EventSetItem(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
 
-						if (GetInventorySetting()->MassItems == true) {
-							CurrentMassa -= Items[IndexItem].ClassItem.GetDefaultObject()->ItemData.MassItem;
-							ToInventory->CurrentMassa += Items[ToIndex].ClassItem.GetDefaultObject()->ItemData.MassItem;
+				if (Items[IndexItem].Count == 0) {
+					NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+					ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+					Items.RemoveAt(IndexItem);
 
-						}
-
-						if (Items[IndexItem].Count == 0) {
-							Items.RemoveAt(IndexItem);
-							NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
-							ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
-
-						}
-						else {
-							NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-							ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetCount);
-
-						}
-						return true;
-					}
 				}
-			}
-		}
-		if (ToIndex == -1) {
-
-			if (SendItem(IndexItem, ToInventory, 1, false, ToPosition)) {
+				else {
+					NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+					ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+				}
 				return true;
 			}
 		}

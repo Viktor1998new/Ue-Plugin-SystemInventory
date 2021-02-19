@@ -33,10 +33,10 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN
-"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
-"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
-"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
-"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Default.rc2.res"
+"D:\Project\MyProject\Intermediate\Build\Win64\MyProjectEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.cpp.obj"
+"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
+"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Default.rc2.res"
 "D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Development\CoreUObject\UE4Editor-CoreUObject.lib"
 "D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Development\Engine\UE4Editor-Engine.lib"
 "D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Development\Slate\UE4Editor-Slate.lib"
@@ -67,8 +67,8 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"D:\Project\Aplha\Plugins\Inventory\Binaries\Win64\UE4Editor-Inventory.dll"
-/IMPLIB:"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.suppressed.lib"
-/PDB:"D:\Project\Aplha\Plugins\Inventory\Binaries\Win64\UE4Editor-Inventory.pdb"
+/OUT:"D:\Project\MyProject\Plugins\Inventory\Binaries\Win64\UE4Editor-Inventory.dll"
+/IMPLIB:"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\UE4Editor-Inventory.suppressed.lib"
+/PDB:"D:\Project\MyProject\Plugins\Inventory\Binaries\Win64\UE4Editor-Inventory.pdb"
 /ignore:4078
 /INCLUDE:IMPLEMENT_MODULE_Inventory

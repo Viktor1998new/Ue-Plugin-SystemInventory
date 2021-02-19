@@ -1,10 +1,10 @@
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/Inventory.init.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/Inventory.init.gen.cpp
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryComponent.gen.cpp
-D:\Project\Aplha\Plugins\Inventory\Source\Inventory/Classes/Inventory/InventoryComponent.h
-D:\Project\Aplha\Plugins\Inventory\Source\Inventory\Classes\Inventory\ItemActor.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryComponent.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory/Classes/Inventory/InventoryComponent.h
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory\Classes\Inventory\ItemActor.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\UMG\Public\Components/Image.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\UMG\Public\Components/Widget.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\UMG\Public\Components/Visual.h
@@ -21,10 +21,10 @@ D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\Engine\Public\Slate/Sl
 D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\SlateTextureAtlasInterface.generated.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\Engine\Classes\Engine/StreamableManager.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\UMG\Image.generated.h
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\ItemActor.generated.h
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryComponent.generated.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryGrid.gen.cpp
-D:\Project\Aplha\Plugins\Inventory\Source\Inventory/Classes/InventoryUMG/InventoryGrid.h
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\ItemActor.generated.h
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryComponent.generated.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryGrid.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory/Classes/InventoryUMG/InventoryGrid.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\UMG\Public\Components/PanelWidget.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\UMG\Public\Components/PanelSlot.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\UMG\PanelSlot.generated.h
@@ -118,11 +118,14 @@ D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\In
 D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\UMG\UserWidget.generated.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Intermediate\Build\Win64\UE4Editor\Inc\UMG\PanelWidget.generated.h
 D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\Slate\Public\Widgets/Layout/SConstraintCanvas.h
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryGrid.generated.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryGridSlot.gen.cpp
-D:\Project\Aplha\Plugins\Inventory\Source\Inventory/Classes/InventoryUMG/InventoryGridSlot.h
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryGridSlot.generated.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventorySettings.gen.cpp
-D:\Project\Aplha\Plugins\Inventory\Source\Inventory/Public/InventorySettings.h
-D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventorySettings.generated.h
-D:/Project/Aplha/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/ItemActor.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryGrid.generated.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryGridSlot.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory/Classes/InventoryUMG/InventoryGridSlot.h
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryGridSlot.generated.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventoryLibrary.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory/Classes/InventoryLibrary.h
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventoryLibrary.generated.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/InventorySettings.gen.cpp
+D:\Project\MyProject\Plugins\Inventory\Source\Inventory/Public/InventorySettings.h
+D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory\InventorySettings.generated.h
+D:/Project/MyProject/Plugins/Inventory/Intermediate/Build/Win64/UE4Editor/Inc/Inventory/ItemActor.gen.cpp

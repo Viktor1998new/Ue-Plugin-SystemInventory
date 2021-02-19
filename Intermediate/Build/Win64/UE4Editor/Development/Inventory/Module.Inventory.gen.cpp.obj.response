@@ -31,7 +31,7 @@
 /wd4244
 /wd4838
 /I .
-/I D:\Project\Aplha\Plugins\Inventory\Source\Inventory\Private
+/I D:\Project\MyProject\Plugins\Inventory\Source\Inventory\Private
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -231,10 +231,10 @@
 /I Editor\Kismet\Public
 /I ..\Intermediate\Build\Win64\UE4Editor\Inc\ClothingSystemRuntimeInterface
 /I Runtime\ClothingSystemRuntimeInterface\Public
-/I D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory
-/I D:\Project\Aplha\Plugins\Inventory\Source
-/I D:\Project\Aplha\Plugins\Inventory\Source\Inventory\Classes
-/I D:\Project\Aplha\Plugins\Inventory\Source\Inventory\Public
+/I D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Inc\Inventory
+/I D:\Project\MyProject\Plugins\Inventory\Source
+/I D:\Project\MyProject\Plugins\Inventory\Source\Inventory\Classes
+/I D:\Project\MyProject\Plugins\Inventory\Source\Inventory\Public
 /I ThirdParty\PhysX3\PxShared\include
 /I ThirdParty\PhysX3\PxShared\include\cudamanager
 /I ThirdParty\PhysX3\PxShared\include\filebuf
@@ -264,12 +264,12 @@
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Yu"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"D:\Project\Aplha\Intermediate\Build\Win64\ProjectAlphaEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp"
-/FI"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h"
-/Fo"D:\Project\Aplha\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
+/FI"D:\Project\MyProject\Intermediate\Build\Win64\MyProjectEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Yu"D:\Project\MyProject\Intermediate\Build\Win64\MyProjectEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Fp"D:\Project\MyProject\Intermediate\Build\Win64\MyProjectEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp"
+/FI"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Definitions.Inventory.h"
+/Fo"D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\Inventory\Module.Inventory.gen.cpp.obj"
 /TP
 /GR-
 /W4

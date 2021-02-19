@@ -35,14 +35,6 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		P_THIS->Event_NewDataSlot(Z_Param_Index,Z_Param_NewData,ETypeSetItem(Z_Param_Type));
 		P_NATIVE_END;
 	}
-	DEFINE_FUNCTION(UInventoryGrid::execGetSlotAtItem)
-	{
-		P_GET_PROPERTY(FIntProperty,Z_Param_ItemIndex);
-		P_FINISH;
-		P_NATIVE_BEGIN;
-		*(int32*)Z_Param__Result=P_THIS->GetSlotAtItem(Z_Param_ItemIndex);
-		P_NATIVE_END;
-	}
 	DEFINE_FUNCTION(UInventoryGrid::execGetInventory)
 	{
 		P_FINISH;
@@ -72,7 +64,6 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		static const FNameNativePtrPair Funcs[] = {
 			{ "Event_NewDataSlot", &UInventoryGrid::execEvent_NewDataSlot },
 			{ "GetInventory", &UInventoryGrid::execGetInventory },
-			{ "GetSlotAtItem", &UInventoryGrid::execGetSlotAtItem },
 			{ "SetInventory", &UInventoryGrid::execSetInventory },
 			{ "SlotAsInventorySlot", &UInventoryGrid::execSlotAsInventorySlot },
 		};
@@ -155,42 +146,6 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		if (!ReturnFunction)
 		{
 			UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UInventoryGrid_GetInventory_Statics::FuncParams);
-		}
-		return ReturnFunction;
-	}
-	struct Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics
-	{
-		struct InventoryGrid_eventGetSlotAtItem_Parms
-		{
-			int32 ItemIndex;
-			int32 ReturnValue;
-		};
-		static const UE4CodeGen_Private::FIntPropertyParams NewProp_ItemIndex;
-		static const UE4CodeGen_Private::FIntPropertyParams NewProp_ReturnValue;
-		static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
-#if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-#endif
-		static const UE4CodeGen_Private::FFunctionParams FuncParams;
-	};
-	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ItemIndex = { "ItemIndex", nullptr, (EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventGetSlotAtItem_Parms, ItemIndex), METADATA_PARAMS(nullptr, 0) };
-	const UE4CodeGen_Private::FIntPropertyParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UE4CodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, 1, STRUCT_OFFSET(InventoryGrid_eventGetSlotAtItem_Parms, ReturnValue), METADATA_PARAMS(nullptr, 0) };
-	const UE4CodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::PropPointers[] = {
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ItemIndex,
-		(const UE4CodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::NewProp_ReturnValue,
-	};
-#if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Classes/InventoryUMG/InventoryGrid.h" },
-	};
-#endif
-	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UInventoryGrid, nullptr, "GetSlotAtItem", nullptr, nullptr, sizeof(InventoryGrid_eventGetSlotAtItem_Parms), Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::PropPointers), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x14020401, 0, 0, METADATA_PARAMS(Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::Function_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem()
-	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem_Statics::FuncParams);
 		}
 		return ReturnFunction;
 	}
@@ -329,7 +284,6 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 	const FClassFunctionLinkInfo Z_Construct_UClass_UInventoryGrid_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UInventoryGrid_Event_NewDataSlot, "Event_NewDataSlot" }, // 1464863420
 		{ &Z_Construct_UFunction_UInventoryGrid_GetInventory, "GetInventory" }, // 514349697
-		{ &Z_Construct_UFunction_UInventoryGrid_GetSlotAtItem, "GetSlotAtItem" }, // 1473815355
 		{ &Z_Construct_UFunction_UInventoryGrid_SetInventory, "SetInventory" }, // 3470154787
 		{ &Z_Construct_UFunction_UInventoryGrid_SlotAsInventorySlot, "SlotAsInventorySlot" }, // 311312809
 	};
@@ -408,7 +362,7 @@ void EmptyLinkFunctionForGeneratedCodeInventoryGrid() {}
 		}
 		return OuterClass;
 	}
-	IMPLEMENT_CLASS(UInventoryGrid, 4262066923);
+	IMPLEMENT_CLASS(UInventoryGrid, 3073790333);
 	template<> INVENTORY_API UClass* StaticClass<UInventoryGrid>()
 	{
 		return UInventoryGrid::StaticClass();

@@ -28,9 +28,5 @@ public class Inventory : ModuleRules
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
-
-		PublicDefinitions.Add("MASSAITEM=0");
-
-
 	}
 }

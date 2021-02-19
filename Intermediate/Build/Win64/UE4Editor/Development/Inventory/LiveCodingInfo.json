@@ -4,6 +4,7 @@
 		"Module.Inventory.cpp.obj": [
 			"Inventory.cpp.obj",
 			"InventoryComponent.cpp.obj",
+			"InventoryLibrary.cpp.obj",
 			"InventorySettings.cpp.obj",
 			"InventoryGrid.cpp.obj",
 			"InventoryGridSlot.cpp.obj",
@@ -14,6 +15,7 @@
 			"InventoryComponent.gen.cpp.obj",
 			"InventoryGrid.gen.cpp.obj",
 			"InventoryGridSlot.gen.cpp.obj",
+			"InventoryLibrary.gen.cpp.obj",
 			"InventorySettings.gen.cpp.obj",
 			"ItemActor.gen.cpp.obj"
 		]

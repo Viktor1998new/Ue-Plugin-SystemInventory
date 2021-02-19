@@ -1,0 +1,8 @@
+{
+	"BuildId": "14830424",
+	"Modules": 
+	{
+		"Inventory": "UE4Editor-Inventory.dll",
+		"InventoryEditor": "UE4Editor-InventoryEditor.dll"
+	}
+}

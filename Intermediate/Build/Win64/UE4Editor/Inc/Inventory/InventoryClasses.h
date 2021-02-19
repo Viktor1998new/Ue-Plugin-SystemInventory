@@ -11,4 +11,5 @@
 #include "Inventory/Classes/Inventory/InventoryComponent.h"
 #include "Inventory/Classes/InventoryUMG/InventoryGrid.h"
 #include "Inventory/Classes/InventoryUMG/InventoryGridSlot.h"
+#include "Inventory/Classes/InventoryLibrary.h"
 

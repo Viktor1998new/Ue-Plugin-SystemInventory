@@ -17,26 +17,24 @@ class UInventoryGridSlot;
 #endif
 #define INVENTORY_InventoryGrid_generated_h
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS \
  \
 	DECLARE_FUNCTION(execEvent_NewDataSlot); \
-	DECLARE_FUNCTION(execGetSlotAtItem); \
 	DECLARE_FUNCTION(execGetInventory); \
 	DECLARE_FUNCTION(execSlotAsInventorySlot); \
 	DECLARE_FUNCTION(execSetInventory);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
  \
 	DECLARE_FUNCTION(execEvent_NewDataSlot); \
-	DECLARE_FUNCTION(execGetSlotAtItem); \
 	DECLARE_FUNCTION(execGetInventory); \
 	DECLARE_FUNCTION(execSlotAsInventorySlot); \
 	DECLARE_FUNCTION(execSetInventory);
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS_NO_PURE_DECLS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUInventoryGrid(); \
 	friend struct Z_Construct_UClass_UInventoryGrid_Statics; \
@@ -45,7 +43,7 @@ public: \
 	DECLARE_SERIALIZER(UInventoryGrid)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS \
 private: \
 	static void StaticRegisterNativesUInventoryGrid(); \
 	friend struct Z_Construct_UClass_UInventoryGrid_Statics; \
@@ -54,7 +52,7 @@ public: \
 	DECLARE_SERIALIZER(UInventoryGrid)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_STANDARD_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_STANDARD_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UInventoryGrid(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UInventoryGrid) \
@@ -67,7 +65,7 @@ private: \
 public:
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_ENHANCED_CONSTRUCTORS \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UInventoryGrid(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) : Super(ObjectInitializer) { }; \
 private: \
@@ -80,28 +78,28 @@ DEFINE_VTABLE_PTR_HELPER_CTOR_CALLER(UInventoryGrid); \
 	DEFINE_DEFAULT_OBJECT_INITIALIZER_CONSTRUCTOR_CALL(UInventoryGrid)
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_14_PROLOG
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_GENERATED_BODY_LEGACY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_14_PROLOG
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_GENERATED_BODY_LEGACY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_STANDARD_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_STANDARD_CONSTRUCTORS \
 public: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 
-#define Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_GENERATED_BODY \
+#define MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS_NO_PURE_DECLS \
-	Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_ENHANCED_CONSTRUCTORS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_PRIVATE_PROPERTY_OFFSET \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_SPARSE_DATA \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_RPC_WRAPPERS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_INCLASS_NO_PURE_DECLS \
+	MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h_17_ENHANCED_CONSTRUCTORS \
 static_assert(false, "Unknown access specifier for GENERATED_BODY() macro in class InventoryGrid."); \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -109,7 +107,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> INVENTORY_API UClass* StaticClass<class UInventoryGrid>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID Aplha_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h
+#define CURRENT_FILE_ID MyProject_Plugins_Inventory_Source_Inventory_Classes_InventoryUMG_InventoryGrid_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
