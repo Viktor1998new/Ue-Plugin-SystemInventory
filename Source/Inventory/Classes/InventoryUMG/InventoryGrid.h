@@ -16,9 +16,10 @@ class INVENTORY_API UInventoryGrid : public UPanelWidget
 {
 	GENERATED_UCLASS_BODY()
 
-		UPROPERTY(Instanced)
-			TArray<UInventoryGridSlot*> ItemSlots;
+	UPROPERTY(Instanced)
+		TArray<UInventoryGridSlot*> ItemSlots;
 
+	UPROPERTY()
 		UInventoryComponent* Inventory;
 
 public:

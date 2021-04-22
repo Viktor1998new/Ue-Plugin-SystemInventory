@@ -1,9 +1,0 @@
-D:\Project\MyProject\Plugins\Inventory\Intermediate\Build\Win64\UE4Editor\Development\InventoryEditor\Definitions.InventoryEditor.h
-D:\Project\MyProject\Plugins\Inventory\Source\Inventory\Public\Inventory.h
-D:\Project\MyProject\Plugins\Inventory\Source\InventoryEditor\Private\InventoryEditorStyle.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyle.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBorderBrush.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateBoxBrush.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateColorBrush.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Brushes/SlateImageBrush.h
-D:\Program Files\Epic Games\UE_4.26\Engine\Source\Runtime\SlateCore\Public\Styling/SlateStyleRegistry.h

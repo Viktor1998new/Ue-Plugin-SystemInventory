@@ -3,7 +3,6 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/Image.h"
 #include "ItemActor.generated.h"
 
 USTRUCT(BlueprintType)
@@ -15,7 +14,7 @@ struct INVENTORY_API FItemData
 		FText NameItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		UTexture2D * ImageItem;
+		UTexture2D* ImageItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FIntPoint SizeSlot;

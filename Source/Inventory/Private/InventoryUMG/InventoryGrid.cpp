@@ -14,7 +14,7 @@ void UInventoryGrid::BeginDestroy() {
 
 	Super::BeginDestroy();
 
-	if (Inventory != nullptr) {
+	if (Inventory) {
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 	}
 }
@@ -32,38 +32,38 @@ UInventoryGridSlot* UInventoryGrid::SlotAsInventorySlot(UWidget* Widget) {
 void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 {
 
-	if (IsValid(Inventory)) {
+	if (Inventory) {
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 		ClearChildren();
 	}
 
-	if(IsValid(NewInventory)){
+	if (!NewInventory)
+		return;
 
-		Inventory = NewInventory;
+	Inventory = NewInventory;
 
-		Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
+	Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 
-		if (IsValid(ContentNoneSlot)) {
-		
-			if (Inventory->MaxSlot != FIntPoint::ZeroValue) {
-			
-				for (int32 Y = 0; Y < Inventory->MaxSlot.Y; Y++)
+	if (ContentNoneSlot) {
+
+		if (Inventory->MaxSlot != FIntPoint::ZeroValue) {
+
+			for (int32 Y = 0; Y < Inventory->MaxSlot.Y; Y++)
+			{
+				for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
 				{
-					for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
-					{
-						AddNoneSlot(FIntPoint(X, Y));
-					}
+					AddNoneSlot(FIntPoint(X, Y));
 				}
 			}
 		}
+	}
 
-		if (Inventory->Items.IsValidIndex(0)) {
-			
-			for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
-			{
-				if(IsValid(Inventory->Items[SlotIndex].ClassItem) && Inventory->Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot != FIntPoint(0,0))
-					AddSlot(SlotIndex);
-			}
+	if (Inventory->Items.IsValidIndex(0)) {
+
+		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
+		{
+			if (Inventory->Items[SlotIndex].ClassItem && Inventory->Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot != FIntPoint(0, 0))
+				AddSlot(SlotIndex);
 		}
 	}
 }
@@ -114,22 +114,26 @@ void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETyp
 
 			for (int32 SlotIndex = Index; SlotIndex < L_Items.Num(); SlotIndex++)
 			{
+				UInventoryGridSlot* L_Slot = ItemSlots[SlotIndex];
 				FIntPoint Size = L_Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
 
-				ItemSlots[SlotIndex]->IndexItem = SlotIndex;
-				ItemSlots[SlotIndex]->SetPosition(FVector2D(L_Items[SlotIndex].PositionSlot.X * SizeSlot, L_Items[SlotIndex].PositionSlot.Y * SizeSlot));
-				ItemSlots[SlotIndex]->SetSize(FVector2D(Size.X * SizeSlot, Size.Y * SizeSlot));
-				ItemSlots[SlotIndex]->OnChangedSlot.Broadcast(SlotIndex, L_Items[SlotIndex]);
+				L_Slot->IndexItem = SlotIndex;
+				L_Slot->SetSize(FVector2D(Size.X * SizeSlot, Size.Y * SizeSlot));
+				L_Slot->SetPosition(FVector2D(L_Items[SlotIndex].PositionSlot.X * SizeSlot, L_Items[SlotIndex].PositionSlot.Y * SizeSlot));
+				L_Slot->SlotPosition = L_Items[SlotIndex].PositionSlot;
+				L_Slot->OnChangedSlot.Broadcast(SlotIndex, L_Items[SlotIndex]);
 			}
 			break;
 
 		case ChangeSlot:
 			ItemSlots[Index]->OnChangedSlot.Broadcast(Index, Inventory->Items[Index]);
 			ItemSlots[Index]->SetPosition(FVector2D(NewData.PositionSlot.X * SizeSlot, NewData.PositionSlot.Y * SizeSlot));
+			ItemSlots[Index]->SlotPosition = NewData.PositionSlot;
 			break;
 
 		case SetPosition:
 			ItemSlots[Index]->SetPosition(FVector2D(NewData.PositionSlot.X * SizeSlot, NewData.PositionSlot.Y * SizeSlot));
+			ItemSlots[Index]->SlotPosition = NewData.PositionSlot;
 			break;
 	}
 }
@@ -166,14 +170,16 @@ TSharedRef<SWidget> UInventoryGrid::RebuildWidget()
 {
 	MyPanel = SNew(SConstraintCanvas);
 
-	for (UPanelSlot* PanelSlot : Slots)
-	{
-		if (UInventoryGridSlot* TypedSlot = Cast<UInventoryGridSlot>(PanelSlot))
+	if(Slots.IsValidIndex(0) && Inventory)
+		for (UPanelSlot* PanelSlot : Slots)
 		{
-			TypedSlot->Parent = this;
-			TypedSlot->BuildSlot(MyPanel.ToSharedRef());
+			if (UInventoryGridSlot* TypedSlot = Cast<UInventoryGridSlot>(PanelSlot))
+			{
+				TypedSlot->Parent = this;
+				TypedSlot->BuildSlot(MyPanel.ToSharedRef());
+			}
 		}
-	}
+
 	return MyPanel.ToSharedRef();
 }
 
