@@ -2,6 +2,7 @@
 
 #pragma once
 #include "CoreMinimal.h"
+#include "Engine/DataAsset.h"
 #include "GameFramework/Actor.h"
 #include "ItemActor.generated.h"
 
@@ -29,15 +30,30 @@ struct INVENTORY_API FItemData
 		bool NoneData = false;
 };
 
+UCLASS(BlueprintType, Blueprintable)
+class INVENTORY_API UItemAsset : public UPrimaryDataAsset
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+		TSubclassOf<AItemActor> ClassItemActor;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+		FItemData SlotItemData;
+	 
+};
+
 UCLASS(abstract, BlueprintType)
 class INVENTORY_API AItemActor : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-		FItemData ItemData;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
+		UItemAsset* ItemAsset;
 
 	// Sets default values for this actor's properties
 	AItemActor();

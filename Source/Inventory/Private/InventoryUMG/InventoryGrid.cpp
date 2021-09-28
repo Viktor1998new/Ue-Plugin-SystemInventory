@@ -62,7 +62,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 
 		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
 		{
-			if (Inventory->Items[SlotIndex].ClassItem && Inventory->Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot != FIntPoint(0, 0))
+			if (Inventory->Items[SlotIndex].ItemAsset && Inventory->Items[SlotIndex].ItemAsset->SlotItemData.SizeSlot != FIntPoint(0, 0))
 				AddSlot(SlotIndex);
 		}
 	}
@@ -115,7 +115,7 @@ void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETyp
 			for (int32 SlotIndex = Index; SlotIndex < L_Items.Num(); SlotIndex++)
 			{
 				UInventoryGridSlot* L_Slot = ItemSlots[SlotIndex];
-				FIntPoint Size = L_Items[SlotIndex].ClassItem.GetDefaultObject()->ItemData.SizeSlot;
+				FIntPoint Size = L_Items[SlotIndex].ItemAsset->SlotItemData.SizeSlot;
 
 				L_Slot->IndexItem = SlotIndex;
 				L_Slot->SetSize(FVector2D(Size.X * SizeSlot, Size.Y * SizeSlot));

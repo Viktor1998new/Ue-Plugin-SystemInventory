@@ -58,7 +58,7 @@ void UInventoryGridSlot::SetIndexItem(int32 NewIndex)
 {
 	UInventoryGrid* ParentPanel = Cast<UInventoryGrid>(Parent);
 	FInventorySlot L_Slot = ParentPanel->Inventory->Items[NewIndex];
-	FIntPoint L_SlotSize = L_Slot.ClassItem.GetDefaultObject()->ItemData.SizeSlot;
+	FIntPoint L_SlotSize = L_Slot.ItemAsset->SlotItemData.SizeSlot;
 	IndexItem = NewIndex;
 	SetPosition(FVector2D(L_Slot.PositionSlot.X * ParentPanel->SizeSlot, L_Slot.PositionSlot.Y * ParentPanel->SizeSlot));
 	SetSize(FVector2D(L_SlotSize.X * ParentPanel->SizeSlot, L_SlotSize.Y * ParentPanel->SizeSlot));

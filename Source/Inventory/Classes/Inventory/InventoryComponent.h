@@ -15,7 +15,7 @@ struct INVENTORY_API FInventorySlot
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TSubclassOf<AItemActor> ClassItem;
+		UItemAsset* ItemAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FIntPoint PositionSlot;
@@ -27,6 +27,25 @@ struct INVENTORY_API FInventorySlot
 		int32 Count;
 
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
+};
+
+USTRUCT(BlueprintType, Immutable)
+struct INVENTORY_API FInventory
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadOnly)
+		TArray<FInventorySlot> Items;
+
+	UPROPERTY(BlueprintReadOnly)
+		float Massa;
+
+	UPROPERTY(BlueprintReadOnly)
+		FIntPoint MaxSlot;
+
+	FInventory();
+
+	FInventory(class UInventoryComponent* InventoryComponent);
 };
 
 UENUM()
@@ -80,6 +99,21 @@ protected:
 
 public:
 
+	UFUNCTION(BlueprintCallable)
+	void SetInventory(FInventory NewInventory) {
+		Items = NewInventory.Items;
+		CurrentMassa = NewInventory.Massa;
+		MaxSlot = NewInventory.MaxSlot;
+	};
+
+
+	UFUNCTION(BlueprintPure)
+	FInventory GetInventory() {
+		return FInventory(this);
+	};
+
+
+
 	/*Adding a slot
 	 * @param NewSlot - The new active state of the component
 	  Use only in Server*/
@@ -99,7 +133,7 @@ public:
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddClassItem(TSubclassOf<AItemActor> Item, int32 Count, const FString& Data, int32& Index);
+		bool AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index);
 
 	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
 	UFUNCTION(BlueprintCallable)
@@ -107,7 +141,7 @@ public:
 
 	/*search function for an item by class or class child*/
 	UFUNCTION(BlueprintCallable)
-		bool FindItem(TSubclassOf<AItemActor> ClassItem ,bool Child,int32& Index);
+		bool FindItem(UItemAsset* ItemAsset,int32& Index);
 
 	/*Removing an item
 	 Use only in Server*/

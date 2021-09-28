@@ -18,6 +18,10 @@ public:
 
 		SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources"));
 		//Set("ClassIcon.ActorSequence", new FSlateImageBrush(RootToContentDir(TEXT("ActorSequence_16x.png")), Icon16x16));
+		
+		Set("ClassIcon.ItemActor", new IMAGE_BRUSH("ItemActor_16x", Icon16x16));
+		Set("ClassThumbnail.ItemActor", new IMAGE_BRUSH("ItemActor_64x", Icon64x64));
+		
 		Set("ClassIcon.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_16x", Icon16x16));
 		Set("ClassThumbnail.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_64x", Icon64x64));
 
