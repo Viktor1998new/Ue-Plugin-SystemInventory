@@ -25,10 +25,10 @@ class INVENTORY_API UInventoryGrid : public UPanelWidget
 public:
 
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> ContentItemSlot;
+		TSubclassOf<UUserWidget> ItemSlot;
 	
 	UPROPERTY(EditAnywhere)
-		TSubclassOf<UUserWidget> ContentNoneSlot;
+		TSubclassOf<UUserWidget> NoneSlot;
 
 	UPROPERTY(EditAnywhere)
 		float SizeSlot = 32;
@@ -47,6 +47,8 @@ public:
 		UInventoryComponent* GetInventory()const {
 			return Inventory;
 	};
+
+	void ReleaseSlateResources(bool bReleaseChildren) override;
 
 protected:
 	

@@ -161,11 +161,9 @@ bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
 
 bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index)
 {
-	if (!ItemAsset || Count <= 0)
-		return false;
+	if (!ItemAsset || Count <= 0) return false;
 
 	if (GetInventorySetting()->StackItems == true) {
-
 		if (ItemAsset->SlotItemData.StackItem == true) {
 			if (ItemAsset->SlotItemData.NoneData == true) {
 
@@ -245,7 +243,6 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 	bool IsNoFree;
 
 	do {
-
 		if (X + (Size.X - 1) > (MaxSlot.X - 1)) {
 			X = 0;
 
@@ -405,26 +402,45 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 
 bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = -1, int32 Count = 1, FIntPoint ToPosition = FIntPoint::ZeroValue)
 {
-	if (!Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[ItemIndex].Count || ToPosition.X + Items[IndexItem].ItemAsset->SlotItemData.SizeSlot.X > MaxSlot.X)
-		return false;
+	if (ToIndex != -1) {
+		
+		if (!GetInventorySetting()->StackItems) return false;
 
-	FIntPoint Size = Items[IndexItem].ItemAsset->SlotItemData.SizeSlot;
+		if (!Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[ItemIndex].Count) return false;
 
-	if (GetInventorySetting()->LimitSlotY == true) {
-		if (ToPosition.Y + Size.Y > MaxSlot.Y)
-		{
-			return false;
+		if (Items[IndexItem].ItemAsset->SlotItemData.StackItem == true && IndexItem != ToIndex && Items[IndexItem] == Items[ToIndex]) {
+
+			Items[IndexItem].Count -= Count;
+			Items[ToIndex].Count += Count;
+
+			NewDataSlot.Broadcast(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+			ClientRPC_EventSetItem(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+
+			if (Items[IndexItem].Count == 0) {
+				NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+				ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
+				Items.RemoveAt(IndexItem);
+
+			}
+			else {
+				NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+				ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+			}
+			return true;
 		}
 	}
+	else {
+		if (ToPosition.X + Items[IndexItem].ItemAsset->SlotItemData.SizeSlot.X > MaxSlot.X) return false;
 
-	if (ToIndex == -1) {
+		if (GetInventorySetting()->LimitSlotY == true)
+			if (ToPosition.Y + Items[IndexItem].ItemAsset->SlotItemData.SizeSlot.Y > MaxSlot.Y) return false;
+
 		for (int32 i = 0; i < Items.Num(); i++)
 		{
-			if (GetInventorySetting()->StackItems == true)
-				if (i == IndexItem && Items[i].Count == Count)
-					continue;
+			if (i == IndexItem && Items[i].Count == Count)
+				continue;
 
-			if (Items[i].IsPosition(ToPosition, Size)) {
+			if (Items[i].IsPosition(ToPosition, Items[IndexItem].ItemAsset->SlotItemData.SizeSlot)) {
 				return false;
 			}
 		}
@@ -454,38 +470,13 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = -1, int3
 				return true;
 			}
 		}
-		
+
 		Items[IndexItem].PositionSlot = ToPosition;
 		NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
 		ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::SetPosition);
 		return true;
-
 	}
-	else {
-		if (GetInventorySetting()->StackItems == true) {
 
-			if (Items[IndexItem].ItemAsset->SlotItemData.StackItem == true && IndexItem != ToIndex && Items[IndexItem].ItemAsset == Items[ToIndex].ItemAsset && Items[IndexItem].ItemData == Items[ToIndex].ItemData) {
-
-				Items[IndexItem].Count -= Count;
-				Items[ToIndex].Count += Count;
-
-				NewDataSlot.Broadcast(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
-				ClientRPC_EventSetItem(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
-
-				if (Items[IndexItem].Count == 0) {
-					NewDataSlot.Broadcast(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-					ClientRPC_EventSetItem(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
-					Items.RemoveAt(IndexItem);
-
-				}
-				else {
-					NewDataSlot.Broadcast(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
-					ClientRPC_EventSetItem(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
-				}
-				return true;
-			}
-		}
-	}
 	return false;
 }
 

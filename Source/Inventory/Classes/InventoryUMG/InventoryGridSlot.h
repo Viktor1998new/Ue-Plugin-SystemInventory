@@ -36,6 +36,8 @@ class INVENTORY_API UInventoryGridSlot : public UPanelSlot
     GENERATED_UCLASS_BODY()
 
 public:
+	UPROPERTY()
+		UInventoryGrid* ParentPanel;
 
 	UPROPERTY()
 		FSlotTransformData Transform;
@@ -46,22 +48,26 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 		FIntPoint SlotPosition;
 
-	int32 ZOrder = 0;
+		int32 ZOrder = 0;
 
 	UPROPERTY(BlueprintAssignable)
 		FOnChangedSlot OnChangedSlot;
 
     void BuildSlot(TSharedRef<SConstraintCanvas> GridPanel);
 
-	void SetSize(FVector2D InSize);
+	void SetSize(FIntPoint NewSize);
 
-	void SetPosition(FVector2D InPosition);
+	void SetPosition(FIntPoint NewPosition);
+
+	void SetTransform(FIntPoint NewPosition, FIntPoint NewSize);
 
 	void SetZOrder(int32 InZOrder);
 
 	void SetIndexItem(int32 NewIndex);
 
+	virtual void SynchronizeProperties() override;
 private:
-    SConstraintCanvas::FSlot* Slot;
+
+	SConstraintCanvas::FSlot* Slot;
 
 };

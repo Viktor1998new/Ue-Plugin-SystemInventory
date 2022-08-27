@@ -1,12 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
-
 #include "InventorySettings.generated.h"
-
-/**
- * 
- */
 
 UCLASS(config = Engine, defaultconfig)
 class INVENTORY_API UInventorySettings : public UObject {
@@ -22,15 +15,15 @@ class INVENTORY_API UInventorySettings : public UObject {
 public:
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
-        bool SizeSlot;
+      bool SizeSlot;
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
-        bool StackItems;
+      bool StackItems;
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
-        bool MassItems;
+      bool MassItems;
 
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings")
-        bool LimitSlotY;
+      bool LimitSlotY;
 
 };

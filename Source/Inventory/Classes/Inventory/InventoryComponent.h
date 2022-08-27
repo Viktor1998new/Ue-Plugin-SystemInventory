@@ -27,9 +27,22 @@ struct INVENTORY_API FInventorySlot
 		int32 Count;
 
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
+
+	bool operator == (const FInventorySlot &A) {
+
+		return ItemAsset == A.ItemAsset && ItemData == A.ItemData;
+	}
+
+	void operator ++() {
+		Count++;
+	}
+
+	void operator --() {
+		Count--;
+	}
 };
 
-USTRUCT(BlueprintType, Immutable)
+USTRUCT(BlueprintType)
 struct INVENTORY_API FInventory
 {
 	GENERATED_BODY()
