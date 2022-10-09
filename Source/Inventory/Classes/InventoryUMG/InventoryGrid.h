@@ -44,7 +44,7 @@ public:
 		static UInventoryGridSlot* SlotAsInventorySlot(UWidget* Widget);
 
 	UFUNCTION(BlueprintPure)
-		UInventoryComponent* GetInventory()const {
+		UInventoryComponent* GetInventory() const {
 			return Inventory;
 	};
 
@@ -54,7 +54,7 @@ protected:
 	
 	void AddNoneSlot(FIntPoint Position);
 
-	UInventoryGridSlot* AddSlot(int32 IndexItem);
+	void AddSlot(int32 IndexItem);
 
 	void RemoveSlot(int32 IndexItem);
 	

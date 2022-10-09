@@ -84,7 +84,7 @@ public:
 	UFUNCTION(BlueprintPure)
 		static UInventorySettings* GetInventorySetting();
 
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, ReplicatedUsing = OnRep_SetItems)
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Replicated)
 		TArray<FInventorySlot> Items;
 	
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated)
@@ -125,8 +125,6 @@ public:
 		return FInventory(this);
 	};
 
-
-
 	/*Adding a slot
 	 * @param NewSlot - The new active state of the component
 	  Use only in Server*/
@@ -136,7 +134,7 @@ public:
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable)
-		bool AddActorItem(AItemActor* Item, int32& Index);
+		bool AddActorItem(AItemActor* Item, int32& Index );
 
 	/*Adding an item
 	 Use only in Server*/
@@ -173,9 +171,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition);
 
-	UFUNCTION()
-		void OnRep_SetItems();
-
 	UFUNCTION(Client, Reliable)
 		void ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
@@ -184,4 +179,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void RecalculationMass();
 #endif
+
+	private:
+	void ChangeSlot(int32 Index, FInventorySlot Slot, ETypeSetItem Type);
 };

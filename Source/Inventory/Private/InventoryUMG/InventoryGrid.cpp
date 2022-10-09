@@ -2,6 +2,8 @@
 
 #include "InventoryUMG/InventoryGrid.h"
 #include "InventoryUMG/InventoryGridSlot.h"
+#include "Inventory.h"
+#include "InventorySettings.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -13,7 +15,6 @@ UInventoryGrid::UInventoryGrid(const FObjectInitializer& ObjectInitializer)
 void UInventoryGrid::BeginDestroy() {
 
 	Super::BeginDestroy();
-
 	if (Inventory) {
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 	}
@@ -40,20 +41,22 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 
 	Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 
-	if (NoneSlot) {
-		if (Inventory->MaxSlot != FIntPoint::ZeroValue) {
-
+	if (NoneSlot && Inventory->MaxSlot != FIntPoint::ZeroValue)
+		if (EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags,EInventoryFlag::OnlyX)) {
+			for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
+				AddNoneSlot(FIntPoint(X, 0));
+		}
+		else {
 			for (int32 Y = 0; Y < Inventory->MaxSlot.Y; Y++)
 				for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
 					AddNoneSlot(FIntPoint(X, Y));
 		}
-	}
 
 	if (!Inventory->Items.IsEmpty()) {
 
-		for (int32 SlotIndex = 0; SlotIndex < Inventory->Items.Num(); SlotIndex++)
-			if (Inventory->Items[SlotIndex].ItemAsset && Inventory->Items[SlotIndex].ItemAsset->SlotItemData.SizeSlot != FIntPoint(0, 0))
-				AddSlot(SlotIndex);
+		for (int32 i = 0; i < Inventory->Items.Num(); i++)
+			if (Inventory->Items[i].ItemAsset)
+				AddSlot(i);
 	}
 }
 
@@ -71,13 +74,12 @@ void UInventoryGrid::AddNoneSlot(FIntPoint Position)
 	NewSlot->SetTransform(Position, FIntPoint(1, 1));
 }
 
-UInventoryGridSlot* UInventoryGrid::AddSlot(int32 IndexItem)
+void UInventoryGrid::AddSlot(int32 IndexItem)
 {
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
 	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
 	NewSlot->SetIndexItem(IndexItem);
 	ItemSlots.Add(NewSlot);
-	return NewSlot;
 }
 
 void UInventoryGrid::RemoveSlot(int32 IndexItem)
@@ -96,29 +98,23 @@ void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETyp
 			break;
 
 		case Remove:
-			RemoveChild(ItemSlots.Last(0)->Content);
-
-			if (GIsClient)
-				L_Items.RemoveAt(Index);
+			
+			RemoveChild(ItemSlots.Last()->Content);
 
 			if (L_Items.IsEmpty())
 				return;
 
-			for (int32 SlotIndex = Index; SlotIndex < L_Items.Num(); SlotIndex++)
-			{
-				UInventoryGridSlot* L_Slot = ItemSlots[SlotIndex];
-				L_Slot->SetIndexItem(SlotIndex);
-				L_Slot->OnChangedSlot.Broadcast(SlotIndex, L_Items[SlotIndex]);
-			}
+			for (int32 i  = Index; i < L_Items.Num(); i++)
+				ItemSlots[i]->ChangeSlot(L_Items[i]);
+
 			break;
 
 		case ChangeSlot:
-			ItemSlots[Index]->OnChangedSlot.Broadcast(Index, Inventory->Items[Index]);
-			ItemSlots[Index]->SetPosition(NewData.PositionSlot);
+			ItemSlots[Index]->ChangeSlot(NewData);
 			break;
 
 		case SetPosition:
-			ItemSlots[Index]->SetPosition(NewData.PositionSlot * SizeSlot);
+			ItemSlots[Index]->SetPosition(NewData.PositionSlot);
 			break;
 	}
 }

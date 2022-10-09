@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-InventoryEditor.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Project\Horror\Intermediate\Build\Win64\HorrorEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\Development\InventoryEditor\InventoryEditor.cpp.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\Development\InventoryEditor\Default.rc2.res"
+/OUT:"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\Development\InventoryEditor\UnrealEditor-InventoryEditor.lib"

@@ -1,0 +1,21 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "d:\\project\\horror\\plugins\\inventory\\source\\inventory\\private\\inventorycomponent.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\project\\horror\\intermediate\\build\\win64\\horroreditor\\debuggame\\engine\\sharedpch.engine.nonoptimized.shadowerrors.h.pch",
+        "Includes": [
+            "d:\\project\\horror\\plugins\\inventory\\intermediate\\build\\win64\\unrealeditor\\debuggame\\inventory\\definitions.inventory.h",
+            "d:\\project\\horror\\plugins\\inventory\\source\\inventory\\classes\\inventory\\inventorycomponent.h",
+            "d:\\project\\horror\\plugins\\inventory\\source\\inventory\\classes\\inventory\\itemactor.h",
+            "d:\\project\\horror\\plugins\\inventory\\intermediate\\build\\win64\\unrealeditor\\inc\\inventory\\itemactor.generated.h",
+            "d:\\project\\horror\\plugins\\inventory\\intermediate\\build\\win64\\unrealeditor\\inc\\inventory\\inventorycomponent.generated.h",
+            "d:\\project\\horror\\plugins\\inventory\\source\\inventory\\public\\inventory.h",
+            "d:\\project\\horror\\plugins\\inventory\\source\\inventory\\public\\inventorysettings.h",
+            "d:\\project\\horror\\plugins\\inventory\\intermediate\\build\\win64\\unrealeditor\\inc\\inventory\\inventorysettings.generated.h",
+            "d:\\program files\\epic games\\ue_5.0\\engine\\source\\runtime\\engine\\public\\net\\unrealnetwork.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

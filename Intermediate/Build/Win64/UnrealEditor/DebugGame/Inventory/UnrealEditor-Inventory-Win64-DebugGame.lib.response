@@ -1,0 +1,15 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-Inventory-Win64-DebugGame.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Project\Horror\Intermediate\Build\Win64\HorrorEditor\DebugGame\Engine\SharedPCH.Engine.NonOptimized.ShadowErrors.h.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\Module.Inventory.cpp.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\InventoryGrid.cpp.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\InventoryComponent.cpp.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\Module.Inventory.gen.cpp.obj"
+"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\Default.rc2.res"
+/OUT:"D:\Project\Horror\Plugins\Inventory\Intermediate\Build\Win64\UnrealEditor\DebugGame\Inventory\UnrealEditor-Inventory-Win64-DebugGame.lib"

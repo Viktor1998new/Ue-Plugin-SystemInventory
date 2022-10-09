@@ -25,9 +25,9 @@ public:
 		FVector2D Alignment;
 
 };
-/**
- * The Slot for the UBorderSlot, contains the widget displayed in a border's single slot
- */
+
+class UInventoryGrid;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangedSlot, int32, Index, FInventorySlot, Slot);
 
 UCLASS()
@@ -42,7 +42,7 @@ public:
 	UPROPERTY()
 		FSlotTransformData Transform;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 		int32 IndexItem;
 
 	UPROPERTY(BlueprintReadOnly)
@@ -66,7 +66,18 @@ public:
 	void SetIndexItem(int32 NewIndex);
 
 	virtual void SynchronizeProperties() override;
+
+	void ChangeSlot(FInventorySlot NewData);
+
 private:
+
+	enum TypeChangeTranstrorm {
+		Position,
+		Size
+	};
+
+	void ChangeTranstrorm(FIntPoint Value, TypeChangeTranstrorm Change);
+	void ChangeTranstrorm(FIntPoint Position, FIntPoint Size);
 
 	SConstraintCanvas::FSlot* Slot;
 

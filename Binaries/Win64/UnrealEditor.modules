@@ -1,0 +1,8 @@
+{
+	"BuildId": "19505902",
+	"Modules": 
+	{
+		"Inventory": "UnrealEditor-Inventory.dll",
+		"InventoryEditor": "UnrealEditor-InventoryEditor.dll"
+	}
+}
