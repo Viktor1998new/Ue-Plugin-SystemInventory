@@ -1,8 +1,0 @@
-{
-	"BuildId": "19505902",
-	"Modules": 
-	{
-		"Inventory": "UnrealEditor-Inventory-Win64-DebugGame.dll",
-		"InventoryEditor": "UnrealEditor-InventoryEditor-Win64-DebugGame.dll"
-	}
-}
