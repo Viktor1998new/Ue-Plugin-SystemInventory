@@ -16,7 +16,11 @@ public:
 		const FVector2D Icon16x16(16.0f, 16.0f);
 		const FVector2D Icon64x64(64.0f, 64.0f);
 
-		SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources"));
+		if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources")))
+			SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources"));
+		else
+			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Runtime/SystemInventory/Resources"));
+
 		//Set("ClassIcon.ActorSequence", new FSlateImageBrush(RootToContentDir(TEXT("ActorSequence_16x.png")), Icon16x16));
 		
 		Set("ClassIcon.ItemActor", new IMAGE_BRUSH("ItemActor_16x", Icon16x16));
