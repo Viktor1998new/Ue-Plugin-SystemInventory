@@ -1,3 +1,4 @@
+//© Viktor F. P., 2022
 #pragma once
 #include "InventorySettings.generated.h"
 

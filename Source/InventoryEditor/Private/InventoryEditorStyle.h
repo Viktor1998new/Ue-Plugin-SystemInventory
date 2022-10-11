@@ -1,6 +1,5 @@
-
+//© Viktor F. P., 2022
 #pragma once
-
 #include "Styling/SlateStyle.h"
 #include "Styling/SlateStyleRegistry.h"
 

@@ -1,3 +1,4 @@
+//© Viktor F. P., 2022
 #pragma once
 #include "CoreMinimal.h"
 #include "UObject/Script.h"
