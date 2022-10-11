@@ -14,16 +14,16 @@ struct INVENTORY_API FInventorySlot
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		UItemAsset* ItemAsset;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		FIntPoint PositionSlot;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		FString ItemData;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		int32 Count;
 
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
@@ -47,13 +47,13 @@ struct INVENTORY_API FInventory
 {
 	GENERATED_BODY()
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory")
 		TArray<FInventorySlot> Items;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory")
 		float Massa;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory")
 		FIntPoint MaxSlot;
 
 	FInventory();
@@ -81,16 +81,16 @@ class INVENTORY_API UInventoryComponent : public UActorComponent
 
 public:
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "Inventory")
 		static UInventorySettings* GetInventorySetting();
 
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Replicated)
+	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Replicated, Category = "Inventory")
 		TArray<FInventorySlot> Items;
 	
-	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated)
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated, Category = "Inventory")
 		float CurrentMassa;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Slot")
 		FIntPoint MaxSlot;
 
 	UPROPERTY(BlueprintAssignable)
@@ -112,7 +112,7 @@ protected:
 
 public:
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	void SetInventory(FInventory NewInventory) {
 		Items = NewInventory.Items;
 		CurrentMassa = NewInventory.Massa;
@@ -120,7 +120,7 @@ public:
 	};
 
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "Inventory")
 	FInventory GetInventory() {
 		return FInventory(this);
 	};
@@ -128,47 +128,47 @@ public:
 	/*Adding a slot
 	 * @param NewSlot - The new active state of the component
 	  Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
 		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
 
 	/*Adding an item
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
 		bool AddActorItem(AItemActor* Item, int32& Index );
 
 	/*Adding an item
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		bool SetSlot(int32 Index, FInventorySlot NewValue);
 
 	/*Adding an item
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|SlotAdd")
 		bool AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index);
 
 	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool FindFreeSlot(FIntPoint Size,FIntPoint &ReturnPosition);
 
 	/*search function for an item by class or class child*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool FindItem(UItemAsset* ItemAsset,int32& Index);
 
 	/*Removing an item
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		bool RemoveItem(int32 Index, int32 count);
 
 	/*the function sends an item from the current inventory to another one
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool SendItem(int32 Index, class UInventoryComponent* ToIntentory, int32 Count, bool FindSlot , FIntPoint Position);
 
 	/*the function checks whether the element can be placed in this position*/
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition);
 
 	UFUNCTION(Client, Reliable)
@@ -176,7 +176,7 @@ public:
 
 #if WITH_EDITOR
 	// Only Edit
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		void RecalculationMass();
 #endif
 

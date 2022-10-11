@@ -42,10 +42,10 @@ public:
 	UPROPERTY()
 		FSlotTransformData Transform;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "InventoryGrid|Slot")
 		int32 IndexItem;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "InventoryGrid|Slot")
 		FIntPoint SlotPosition;
 
 		int32 ZOrder = 0;

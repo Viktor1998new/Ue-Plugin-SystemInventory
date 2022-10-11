@@ -24,26 +24,26 @@ class INVENTORY_API UInventoryGrid : public UPanelWidget
 
 public:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> ItemSlot;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> NoneSlot;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
 		float SizeSlot = 32;
 
 #if WITH_EDITOR
 	virtual const FText GetPaletteCategory() override;
 #endif
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "InventoryGrid")
 	void SetInventory(UInventoryComponent* NewInventory);
 
 	UFUNCTION(BlueprintPure, Category = "Slot")
 		static UInventoryGridSlot* SlotAsInventorySlot(UWidget* Widget);
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "InventoryGrid")
 		UInventoryComponent* GetInventory() const {
 			return Inventory;
 	};

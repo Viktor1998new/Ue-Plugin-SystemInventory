@@ -11,22 +11,22 @@ struct INVENTORY_API FItemData
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		FText NameItem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		UTexture2D* ImageItem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		FIntPoint SizeSlot;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		float MassItem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		bool StackItem;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		bool NoneData = false;
 };
 
@@ -37,10 +37,10 @@ class INVENTORY_API UItemAsset : public UPrimaryDataAsset
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")
 		TSubclassOf<AItemActor> ClassItemActor;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")
 		FItemData SlotItemData;
 	 
 };
@@ -52,21 +52,21 @@ class INVENTORY_API AItemActor : public AActor
 	
 public:	
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ExposeOnSpawn = "true"), Category = "ItemActor")
 		UItemAsset* ItemAsset;
 
 	// Sets default values for this actor's properties
 	AItemActor();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "ItemActor")
 		virtual void SetData(const FString &NewData);
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "InitData"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "InitData"), Category = "ItemActor")
 		void ReceiveInitData(const FString& Data);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "ItemActor")
 		virtual FString GetData();
 
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "GetData"))
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "GetData"), Category = "ItemActor")
 		void ReceiveGetData(FString& Data);
 };
