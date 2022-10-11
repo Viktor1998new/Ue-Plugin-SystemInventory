@@ -3,9 +3,9 @@
 	"Version": 1,
 	"VersionName": "1.0",
 	"FriendlyName": "Inventory",
-	"EngineVersion": "5.0"
+	"EngineVersion": "5.0",
 	"Category": "Other",
-	"WhitelistPlatforms": [ "Win64", "Win32"]
+	"WhitelistPlatforms": [ "Win64", "Win32"],
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/a91aca6f2ceb4237988335e01112d30e",
 	"EnabledByDefault": true,
 	"CanContainContent": true,
