@@ -1,3 +1,4 @@
+//© Viktor F. P., 2022
 #include "InventoryLibrary.h"
 
 FString UInventoryLibrary::DataItem(TMap<FString, FString> MapDataItem){

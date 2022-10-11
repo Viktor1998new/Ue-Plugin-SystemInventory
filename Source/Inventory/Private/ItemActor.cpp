@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+//© Viktor F. P., 2022
 
 #include "Inventory/ItemActor.h"
 

@@ -1,4 +1,4 @@
-// Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
+//© Viktor F. P., 2022
 
 #include "Inventory.h"
 #include "InventorySettings.h"

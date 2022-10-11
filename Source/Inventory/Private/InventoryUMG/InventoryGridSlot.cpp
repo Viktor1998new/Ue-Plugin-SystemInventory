@@ -1,3 +1,4 @@
+//© Viktor F. P., 2022
 #pragma once
 #include "InventoryUMG/InventoryGridSlot.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
