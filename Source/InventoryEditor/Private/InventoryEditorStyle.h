@@ -17,8 +17,10 @@ public:
 
 		if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources")))
 			SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources"));
-		else
+		else if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Runtime/SystemInventory/Resources")))
 			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Runtime/SystemInventory/Resources"));
+		else
+			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Marketplace/SystemInventory/Resources"));
 
 		//Set("ClassIcon.ActorSequence", new FSlateImageBrush(RootToContentDir(TEXT("ActorSequence_16x.png")), Icon16x16));
 		
