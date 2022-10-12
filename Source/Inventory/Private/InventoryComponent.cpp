@@ -319,10 +319,14 @@ bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory
 	FIntPoint NewPosition = Position;
 	int32 FindIndex;
 
-	if (FindSlot)
-		if (!ToIntentory->FindFreeSlot(NewStot.ItemAsset->SlotItemData.SizeSlot, NewPosition)) return false;
-	else
-		if (!ToIntentory->IsPositionFree(NewPosition, NewStot.ItemAsset->SlotItemData.SizeSlot, FindIndex)) return false;
+	if (FindSlot) {
+		if (!ToIntentory->FindFreeSlot(NewStot.ItemAsset->SlotItemData.SizeSlot, NewPosition)) 
+			return false;
+	}
+	else {
+		if (!ToIntentory->IsPositionFree(NewPosition, NewStot.ItemAsset->SlotItemData.SizeSlot, FindIndex)) 
+			return false;
+	}
 
 	RemoveItem(Index, Count);
 

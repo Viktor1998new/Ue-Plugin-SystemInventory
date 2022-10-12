@@ -41,8 +41,8 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 
 	Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 
-	if (NoneSlot && Inventory->MaxSlot != FIntPoint::ZeroValue)
-		if (EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags,EInventoryFlag::OnlyX)) {
+	if (NoneSlot && Inventory->MaxSlot != FIntPoint::ZeroValue) {
+		if (EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags, EInventoryFlag::OnlyX)) {
 			for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
 				AddNoneSlot(FIntPoint(X, 0));
 		}
@@ -51,6 +51,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 				for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
 					AddNoneSlot(FIntPoint(X, Y));
 		}
+	}
 
 	if (!Inventory->Items.IsEmpty()) {
 
