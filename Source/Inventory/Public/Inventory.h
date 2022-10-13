@@ -1,7 +1,6 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 #pragma once
-
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 

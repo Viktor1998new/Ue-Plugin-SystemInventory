@@ -1,4 +1,4 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 
 #include "InventorySettings.h"

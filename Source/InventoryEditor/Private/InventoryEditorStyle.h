@@ -1,4 +1,4 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 #pragma once
 #include "Styling/SlateStyle.h"
 #include "Styling/SlateStyleRegistry.h"
@@ -22,8 +22,6 @@ public:
 		else
 			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Marketplace/SystemInventory/Resources"));
 
-		//Set("ClassIcon.ActorSequence", new FSlateImageBrush(RootToContentDir(TEXT("ActorSequence_16x.png")), Icon16x16));
-		
 		Set("ClassIcon.ItemActor", new IMAGE_BRUSH("ItemActor_16x", Icon16x16));
 		Set("ClassThumbnail.ItemActor", new IMAGE_BRUSH("ItemActor_64x", Icon64x64));
 		

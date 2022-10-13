@@ -1,4 +1,4 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 #pragma once
 
@@ -72,8 +72,10 @@ protected:
 
 	TSharedPtr<SConstraintCanvas> MyPanel;
 
-protected:
-
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
+
+	UFUNCTION()
+		void ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
+
 };

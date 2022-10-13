@@ -1,4 +1,4 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 #include "Inventory/InventoryComponent.h"
 #include "Inventory.h"
@@ -12,12 +12,10 @@ bool HasInventoryFlag(EInventoryFlag Contains)
 
 void UInventoryComponent::ChangeSlot(int32 Index, FInventorySlot Slot, ETypeSetItem Type) {
 
-	NewDataSlot.Broadcast(Index, Slot, Type);
-
-	if (GetOwner()->HasAuthority())
-		return;
-
-	ClientRPC_EventSetItem(Index, Slot, Type);
+	if(GIsServer)
+		ClientRPC_EventSetItem(Index, Slot, Type);
+	else
+		NewDataSlot.Broadcast(Index, Slot, Type);
 }
 
 FInventory::FInventory() {
@@ -84,9 +82,6 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 
 void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
 {
-	ItemIndex = Index;
-	TypeSetItem = Type;
-
 	NewDataSlot.Broadcast(Index, NewData, Type);
 }
 
@@ -371,7 +366,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NO
 		
 		if (!HasInventoryFlag(EInventoryFlag::Stack) && !Items[IndexItem].ItemAsset->SlotItemData.StackItem) return false;
 
-		if (!Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[ItemIndex].Count) return false;
+		if (!Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[IndexItem].Count) return false;
 
 		if (IndexItem != ToIndex && Items[IndexItem] == Items[ToIndex]) {
 

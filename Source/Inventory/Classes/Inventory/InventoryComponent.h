@@ -1,4 +1,4 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 #pragma once
 
@@ -104,12 +104,6 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-protected:
-
-	ETypeSetItem TypeSetItem;
-
-	int32 ItemIndex;
-
 public:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
@@ -143,7 +137,7 @@ public:
 
 	/*Adding an item
 	 Use only in Server*/
-	UFUNCTION(BlueprintCallable, Category = "Inventory|SlotAdd")
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
 		bool AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index);
 
 	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */

@@ -1,9 +1,11 @@
-//© Viktor F. P., 2022
+//Copyright(c) 2022, Viktor.F.P
 
 #include "InventoryUMG/InventoryGrid.h"
 #include "InventoryUMG/InventoryGridSlot.h"
-#include "Inventory.h"
 #include "InventorySettings.h"
+#include "GameFramework/PlayerState.h"
+#include "TimerManager.h"
+#include "Inventory.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -29,7 +31,6 @@ UInventoryGridSlot* UInventoryGrid::SlotAsInventorySlot(UWidget* Widget) {
 
 void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 {
-
 	if (Inventory) {
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
 		ClearChildren();
@@ -80,6 +81,7 @@ void UInventoryGrid::AddSlot(int32 IndexItem)
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
 	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
 	NewSlot->SetIndexItem(IndexItem);
+	NewSlot->SetZOrder(1);
 	ItemSlots.Add(NewSlot);
 }
 
@@ -89,34 +91,53 @@ void UInventoryGrid::RemoveSlot(int32 IndexItem)
 }
 
 void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
-{
-	TArray<FInventorySlot> L_Items = Inventory->Items;
+{	
+	if(GetOwningPlayer()){
+		if (Inventory->GetIsReplicated()) {
+			float TimePing = GetOwningPlayer()->PlayerState->GetPingInMilliseconds() * GetWorld()->GetDeltaSeconds();
+
+			if (TimePing == 0.0f) {
+				ChangeSlots(Index, NewData, Type);
+				return;
+			}
+
+			FTimerHandle TimerPing;
+			FTimerDelegate Del_ChangeSlots = FTimerDelegate::CreateUObject(this, &UInventoryGrid::ChangeSlots, Index,NewData,Type);
+			GetWorld()->GetTimerManager().SetTimer(TimerPing, Del_ChangeSlots, TimePing, false);
+			return;
+		}
+	}
+
+	ChangeSlots(Index, NewData, Type);
+}
+
+void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type) {
 
 	switch (Type)
 	{
-		case Add:
-			AddSlot(Index);
-			break;
+	case Add:
+		AddSlot(Index);
+		break;
 
-		case Remove:
-			
-			RemoveChild(ItemSlots.Last()->Content);
+	case Remove:
 
-			if (L_Items.IsEmpty())
-				return;
+		RemoveChild(ItemSlots.Last()->Content);
 
-			for (int32 i  = Index; i < L_Items.Num(); i++)
-				ItemSlots[i]->ChangeSlot(L_Items[i]);
+		if (Inventory->Items.IsEmpty())
+			return;
 
-			break;
+		for (int32 i = Index; i < Inventory->Items.Num(); i++)
+			ItemSlots[i]->ChangeSlot(Inventory->Items[i]);
 
-		case ChangeSlot:
-			ItemSlots[Index]->ChangeSlot(NewData);
-			break;
+		break;
 
-		case SetPosition:
-			ItemSlots[Index]->SetPosition(NewData.PositionSlot);
-			break;
+	case ChangeSlot:
+		ItemSlots[Index]->ChangeSlot(NewData);
+		break;
+
+	case SetPosition:
+		ItemSlots[Index]->SetPosition(NewData.PositionSlot);
+		break;
 	}
 }
 
