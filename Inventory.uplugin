@@ -8,7 +8,7 @@
 	"Category": "Other",
 	"DocsURL" : "https://drive.google.com/file/d/1teZ6rl9H0WimvEpWoK2beZMedcm8JS7W/view?usp=sharing",
 	"WhitelistPlatforms": [ "Win64", "Win32"],
-	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/a91aca6f2ceb4237988335e01112d30e",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
 	"EnabledByDefault": true,
 	"CanContainContent": true,
 	"IsBetaVersion": false,

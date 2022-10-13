@@ -17,10 +17,10 @@ public:
 
 		if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources")))
 			SetContentRoot(FPaths::ProjectPluginsDir() / TEXT("Inventory/Resources"));
-		else if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Runtime/SystemInventory/Resources")))
-			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Runtime/SystemInventory/Resources"));
+		else if(FPaths::DirectoryExists(FPaths::ProjectPluginsDir() / TEXT("Runtime/Inventory/Resources")))
+			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Runtime/Inventory/Resources"));
 		else
-			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Marketplace/SystemInventory/Resources"));
+			SetContentRoot(FPaths::EnginePluginsDir() / TEXT("Marketplace/Inventory/Resources"));
 
 		Set("ClassIcon.ItemActor", new IMAGE_BRUSH("ItemActor_16x", Icon16x16));
 		Set("ClassThumbnail.ItemActor", new IMAGE_BRUSH("ItemActor_64x", Icon64x64));

@@ -362,11 +362,13 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 
 bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NONE, int32 Count = 1, FIntPoint ToPosition = FIntPoint::ZeroValue)
 {
+	if (!Items.IsValidIndex(IndexItem)) return false;
+
 	if (ToIndex != INDEX_NONE) {
 		
 		if (!HasInventoryFlag(EInventoryFlag::Stack) && !Items[IndexItem].ItemAsset->SlotItemData.StackItem) return false;
 
-		if (!Items.IsValidIndex(IndexItem) || Count <= 0 || Count > Items[IndexItem].Count) return false;
+		if (Count <= 0 || Count > Items[IndexItem].Count) return false;
 
 		if (IndexItem != ToIndex && Items[IndexItem] == Items[ToIndex]) {
 
