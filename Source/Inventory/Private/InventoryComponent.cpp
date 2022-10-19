@@ -100,7 +100,7 @@ bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
 
 			if (Items[i].ItemAsset) {
 				if (Items[i].IsPosition(NewValue.PositionSlot, NewValue.ItemAsset->SlotItemData.SizeSlot)) {
-					Index = i;
+					
 					return false;
 				}
 			}
@@ -116,7 +116,7 @@ bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
 	
 	Items[Index] = NewValue;
 
-	ChangeSlot(Index, Items[Index], ETypeSetItem::ChangeSlot);
+	ChangeSlot(Index, NewValue, ETypeSetItem::ChangeSlot);
 
 	return true;
 }

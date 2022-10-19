@@ -126,7 +126,7 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		if (Inventory->Items.IsEmpty())
 			return;
 
-		for (int32 i = Index; i < Inventory->Items.Num(); i++)
+		for (int32 i = Index; i < ItemSlots.Num(); i++)
 			ItemSlots[i]->ChangeSlot(Inventory->Items[i]);
 
 		break;

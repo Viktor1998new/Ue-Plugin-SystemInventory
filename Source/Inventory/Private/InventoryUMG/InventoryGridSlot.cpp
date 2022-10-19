@@ -41,13 +41,13 @@ void UInventoryGridSlot::ChangeTranstrorm(FIntPoint Position, FIntPoint Size) {
 
 	SlotPosition = Position;
 
+	if (!Slot) return;
+
 	Transform.Offsets.Left = Position.X * ParentPanel->SizeSlot;
 	Transform.Offsets.Top = Position.Y * ParentPanel->SizeSlot;
 
 	Transform.Offsets.Right = Size.X * ParentPanel->SizeSlot;
 	Transform.Offsets.Bottom = Size.Y * ParentPanel->SizeSlot;
-
-	if (!Slot) return;
 
 	Slot->SetOffset(Transform.Offsets);
 }

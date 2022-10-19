@@ -4,27 +4,31 @@
 	"VersionName": "1.0",
 	"FriendlyName": "SystemInventory",
 	"Description": "A great tool for creating an inverter of any type. All the code is written in C++ with an easily customizable and convenient Inventory editor",
-	"EngineVersion": "5.0",
 	"Category": "Other",
-	"DocsURL" : "https://drive.google.com/file/d/1teZ6rl9H0WimvEpWoK2beZMedcm8JS7W/view?usp=sharing",
-	"WhitelistPlatforms": [ "Win64", "Win32"],
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "https://drive.google.com/file/d/1teZ6rl9H0WimvEpWoK2beZMedcm8JS7W/view?usp=sharing",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
-	"EnabledByDefault": true,
+	"SupportURL": "",
+	"EngineVersion": "5.0.0",
 	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"Installed": false,
+	"Installed": true,
 	"Modules": [
 		{
 			"Name": "Inventory",
 			"Type": "Runtime",
-			"LoadingPhase" : "Default",
-			"WhitelistPlatforms": ["Win64","Win32"]
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "InventoryEditor",
 			"Type": "Editor",
-			"LoadingPhase" : "PostEngineInit",
-			"WhitelistPlatforms": ["Win64"]
+			"LoadingPhase": "PostEngineInit",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		}
 	]
 }
