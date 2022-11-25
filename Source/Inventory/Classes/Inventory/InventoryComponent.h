@@ -163,7 +163,7 @@ public:
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
-		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition);
+		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition, bool Change, bool FindPosition);
 
 	UFUNCTION(Client, Reliable)
 		void ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
