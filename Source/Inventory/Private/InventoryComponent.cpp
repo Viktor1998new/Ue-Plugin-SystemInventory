@@ -220,15 +220,21 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 	bool IsNoFree;
 
 	do {
-		if(!HasInventoryFlag(EInventoryFlag::OnlyX))
+		if (HasInventoryFlag(EInventoryFlag::OnlyX)) {
+			if (X + (Size.X - 1) > (MaxSlot.X - 1)) {
+				return false;
+			}
+		}
+		else {
 			if (X + (Size.X - 1) > (MaxSlot.X - 1)) {
 				X = 0;
 
-				if (HasInventoryFlag(EInventoryFlag::LimitY)) 
+				if (HasInventoryFlag(EInventoryFlag::LimitY))
 					if (Y + (Size.Y - 1) > (MaxSlot.Y - 1))
 						return false;
 				Y++;
 			}
+		}
 
 		int32 L_ItemIndex;
 
@@ -359,34 +365,120 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 	return true;
 }
 
-
-bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NONE, int32 Count = 1, FIntPoint ToPosition = FIntPoint::ZeroValue)
+bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NONE, int32 Count = 1, FIntPoint ToPosition = FIntPoint::ZeroValue, bool Change = false, bool FindPosition = false)
 {
 	if (!Items.IsValidIndex(IndexItem)) return false;
 
 	if (ToIndex != INDEX_NONE) {
 		
-		if (!HasInventoryFlag(EInventoryFlag::Stack) && !Items[IndexItem].ItemAsset->SlotItemData.StackItem) return false;
+		if (!HasInventoryFlag(EInventoryFlag::Stack))
+		{
+			if (Change) {
+				int32 Index;
+
+				auto CuToPosition = Items[ToIndex].PositionSlot;
+
+				auto CuPosition = Items[IndexItem].PositionSlot;
+
+				Items[ToIndex].PositionSlot = Items[ToIndex].ItemAsset->SlotItemData.SizeSlot * -2;
+				Items[IndexItem].PositionSlot = Items[IndexItem].ItemAsset->SlotItemData.SizeSlot * -2;
+
+				if (IsPositionFree(CuToPosition, Items[IndexItem].ItemAsset->SlotItemData.SizeSlot, Index)) {
+
+					Items[IndexItem].PositionSlot = CuToPosition;
+
+					if (IsPositionFree(CuPosition, Items[ToIndex].ItemAsset->SlotItemData.SizeSlot, Index)) {
+
+						Items[ToIndex].PositionSlot = CuPosition;
+
+						ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+						ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+						return true;
+					}
+					else if (FindPosition) {
+
+						FIntPoint NewPosition;
+
+						if (FindFreeSlot(Items[ToIndex].ItemAsset->SlotItemData.SizeSlot, NewPosition))
+						{
+							Items[ToIndex].PositionSlot = NewPosition;
+
+							ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+							ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+							return true;
+						}
+					}
+				}
+
+				Items[ToIndex].PositionSlot = CuToPosition;
+				Items[IndexItem].PositionSlot = CuPosition;
+			}
+
+			return false;
+		}
 
 		if (Count <= 0 || Count > Items[IndexItem].Count) return false;
 
-		if (IndexItem != ToIndex && Items[IndexItem] == Items[ToIndex]) {
+		if (IndexItem != ToIndex) {
+			if (Items[IndexItem].ItemAsset->SlotItemData.StackItem && Items[IndexItem] == Items[ToIndex])
+			{
+				Items[IndexItem].Count -= Count;
+				Items[ToIndex].Count += Count;
 
-			Items[IndexItem].Count -= Count;
-			Items[ToIndex].Count += Count;
+				ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
 
-			ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+				bool IsCountRemove = Items[IndexItem].Count == 0;
 
-			bool IsCountRemove = Items[IndexItem].Count == 0;
+				if (IsCountRemove) {
+					Items.RemoveAt(IndexItem);
+					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
+				}
+				else
+					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
 
-			if (IsCountRemove) {
-				Items.RemoveAt(IndexItem);
-				ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
+				return true;
 			}
-			else
-				ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+			else if (Change) {
 
-			return true;
+				int32 Index;
+
+				auto CuToPosition = Items[ToIndex].PositionSlot;
+				
+				auto CuPosition = Items[IndexItem].PositionSlot;
+
+				Items[ToIndex].PositionSlot = Items[ToIndex].ItemAsset->SlotItemData.SizeSlot * -2;
+				Items[IndexItem].PositionSlot = Items[IndexItem].ItemAsset->SlotItemData.SizeSlot * -2;
+
+				if (IsPositionFree(CuToPosition, Items[IndexItem].ItemAsset->SlotItemData.SizeSlot, Index)) {
+
+					Items[IndexItem].PositionSlot = CuToPosition;
+
+					if (IsPositionFree(CuPosition, Items[ToIndex].ItemAsset->SlotItemData.SizeSlot, Index)) {
+
+						Items[ToIndex].PositionSlot = CuPosition;
+
+						ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+						ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+						return true;
+					}
+					else if (FindPosition) {
+
+						FIntPoint NewPosition;
+						
+						if (FindFreeSlot(Items[ToIndex].ItemAsset->SlotItemData.SizeSlot, NewPosition))
+						{
+							Items[ToIndex].PositionSlot = NewPosition;
+
+							ChangeSlot(ToIndex, Items[ToIndex], ETypeSetItem::ChangeSlot);
+							ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
+							return true;
+						}
+					}
+				}
+
+				Items[ToIndex].PositionSlot = CuToPosition;
+				Items[IndexItem].PositionSlot = CuPosition;
+			}
 		}
 	}
 	else {

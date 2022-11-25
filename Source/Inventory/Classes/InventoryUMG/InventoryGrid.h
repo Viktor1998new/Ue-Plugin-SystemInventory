@@ -23,11 +23,10 @@ class INVENTORY_API UInventoryGrid : public UPanelWidget
 		UInventoryComponent* Inventory;
 
 public:
-
-	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> ItemSlot;
 	
-	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> NoneSlot;
 
 	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
