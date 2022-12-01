@@ -44,8 +44,10 @@ bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
 		Size -= 1;
 
 		if (Position.X >= PositionSlot.X ? Position.X <= PositionSlot.X + SizeItem.X : Position.X + Size.X >= PositionSlot.X) {
-			if (HasInventoryFlag(EInventoryFlag::OnlyX))
+			
+			if (HasInventoryFlag(EInventoryFlag::OnlyX)) {
 				return true;
+			}
 
 			if (Position.Y >= PositionSlot.Y ? Position.Y <= PositionSlot.Y + SizeItem.Y : Position.Y + Size.Y >= PositionSlot.Y) {
 				return true;
@@ -129,7 +131,11 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 	FIntPoint NewPosition;
 	int32 IndexFull;
 
-	if (FindPositionSlot || !IsPositionFree(NewSlot.PositionSlot, NewSlot.ItemAsset->SlotItemData.SizeSlot, IndexFull)) {
+	if (!IsPositionFree(NewSlot.PositionSlot, NewSlot.ItemAsset->SlotItemData.SizeSlot, IndexFull)) {
+
+		if (!FindPositionSlot) {
+			return false;
+		}
 
 		if (FindFreeSlot(NewSlot.ItemAsset->SlotItemData.SizeSlot, NewPosition)) {
 			NewSlot.PositionSlot = NewPosition;

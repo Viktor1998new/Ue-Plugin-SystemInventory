@@ -60,7 +60,7 @@ protected:
 	UFUNCTION()
 		void Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
-	virtual void BeginDestroy() override;
+	virtual void RemoveFromParent() override;
 
 	// UPanelWidget
 	virtual UClass* GetSlotClass() const override;

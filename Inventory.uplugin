@@ -10,7 +10,7 @@
 	"DocsURL": "https://drive.google.com/file/d/1teZ6rl9H0WimvEpWoK2beZMedcm8JS7W/view?usp=sharing",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
 	"SupportURL": "",
-	"EngineVersion": "5.0.0",
+	"EngineVersion": "5.1.0",
 	"CanContainContent": true,
 	"Installed": true,
 	"Modules": [
