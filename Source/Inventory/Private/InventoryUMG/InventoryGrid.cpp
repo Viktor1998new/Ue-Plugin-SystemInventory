@@ -14,12 +14,12 @@ UInventoryGrid::UInventoryGrid(const FObjectInitializer& ObjectInitializer)
 {
 }
 
-void UInventoryGrid::BeginDestroy() {
+void UInventoryGrid::RemoveFromParent() {
 
-	Super::BeginDestroy();
-	if (Inventory) {
+	if (Inventory)
 		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
-	}
+	
+	Super::RemoveFromParent();
 }
 
 UInventoryGridSlot* UInventoryGrid::SlotAsInventorySlot(UWidget* Widget) {
@@ -64,6 +64,9 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 
 void UInventoryGrid::ReleaseSlateResources(bool bReleaseChildren)
 {
+	if (Inventory)
+		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
+
 	Super::ReleaseSlateResources(bReleaseChildren);
 
 	MyPanel.Reset();
@@ -80,6 +83,7 @@ void UInventoryGrid::AddSlot(int32 IndexItem)
 {
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
 	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
+	NewSlot->ParentPanel = this;
 	NewSlot->SetIndexItem(IndexItem);
 	NewSlot->SetZOrder(1);
 	ItemSlots.Add(NewSlot);
@@ -150,7 +154,7 @@ void UInventoryGrid::OnSlotAdded(UPanelSlot* inSlot)
 {
 	if (!MyPanel.IsValid()) return;
 
-	CastChecked<UInventoryGridSlot>(inSlot)->ParentPanel = this;
+	CastChecked<UInventoryGridSlot>(inSlot)->Parent = this;
 	CastChecked<UInventoryGridSlot>(inSlot)->BuildSlot(MyPanel.ToSharedRef());
 }
 

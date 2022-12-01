@@ -14,6 +14,8 @@ UInventoryGridSlot::UInventoryGridSlot(const FObjectInitializer& ObjectInitializ
 
 void UInventoryGridSlot::ChangeTranstrorm(FIntPoint Value, TypeChangeTranstrorm Change) {
 	
+	if (!Slot) return;
+
 	switch(Change) {
 
 	case TypeChangeTranstrorm::Position:
@@ -31,8 +33,6 @@ void UInventoryGridSlot::ChangeTranstrorm(FIntPoint Value, TypeChangeTranstrorm 
 		Transform.Offsets.Bottom = Value.Y * ParentPanel->SizeSlot;
 		break;
 	}
-
-	if (!Slot) return;
 		
 	Slot->SetOffset(Transform.Offsets);
 }
@@ -60,6 +60,8 @@ void UInventoryGridSlot::ChangeSlot(FInventorySlot NewData) {
 
 void UInventoryGridSlot::BuildSlot(TSharedRef<SConstraintCanvas> GridPanel)
 {
+	ParentPanel = Cast<UInventoryGrid>(Parent);
+
 	GridPanel->AddSlot()
 		.Alignment(FVector2D(0.0f))
 		.AutoSize(false)
@@ -95,7 +97,7 @@ void UInventoryGridSlot::SetZOrder(int32 InZOrder)
 
 void UInventoryGridSlot::SetIndexItem(int32 NewIndex)
 {
-	if (NewIndex == INDEX_NONE) return;
+	if (NewIndex == INDEX_NONE || !Slot) return;
 
 	FInventorySlot L_Slot = ParentPanel->Inventory->Items[NewIndex];
 	FIntPoint L_SlotSize = L_Slot.ItemAsset->SlotItemData.SizeSlot;
@@ -106,7 +108,7 @@ void UInventoryGridSlot::SetIndexItem(int32 NewIndex)
 
 void UInventoryGridSlot::SynchronizeProperties() {
 
-	if (IndexItem == INDEX_NONE) return;
+	if (IndexItem == INDEX_NONE || !Slot) return;
 
 	FInventorySlot L_Slot = ParentPanel->Inventory->Items[IndexItem];
 	FIntPoint L_SlotSize = L_Slot.ItemAsset->SlotItemData.SizeSlot;
