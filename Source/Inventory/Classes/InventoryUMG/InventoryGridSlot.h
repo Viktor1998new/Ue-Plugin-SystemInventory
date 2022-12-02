@@ -34,8 +34,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangedSlot, int32, Index, FInve
 UCLASS()
 class INVENTORY_API UInventoryGridSlot : public UPanelSlot
 {
-	GENERATED_UCLASS_BODY()
+    GENERATED_UCLASS_BODY()
 
+	
 	UInventoryGrid* ParentPanel;
 
 public:

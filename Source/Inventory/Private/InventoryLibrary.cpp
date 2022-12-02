@@ -35,9 +35,8 @@ TMap<FString, FString> UInventoryLibrary::DataItemToMap(FString DataItem) {
 		TArray<FString> NewMap;
 
 		Value.ParseIntoArray(NewMap, TEXT(":"), true);
-		
-		if(NewMap.IsValidIndex(1))
-			L_ReturnValue.Add(NewMap[0], NewMap[1]);
+
+		L_ReturnValue.Add(NewMap[0], NewMap[1]);
 	}
 
 	return L_ReturnValue;
