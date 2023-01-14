@@ -294,8 +294,8 @@ bool UInventoryComponent::RemoveItem(int32 Index, int32 Count) {
 			if (Items[Index].Count - Count == 0) {
 				
 				OnRemoveItem.Broadcast(Index);
-				ChangeSlot(Index, FInventorySlot(), ETypeSetItem::Remove);
 				Items.RemoveAt(Index);
+				ChangeSlot(Index, FInventorySlot(), ETypeSetItem::Remove);
 				
 			}
 			else {
@@ -437,7 +437,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NO
 
 				if (IsCountRemove) {
 					Items.RemoveAt(IndexItem);
-					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
+					ChangeSlot(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
 				}
 				else
 					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
@@ -516,7 +516,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NO
 
 				if (IsCountRemove) {
 					Items.RemoveAt(IndexItem);
-					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::Remove);
+					ChangeSlot(IndexItem, FInventorySlot(), ETypeSetItem::Remove);
 				}
 				else
 					ChangeSlot(IndexItem, Items[IndexItem], ETypeSetItem::ChangeSlot);
