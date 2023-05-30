@@ -52,3 +52,8 @@ TMap<FString, FString> UInventoryLibrary::DataItemSetValue(TMap<FString, FString
 
 	return MapDataItem;
 }
+
+FIntPoint UInventoryLibrary::GetSlotSize(FInventorySlot Slot)
+{
+	return Slot.GetSize();
+}

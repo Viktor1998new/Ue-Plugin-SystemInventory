@@ -54,7 +54,7 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 		}
 	}
 
-	if (!Inventory->Items.IsEmpty()) {
+	if (Inventory->Items.Num() != 0) {
 
 		for (int32 i = 0; i < Inventory->Items.Num(); i++)
 			if (Inventory->Items[i].ItemAsset)
@@ -98,7 +98,7 @@ void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETyp
 {	
 	if(GetOwningPlayer()){
 		if (Inventory->GetIsReplicated()) {
-			float TimePing = GetOwningPlayer()->PlayerState->GetPingInMilliseconds() * GetWorld()->GetDeltaSeconds();
+			float TimePing = GetOwningPlayer()->PlayerState->GetPing() * GetWorld()->GetDeltaSeconds();
 
 			if (TimePing == 0.0f) {
 				ChangeSlots(Index, NewData, Type);
@@ -127,7 +127,7 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 
 		RemoveChild(ItemSlots.Last()->Content);
 
-		if (Inventory->Items.IsEmpty())
+		if (Inventory->Items.Num() == 0)
 			return;
 
 		for (int32 i = Index; i < ItemSlots.Num(); i++)
@@ -173,7 +173,7 @@ TSharedRef<SWidget> UInventoryGrid::RebuildWidget()
 {
 	MyPanel = SNew(SConstraintCanvas);
 
-	if(!Slots.IsEmpty() && Inventory)
+	if(Slots.Num() != 0 && Inventory)
 		for (UPanelSlot* PanelSlot : Slots)
 		{
 			if (UInventoryGridSlot* TypedSlot = Cast<UInventoryGridSlot>(PanelSlot))
