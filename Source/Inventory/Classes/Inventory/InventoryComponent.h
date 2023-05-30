@@ -14,7 +14,7 @@ struct INVENTORY_API FInventorySlot
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
+		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		UItemAsset* ItemAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
@@ -26,9 +26,12 @@ struct INVENTORY_API FInventorySlot
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		int32 Count;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Slot")
+		bool IsRotate;
+
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
 
-	bool operator == (const FInventorySlot &A) {
+	bool operator == (const FInventorySlot& A) {
 
 		return ItemAsset == A.ItemAsset && ItemData == A.ItemData;
 	}
@@ -39,6 +42,19 @@ struct INVENTORY_API FInventorySlot
 
 	void operator --() {
 		Count--;
+	}
+
+	FIntPoint GetSize()
+	{
+		if (!IsValid(ItemAsset))
+			return FIntPoint::ZeroValue;
+
+		FIntPoint L_ReturnValue = ItemAsset->SlotItemData.SizeSlot;
+
+		if (IsRotate)
+			return FIntPoint(L_ReturnValue.Y, L_ReturnValue.X);
+
+		return L_ReturnValue;
 	}
 };
 
@@ -161,6 +177,9 @@ public:
 	/*the function checks whether the element can be placed in this position*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		void SetRotateSlot(int32 Index, bool NewRotate);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition, bool Change, bool FindPosition);

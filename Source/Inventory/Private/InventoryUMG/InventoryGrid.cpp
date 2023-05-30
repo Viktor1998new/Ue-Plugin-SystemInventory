@@ -83,6 +83,7 @@ void UInventoryGrid::AddSlot(int32 IndexItem)
 {
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
 	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
+	NewSlot->ParentPanel = this;
 	NewSlot->SetIndexItem(IndexItem);
 	NewSlot->SetZOrder(1);
 	ItemSlots.Add(NewSlot);
@@ -129,7 +130,7 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		if (Inventory->Items.Num() == 0)
 			return;
 
-		for (int32 i = Index; i < Inventory->Items.Num(); i++)
+		for (int32 i = Index; i < ItemSlots.Num(); i++)
 			ItemSlots[i]->ChangeSlot(Inventory->Items[i]);
 
 		break;

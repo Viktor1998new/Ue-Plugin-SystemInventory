@@ -4,6 +4,7 @@
 #include "UObject/Script.h"
 #include "UObject/ObjectMacros.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Inventory/Classes/Inventory/InventoryComponent.h"
 #include "InventoryLibrary.generated.h"
 
 UCLASS()
@@ -21,4 +22,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "InventoryLibrary")
         static TMap<FString, FString> DataItemSetValue(TMap<FString, FString> MapDataItem, FString Key, FString NewValue);
+
+    UFUNCTION(BlueprintPure, Category = "InventoryLibrary")
+        static FIntPoint GetSlotSize(FInventorySlot Slot);
 };
