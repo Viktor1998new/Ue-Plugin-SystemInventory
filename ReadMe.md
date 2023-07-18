@@ -155,7 +155,7 @@ The method GetSlotSize takes an FInventorySlot object representing a slot in the
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/20.jpg)
 
-Setting Plugin
+* Setting Plugin
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/21.jpg)
  
