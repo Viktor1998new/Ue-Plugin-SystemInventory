@@ -1,3 +1,5 @@
+//Copyright(c) 2022, Viktor.F.P
+
 #include "InventoryUMG/InventoryList.h"
 #include "InventoryUMG/InventoryPanelSlot.h"
 #include "GameFramework/PlayerState.h"
