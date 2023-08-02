@@ -63,6 +63,27 @@ void UInventoryPanel::OnSlotRemoved(UPanelSlot* inSlot)
 	MyPanel->RemoveSlot(Widget.ToSharedRef());
 }
 
+UInventoryPanelSlot* UInventoryPanel::AddChildToInventoryPanelItem(UWidget* Content, int32 Index)
+{
+	UInventoryPanelSlot* PanelSlot = Cast<UInventoryPanelSlot>(Super::AddChild(Content));
+
+	if (PanelSlot != nullptr)
+	{
+		PanelSlot->SetIndexItem(Index);
+		ItemSlots.Add(PanelSlot);
+	}
+
+	return PanelSlot;
+
+}
+
+UInventoryPanelSlot* UInventoryPanel::AddChildToInventoryPanel(UWidget* Content)
+{
+	
+	return Cast<UInventoryPanelSlot>(Super::AddChild(Content));
+
+}
+
 void UInventoryPanel::ReleaseSlateResources(bool bReleaseChildren)
 {
 	if (Inventory)

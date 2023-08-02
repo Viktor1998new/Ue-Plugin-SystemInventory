@@ -41,6 +41,12 @@ public:
 		return Inventory;
 	};
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "AddChildToInventoryPanel (Item)"), Category = "Widget")
+		UInventoryPanelSlot* AddChildToInventoryPanelItem(UWidget* Content, int32 Index);
+	
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "AddChildToInventoryPanel"), Category = "Widget")
+		UInventoryPanelSlot* AddChildToInventoryPanel(UWidget* Content);
+
 	void ReleaseSlateResources(bool bReleaseChildren) override;
 
 protected:
