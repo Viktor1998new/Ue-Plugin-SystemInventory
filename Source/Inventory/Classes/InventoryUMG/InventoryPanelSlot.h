@@ -7,7 +7,7 @@
 #include "Layout/Margin.h"
 #include "Components/PanelSlot.h"
 #include "Inventory/InventoryComponent.h"
-#include "InventoryGridSlot.generated.h"
+#include "InventoryPanelSlot.generated.h"
 
 USTRUCT(BlueprintType)
 struct FSlotTransformData
@@ -27,28 +27,26 @@ public:
 
 };
 
-class UInventoryGrid;
+class UInventoryPanel;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnChangedSlot, int32, Index, FInventorySlot, Slot);
 
 UCLASS()
-class INVENTORY_API UInventoryGridSlot : public UPanelSlot
+class INVENTORY_API UInventoryPanelSlot : public UPanelSlot
 {
 	GENERATED_UCLASS_BODY()
 
-	UInventoryGrid* ParentPanel;
+		UInventoryPanel* ParentPanel;
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = "InventoryPanel|Slot")
 		FSlotTransformData Transform;
 
-	UPROPERTY(BlueprintReadOnly, Category = "InventoryGrid|Slot")
+	UPROPERTY(BlueprintReadOnly, Category = "InventoryPanel|Slot")
 		int32 IndexItem;
 
-	UPROPERTY(BlueprintReadOnly, Category = "InventoryGrid|Slot")
-		FIntPoint SlotPosition;
-
+	UPROPERTY(BlueprintReadOnly, Category = "InventoryPanel|Slot")
 		int32 ZOrder = 0;
 
 	UPROPERTY(BlueprintAssignable)
@@ -56,29 +54,24 @@ public:
 
     void BuildSlot(TSharedRef<SConstraintCanvas> GridPanel);
 
-	void SetSize(FIntPoint NewSize);
+	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
+		void SetZOrder(int32 InZOrder);
 
-	void SetPosition(FIntPoint NewPosition);
+	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
+		void SetAnchors(FAnchors Anchors);
 
-	void SetTransform(FIntPoint NewPosition, FIntPoint NewSize);
+	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
+		void SetIndexItem(int32 NewIndex);
 
-	void SetZOrder(int32 InZOrder);
+	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
+		void ChangeSlot(FInventorySlot NewData);
 
-	void SetIndexItem(int32 NewIndex);
+	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
+		void SetMargin(FMargin NewMargin);
 
 	virtual void SynchronizeProperties() override;
 
-	void ChangeSlot(FInventorySlot NewData);
-
 private:
-
-	enum TypeChangeTranstrorm {
-		Position,
-		Size
-	};
-
-	void ChangeTranstrorm(FIntPoint Value, TypeChangeTranstrorm Change);
-	void ChangeTranstrorm(FIntPoint Position, FIntPoint Size);
 
 	SConstraintCanvas::FSlot* Slot;
 

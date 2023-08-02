@@ -4,75 +4,46 @@
 
 #include "CoreMinimal.h"
 #include "UObject/ObjectMacros.h"
-#include "Components/PanelWidget.h"
+#include "InventoryUMG/InventoryPanel.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
 #include "Inventory/InventoryComponent.h"
 #include "InventoryGrid.generated.h"
 
-class UInventoryGridSlot;
-
 UCLASS()
-class INVENTORY_API UInventoryGrid : public UPanelWidget
+class INVENTORY_API UInventoryGrid : public UInventoryPanel
 {
 	GENERATED_UCLASS_BODY()
 
-	UPROPERTY(Instanced)
-		TArray<UInventoryGridSlot*> ItemSlots;
 
-	UPROPERTY()
-		UInventoryComponent* Inventory;
+	enum TypeChangeTranstrorm {
+		E_Position,
+		E_Size
+	};
 
 public:
+
 	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> ItemSlot;
 	
-	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
 		TSubclassOf<UUserWidget> NoneSlot;
 
 	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
-		float SizeSlot = 32;
+		float SizeSlot = 32.0f;
 
-#if WITH_EDITOR
-	virtual const FText GetPaletteCategory() override;
-#endif
+	virtual void SetInventory(UInventoryComponent* NewInventory) override;
 
-	UFUNCTION(BlueprintCallable, Category = "InventoryGrid")
-	void SetInventory(UInventoryComponent* NewInventory);
-
-	UFUNCTION(BlueprintPure, Category = "Slot")
-		static UInventoryGridSlot* SlotAsInventorySlot(UWidget* Widget);
-
-	UFUNCTION(BlueprintPure, Category = "InventoryGrid")
-		UInventoryComponent* GetInventory() const {
-			return Inventory;
-	};
-
-	void ReleaseSlateResources(bool bReleaseChildren) override;
+	void SetSlotTranstrorm(UInventoryPanelSlot* ChangeSlot, FIntPoint Value, TypeChangeTranstrorm Change);
 
 protected:
 	
 	void AddNoneSlot(FIntPoint Position);
 
 	void AddSlot(int32 IndexItem);
-
-	void RemoveSlot(int32 IndexItem);
 	
-	UFUNCTION()
-		void Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
-
-	virtual void RemoveFromParent() override;
-
-	// UPanelWidget
-	virtual UClass* GetSlotClass() const override;
-	virtual void OnSlotAdded(UPanelSlot* inSlot) override;
-	virtual void OnSlotRemoved(UPanelSlot* inSlot) override;
+	virtual void OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type) override;
 
 protected:
-
-	TSharedPtr<SConstraintCanvas> MyPanel;
-
-	// UWidget interface
-	virtual TSharedRef<SWidget> RebuildWidget() override;
 
 	UFUNCTION()
 		void ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type);

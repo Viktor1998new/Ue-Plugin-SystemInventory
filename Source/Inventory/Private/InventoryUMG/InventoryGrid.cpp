@@ -1,7 +1,7 @@
 //Copyright(c) 2022, Viktor.F.P
 
 #include "InventoryUMG/InventoryGrid.h"
-#include "InventoryUMG/InventoryGridSlot.h"
+#include "InventoryUMG/InventoryPanelSlot.h"
 #include "InventorySettings.h"
 #include "GameFramework/PlayerState.h"
 #include "TimerManager.h"
@@ -14,33 +14,9 @@ UInventoryGrid::UInventoryGrid(const FObjectInitializer& ObjectInitializer)
 {
 }
 
-void UInventoryGrid::RemoveFromParent() {
-
-	if (Inventory)
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
-	
-	Super::RemoveFromParent();
-}
-
-UInventoryGridSlot* UInventoryGrid::SlotAsInventorySlot(UWidget* Widget) {
-	
-	if (Widget)	return Cast<UInventoryGridSlot>(Widget->Slot);
-	
-	return nullptr;
-}
-
 void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 {
-	if (Inventory) {
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
-		ClearChildren();
-	}
-
-	if (!NewInventory) return;
-
-	Inventory = NewInventory;
-
-	Inventory->NewDataSlot.AddDynamic(this, &UInventoryGrid::Event_NewDataSlot);
+	Super::SetInventory(NewInventory);
 
 	if (NoneSlot && Inventory->MaxSlot != FIntPoint::ZeroValue) {
 		if (EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags, EInventoryFlag::OnlyX)) {
@@ -62,39 +38,53 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 	}
 }
 
-void UInventoryGrid::ReleaseSlateResources(bool bReleaseChildren)
-{
-	if (Inventory)
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryGrid::Event_NewDataSlot);
-
-	Super::ReleaseSlateResources(bReleaseChildren);
-
-	MyPanel.Reset();
-}
-
 void UInventoryGrid::AddNoneSlot(FIntPoint Position)
 {
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this, NoneSlot);
-	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
-	NewSlot->SetTransform(Position, FIntPoint(1, 1));
+	UInventoryPanelSlot* NewSlot = Cast<UInventoryPanelSlot>(Super::AddChild(WidgetSlot));
+	SetSlotTranstrorm(NewSlot, Position, E_Position);
+	SetSlotTranstrorm(NewSlot, FIntPoint(1, 1) ,E_Size);
 }
 
 void UInventoryGrid::AddSlot(int32 IndexItem)
 {
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
-	UInventoryGridSlot* NewSlot = Cast<UInventoryGridSlot>(Super::AddChild(WidgetSlot));
-	NewSlot->ParentPanel = this;
+	UInventoryPanelSlot* NewSlot = Cast<UInventoryPanelSlot>(Super::AddChild(WidgetSlot));
+	FInventorySlot L_ItemSlot = Inventory->Items[IndexItem];
+	SetSlotTranstrorm(NewSlot, L_ItemSlot.PositionSlot, E_Position);
+	SetSlotTranstrorm(NewSlot, L_ItemSlot.GetSize(), E_Size);
 	NewSlot->SetIndexItem(IndexItem);
 	NewSlot->SetZOrder(1);
 	ItemSlots.Add(NewSlot);
 }
 
-void UInventoryGrid::RemoveSlot(int32 IndexItem)
-{
-	RemoveChildAt(Slots.Find(ItemSlots[IndexItem]));
+void UInventoryGrid::SetSlotTranstrorm(UInventoryPanelSlot* ChangeSlot ,FIntPoint Value, TypeChangeTranstrorm Change) {
+
+	if (!ChangeSlot) return;
+
+	FMargin Offsets = ChangeSlot->Transform.Offsets;
+
+	switch (Change) {
+
+	case E_Position:
+
+		Offsets.Left = Value.X * SizeSlot;
+		Offsets.Top = Value.Y * SizeSlot;
+		break;
+
+
+	case E_Size:
+
+		Offsets.Right = Value.X * SizeSlot;
+		Offsets.Bottom = Value.Y * SizeSlot;
+		break;
+	}
+
+
+	ChangeSlot->SetMargin(Offsets);
 }
 
-void UInventoryGrid::Event_NewDataSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
+void UInventoryGrid::OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
 {	
 	if(GetOwningPlayer()){
 		if (Inventory->GetIsReplicated()) {
@@ -130,69 +120,26 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		if (Inventory->Items.Num() == 0)
 			return;
 
-		for (int32 i = Index; i < ItemSlots.Num(); i++)
-			ItemSlots[i]->ChangeSlot(Inventory->Items[i]);
+		for (int32 i = Index; i < ItemSlots.Num(); i++) {
+			FInventorySlot L_Slot = Inventory->Items[i];
+			ItemSlots[i]->ChangeSlot(L_Slot);
+			SetSlotTranstrorm(ItemSlots[Index], L_Slot.PositionSlot, E_Position);
+			SetSlotTranstrorm(ItemSlots[Index], L_Slot.GetSize(), E_Size);
 
+		}
 		break;
 
 	case ChangeSlot:
 		ItemSlots[Index]->ChangeSlot(NewData);
+		SetSlotTranstrorm(ItemSlots[Index], NewData.PositionSlot, E_Position);
+		SetSlotTranstrorm(ItemSlots[Index], NewData.GetSize(), E_Size);
 		break;
 
 	case SetPosition:
-		ItemSlots[Index]->SetPosition(NewData.PositionSlot);
+		SetSlotTranstrorm(ItemSlots[Index], NewData.PositionSlot, E_Position);
 		break;
 	}
 }
 
-UClass* UInventoryGrid::GetSlotClass() const
-{
-	return UInventoryGridSlot::StaticClass();
-}
-
-void UInventoryGrid::OnSlotAdded(UPanelSlot* inSlot)
-{
-	if (!MyPanel.IsValid()) return;
-
-	CastChecked<UInventoryGridSlot>(inSlot)->Parent = this;
-	CastChecked<UInventoryGridSlot>(inSlot)->BuildSlot(MyPanel.ToSharedRef());
-}
-
-void UInventoryGrid::OnSlotRemoved(UPanelSlot* inSlot)
-{
-	if (!MyPanel.IsValid()) return;
-
-	TSharedPtr<SWidget> Widget = inSlot->Content->GetCachedWidget();
-
-	if (Widget.IsValid()) ItemSlots.Remove(Cast<UInventoryGridSlot>(inSlot));
-
-	MyPanel->RemoveSlot(Widget.ToSharedRef());
-}
-
-TSharedRef<SWidget> UInventoryGrid::RebuildWidget()
-{
-	MyPanel = SNew(SConstraintCanvas);
-
-	if(Slots.Num() != 0 && Inventory)
-		for (UPanelSlot* PanelSlot : Slots)
-		{
-			if (UInventoryGridSlot* TypedSlot = Cast<UInventoryGridSlot>(PanelSlot))
-			{
-				TypedSlot->Parent = this;
-				TypedSlot->BuildSlot(MyPanel.ToSharedRef());
-			}
-		}
-
-	return MyPanel.ToSharedRef();
-}
-
-#if WITH_EDITOR
-
-const FText UInventoryGrid::GetPaletteCategory()
-{
-	return LOCTEXT("Panel", "Panel");
-}
-
-#endif
 
 #undef LOCTEXT_NAMESPACE
