@@ -20,7 +20,4 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnChangeSlot"), Category = "InventoryPanel")
 		void ReceiveOnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
-	UFUNCTION(BlueprintCallable, Category = "InventoryPanel|Slot")
-		void SetSlotMargin(UInventoryPanelSlot* ChangeSlot, FMargin NewMargin);
-
 };

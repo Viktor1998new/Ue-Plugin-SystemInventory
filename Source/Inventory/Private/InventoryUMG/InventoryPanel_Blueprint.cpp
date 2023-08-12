@@ -21,8 +21,3 @@ void UInventoryPanel_Blueprint::OnChangeSlot(int32 Index, FInventorySlot NewData
 {
 	ReceiveOnChangeSlot(Index, NewData, Type);
 }
-
-void UInventoryPanel_Blueprint::SetSlotMargin(UInventoryPanelSlot* ChangeSlot, FMargin NewMargin)
-{
-	ChangeSlot->SetMargin(NewMargin);
-}

@@ -13,21 +13,18 @@ class INVENTORY_API UInventoryList : public UInventoryPanel
 
 public:
 
-	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, NoClear, Category = "InventoryList")
 		TSubclassOf<UUserWidget> ItemSlot;
 
-	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, Category = "InventoryList")
 		TSubclassOf<UUserWidget> NoneSlot;
 
-	UPROPERTY(EditAnywhere, Category = "InventoryGrid")
+	UPROPERTY(EditAnywhere, Category = "InventoryList")
 		float SizeSlot = 32.0f;
-
 
 	virtual void SetInventory(UInventoryComponent* NewInventory) override;
 
 protected:
-
-	void AddNoneSlot(float Position);
 
 	void AddSlot(int32 IndexItem);
 

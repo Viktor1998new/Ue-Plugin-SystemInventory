@@ -20,8 +20,10 @@ public class InventoryEditor : ModuleRules
 				"Slate",
 				"UMG",
 				"SlateCore",
-				"MainFrame"
-			}
+				"MainFrame",
+                "UMGEditor",
+                "UnrealEd"
+            }
 		);
 
 		PrivateIncludePaths.AddRange(

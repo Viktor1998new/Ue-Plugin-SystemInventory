@@ -18,7 +18,7 @@ struct INVENTORY_API FItemData
 		UTexture2D* ImageItem;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
-		FIntPoint SizeSlot;
+		FIntPoint SizeSlot = FIntPoint(1);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		float MassItem;

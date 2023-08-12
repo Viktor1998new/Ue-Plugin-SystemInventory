@@ -1,5 +1,6 @@
 //Copyright(c) 2022, Viktor.F.P
 #include "InventoryLibrary.h"
+#include "InventorySettings.h"
 
 FString UInventoryLibrary::DataItem(TMap<FString, FString> MapDataItem){
 
@@ -56,4 +57,9 @@ TMap<FString, FString> UInventoryLibrary::DataItemSetValue(TMap<FString, FString
 FIntPoint UInventoryLibrary::GetSlotSize(FInventorySlot Slot)
 {
 	return Slot.GetSize();
+}
+
+UInventorySettings* UInventoryLibrary::GetInventorySetting()
+{
+	return UInventorySettings::Get();
 }

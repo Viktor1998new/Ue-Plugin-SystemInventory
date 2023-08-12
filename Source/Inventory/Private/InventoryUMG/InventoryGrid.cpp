@@ -18,8 +18,11 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 {
 	Super::SetInventory(NewInventory);
 
+	if (!IsValid(NewInventory))
+		return;
+
 	if (NoneSlot && Inventory->MaxSlot != FIntPoint::ZeroValue) {
-		if (EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags, EInventoryFlag::OnlyX)) {
+		if (EnumHasAnyFlags((EInventoryFlag)UInventorySettings::Get()->InventoryFlags, EInventoryFlag::OnlyX)) {
 			for (int32 X = 0; X < Inventory->MaxSlot.X; X++)
 				AddNoneSlot(FIntPoint(X, 0));
 		}
@@ -109,11 +112,11 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 
 	switch (Type)
 	{
-	case Add:
+	case ETypeSetItem::Add:
 		AddSlot(Index);
 		break;
 
-	case Remove:
+	case ETypeSetItem::Remove:
 
 		RemoveChild(ItemSlots.Last()->Content);
 
@@ -129,13 +132,13 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		}
 		break;
 
-	case ChangeSlot:
+	case ETypeSetItem::ChangeSlot:
 		ItemSlots[Index]->ChangeSlot(NewData);
 		SetSlotTranstrorm(ItemSlots[Index], NewData.PositionSlot, E_Position);
 		SetSlotTranstrorm(ItemSlots[Index], NewData.GetSize(), E_Size);
 		break;
 
-	case SetPosition:
+	case ETypeSetItem::SetPosition:
 		SetSlotTranstrorm(ItemSlots[Index], NewData.PositionSlot, E_Position);
 		break;
 	}

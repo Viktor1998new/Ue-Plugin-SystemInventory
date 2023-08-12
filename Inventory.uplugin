@@ -10,7 +10,6 @@
 	"WhitelistPlatforms": [ "Win64", "Win32"],
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
 	"EnabledByDefault": true,
-	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"Installed": false,
 	"Modules": [

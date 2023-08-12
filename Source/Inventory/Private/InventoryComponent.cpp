@@ -1,13 +1,12 @@
 //Copyright(c) 2022, Viktor.F.P
 
 #include "Inventory/InventoryComponent.h"
-#include "Inventory.h"
 #include "InventorySettings.h"
 #include "Net/UnrealNetwork.h"
 
 bool HasInventoryFlag(EInventoryFlag Contains)
 {
-	return EnumHasAnyFlags((EInventoryFlag)FInventoryModule::Get().GetSettings()->InventoryFlags, Contains);
+	return EnumHasAnyFlags<EInventoryFlag>((EInventoryFlag)UInventorySettings::Get()->InventoryFlags, Contains);
 }
 
 void UInventoryComponent::ChangeSlot(int32 Index, FInventorySlot Slot, ETypeSetItem Type) {
@@ -62,12 +61,6 @@ bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
 
 	return false;
 }
-
-UInventorySettings* UInventoryComponent::GetInventorySetting()
-{
-	return FInventoryModule::Get().GetSettings();
-}
-
 
 UInventoryComponent::UInventoryComponent()
 {
@@ -567,7 +560,7 @@ void UInventoryComponent::RecalculationMass() {
 
 	CurrentMassa = 0;
 
-	for (auto Element : Items) {
+	for (auto& Element : Items) {
 		if(Element.ItemAsset)
 			CurrentMassa += Element.ItemAsset->SlotItemData.MassItem * Element.Count;
 	}

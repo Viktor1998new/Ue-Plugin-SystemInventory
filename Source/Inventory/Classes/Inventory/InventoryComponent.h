@@ -77,8 +77,8 @@ struct INVENTORY_API FInventory
 	FInventory(class UInventoryComponent* InventoryComponent);
 };
 
-UENUM()
-enum ETypeSetItem
+UENUM(BlueprintType)
+enum class ETypeSetItem : uint8
 {
 	Add,
 	Remove,
@@ -96,9 +96,6 @@ class INVENTORY_API UInventoryComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-
-	UFUNCTION(BlueprintPure, Category = "Inventory")
-		static UInventorySettings* GetInventorySetting();
 
 	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Replicated, Category = "Inventory")
 		TArray<FInventorySlot> Items;

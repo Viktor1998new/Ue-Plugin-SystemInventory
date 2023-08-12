@@ -1,5 +1,6 @@
 //Copyright(c) 2022, Viktor.F.P
 #pragma once
+#include "Inventory.h"
 #include "InventorySettings.generated.h"
 
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
@@ -32,4 +33,7 @@ public:
     UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings", meta = (Bitmask, BitmaskEnum = "EInventoryFlag"))
         int32 InventoryFlags;
 
+    static UInventorySettings* Get() {
+        return FInventoryModule::Get().GetSettings();
+    }
 };
