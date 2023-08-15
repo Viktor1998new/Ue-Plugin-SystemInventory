@@ -41,16 +41,19 @@ public:
 
 	void SetInventory(UInventoryComponent* NewInventory , uint8 NewPanel);
 
+	virtual void RemoveFromParent() override;
+
 protected:
 
-	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	class UScaleBox* InventoryGridUWidget;
+	class UScaleBox* InventoryListUWidget;
 
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	TSharedPtr<SVerticalBox> MyPanel;
 
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
-
 };
 
 UCLASS()
@@ -82,6 +85,7 @@ class INVENTORYEDITOR_API UEditorWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	bool EnableTick = true;
 
 	TSharedPtr<STextBlock> Text;
 	TSharedPtr<SVerticalBox> ListInventory;
@@ -106,6 +110,8 @@ public:
 
 	TArray<UObject*> GetSelectedActors();
 
+	void ClearInventory();
+
 protected:
 
 	TSharedPtr<SConstraintCanvas> MyPanel;
@@ -113,4 +119,5 @@ protected:
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	
+	virtual void PostRename(UObject* OldOuter, const FName OldName) override;
 };

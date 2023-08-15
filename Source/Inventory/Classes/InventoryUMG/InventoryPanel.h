@@ -49,12 +49,12 @@ public:
 
 	void ReleaseSlateResources(bool bReleaseChildren) override;
 
+	virtual void RemoveFromParent() override;
+
 protected:
 
 	UFUNCTION()
 		virtual	void OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type) {};
-
-	virtual void RemoveFromParent() override;
 
 	// UPanelWidget
 	virtual UClass* GetSlotClass() const override;

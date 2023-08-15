@@ -43,10 +43,12 @@ bool USlotNoneWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 		if (Operation->Inventory == L_Inventory) {
 			Operation->Inventory->DropItem(Operation->Index,-1,1,L_CurrentPositin,true,true);
+			Cast<UWidget>(Operation->Payload)->SetVisibility(ESlateVisibility::Visible);
 			return true;
 		}
 		
 		Operation->Inventory->SendItem(Operation->Index, L_Inventory,1,false,L_CurrentPositin);
+		Cast<UWidget>(Operation->Payload)->SetVisibility(ESlateVisibility::Visible);
 		return true;
 	}
 
@@ -165,8 +167,7 @@ void USlotItemWidget::OnChangedSlot(int32 NewIndex, FInventorySlot NewSlot)
 	else
 		NumberText->SetText(FText::FromString(""));
 	
-	if(GetVisibility() != ESlateVisibility::Visible)
-		SetVisibility(ESlateVisibility::Visible);
+	SetVisibility(ESlateVisibility::Visible);
 }
 
 bool USlotItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -178,6 +179,7 @@ bool USlotItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 			if (auto L_Inventory = GetInventory()) {
 				if (L_Inventory == Drag->Inventory) {
 					Drag->Inventory->DropItem(Drag->Index, Item_Index, 1, FIntPoint(), true, true);
+
 					return true;
 				}
 				else {
@@ -395,8 +397,6 @@ void UMenuContextItemWidget::SetItem(TSharedPtr<class SMenuAnchor> MewMenu,UInve
 
 void UMenuContextItemWidget::OnPropertyValueChanged(FName Name)
 {
-	UE_LOG(LogTemp, Warning, TEXT("OnPropertyValueChanged"));
-
 	if (!Inventory)
 		return;
 

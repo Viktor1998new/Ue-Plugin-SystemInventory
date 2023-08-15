@@ -14,7 +14,7 @@
 #include "Editor.h"
 #include "InventoryEditorStyle.h"
 #include "Framework/Notifications/NotificationManager.h"
-
+#include "D:\Program Files\Epic Games\UE_4.27\Engine\Source\Runtime\UMG\Public\Blueprint\WidgetTree.h"
 #define LOCTEXT_NAMESPACE "InventoryEditor"
 
 class FInventoryEditorModule
@@ -26,19 +26,21 @@ public:
 
 	TSharedPtr<FTabManager::FLayout> TabManagerLayout;
 
+	UEditorWidget* CreatedUMGWidget;
+
+	UBrowserAssetsWidget* BrowserAssetsWidget;
+
 	virtual void StartupModule() override
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Editor Inventory"));
-
-		FLevelEditorModule& LevelEditor = FModuleManager::GetModuleChecked<FLevelEditorModule>(FName("LevelEditor"));
+		FLevelEditorModule& LevelEditor = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+		LevelEditor.OnMapChanged().AddRaw(this, &FInventoryEditorModule::ChangeTabWorld);
 
 		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
 		MenuExtender->AddMenuExtension(
 			"LevelEditor",
 			EExtensionHook::After,
 			NULL,
-			FMenuExtensionDelegate::CreateRaw(this, &FInventoryEditorModule::AddMenuEntry)
-		);
+			FMenuExtensionDelegate::CreateRaw(this, &FInventoryEditorModule::AddMenuEntry));
 		
 		LevelEditor.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
 
@@ -63,46 +65,61 @@ public:
 	void RegisterEditor() {
 	
 		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("InventoryEditorTabName", FOnSpawnTab::CreateRaw(this, &FInventoryEditorModule::OnSpawnPluginTab))
-			.SetDisplayName(LOCTEXT("InventoryEditor", "InventoryEditor"))
-			.SetMenuType(ETabSpawnerMenuType::Hidden);
+		.SetDisplayName(LOCTEXT("InventoryEditor", "InventoryEditor"))
+		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
-		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("Inventory", FOnSpawnTab::CreateLambda([](const FSpawnTabArgs& SpawnTabArgs)
-		{
-			UEditorWidget* CreatedUMGWidget = nullptr;
-
-			UWorld* World = GEditor->GetEditorWorldContext().World();
-			if (World)
-			{
-				CreatedUMGWidget = CreateWidget<UEditorWidget>(World, UEditorWidget::StaticClass());
-			}
-
-			return
-				SNew(SDockTab)
-				.TabRole(ETabRole::NomadTab)
-				[
-					SNew(SVerticalBox)
-					+ SVerticalBox::Slot()
-					.HAlign(HAlign_Fill)
-					[
-						CreatedUMGWidget->TakeWidget()
-					]
-				];
-		}))
+		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("Inventory", FOnSpawnTab::CreateRaw(this, &FInventoryEditorModule::OnRegisterInventoryTab))
 		.SetDisplayName(LOCTEXT("Inventory", "Inventory"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
-		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("BrowserAssets", FOnSpawnTab::CreateLambda([](const FSpawnTabArgs& SpawnTabArgs)
+		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("BrowserAssets", FOnSpawnTab::CreateRaw(this, &FInventoryEditorModule::OnRegisterBrowserAssetsTab))
+		.SetDisplayName(LOCTEXT("BrowserAssets", "BrowserAssets"))
+		.SetMenuType(ETabSpawnerMenuType::Hidden);
+
+		FGlobalTabmanager::Get()->TryInvokeTab(FTabId("InventoryEditorTabName"));
+	}
+
+	TSharedRef<SDockTab> OnRegisterBrowserAssetsTab(const FSpawnTabArgs& SpawnTabArgs) {
+	
+		UWorld* World = GEditor->GetEditorWorldContext().World();
+		if (World)
 		{
-			UBrowserAssetsWidget* CreatedUMGWidget = nullptr;
-
-			UWorld* World = GEditor->GetEditorWorldContext().World();
-			if (World)
+			if (BrowserAssetsWidget)
 			{
-				CreatedUMGWidget = CreateWidget<UBrowserAssetsWidget>(World, UBrowserAssetsWidget::StaticClass());
+				BrowserAssetsWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+				BrowserAssetsWidget = nullptr;
 			}
+			BrowserAssetsWidget = CreateWidget<UBrowserAssetsWidget>(World, UBrowserAssetsWidget::StaticClass());
+		}
 
-			return
-				SNew(SDockTab)
+		return SNew(SDockTab)
+			.TabRole(ETabRole::NomadTab)
+			[
+				SNew(SVerticalBox)
+				+ SVerticalBox::Slot()
+			.HAlign(HAlign_Fill)
+			[
+				BrowserAssetsWidget->TakeWidget()
+			]
+			];
+	}
+
+	TSharedRef<SDockTab> OnRegisterInventoryTab(const FSpawnTabArgs& SpawnTabArgs) {
+		
+		UWorld* World = GEditor->GetEditorWorldContext().World();
+		if (World)
+		{
+			if (CreatedUMGWidget)
+			{
+				CreatedUMGWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+				CreatedUMGWidget = nullptr;
+			}
+			CreatedUMGWidget = CreateWidget<UEditorWidget>(World, UEditorWidget::StaticClass());
+		}
+
+		if (CreatedUMGWidget)
+		{
+			return SNew(SDockTab)
 				.TabRole(ETabRole::NomadTab)
 				[
 					SNew(SVerticalBox)
@@ -112,20 +129,36 @@ public:
 					CreatedUMGWidget->TakeWidget()
 				]
 				];
-		}))
-		.SetDisplayName(LOCTEXT("BrowserAssets", "BrowserAssets"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+		}
+		else
+		{
+			return  SNew(SDockTab)
+				.TabRole(ETabRole::NomadTab);
+		}
+	}
 
-		FGlobalTabmanager::Get()->TryInvokeTab(FTabId("InventoryEditorTabName"));
-	
+	void UpdateRespawnListIfNeeded(TSharedRef<SDockTab> TabBeingClosed)
+	{
+		if (CreatedUMGWidget)
+		{
+			CreatedUMGWidget->Rename(nullptr, GetTransientPackage());
+			CreatedUMGWidget = nullptr;
+		}
+
+		if (BrowserAssetsWidget)
+		{
+			BrowserAssetsWidget->Rename(nullptr, GetTransientPackage());
+			BrowserAssetsWidget = nullptr;
+		}
 	}
 
 	TSharedRef<SDockTab> OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 	{
-		
 		const TSharedRef<SDockTab> NomadTab = SNew(SDockTab)
 			.TabRole(ETabRole::NomadTab);
 		
+		NomadTab->SetOnTabClosed(SDockTab::FOnTabClosedCallback::CreateRaw(this, &FInventoryEditorModule::UpdateRespawnListIfNeeded));
+
 		if (!TabManager.IsValid())
 		{
 			TabManager = FGlobalTabmanager::Get()->NewTabManager(NomadTab);
@@ -155,15 +188,32 @@ public:
 
 		TSharedRef<SWidget> TabContents = TabManager->RestoreFrom(TabManagerLayout.ToSharedRef(), TSharedPtr<SWindow>(),false, EOutputCanBeNullptr::IfNoTabValid).ToSharedRef();
 
-		NomadTab->SetContent(
-			TabContents
-		);
+		NomadTab->SetContent(TabContents);
 
 		return NomadTab;
 	}
+
+
+	void ChangeTabWorld(UWorld* World, EMapChangeType MapChangeType)
+	{
+		if (MapChangeType == EMapChangeType::TearDownWorld) {
+
+			if (CreatedUMGWidget)
+			{
+				CreatedUMGWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+				CreatedUMGWidget = nullptr;
+			}
+
+			if (BrowserAssetsWidget)
+			{
+				BrowserAssetsWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+				BrowserAssetsWidget = nullptr;
+			}
+		}
+	}
+
 	virtual void ShutdownModule() override
 	{
-
 		FGlobalTabmanager::Get()->UnregisterNomadTabSpawner("InventoryEditorTabName");
 	}
 

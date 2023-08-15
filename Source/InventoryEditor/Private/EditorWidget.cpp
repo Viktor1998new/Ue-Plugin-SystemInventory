@@ -126,8 +126,32 @@ TSharedRef<SWidget> UEditorWidget::RebuildWidget()
 	return MyPanel.ToSharedRef();
 }
 
+void UEditorWidget::PostRename(UObject* OldOuter, const FName OldName)
+{
+    EnableTick = false;
+
+    if (Inventorys.Num() != INDEX_NONE) {
+
+        for (auto& Ele : CurrentSelectActors) {
+            
+            if (AActor * Select = Cast<AActor>(Ele)) {
+                UInventoryWidget* InventoryWidget = Inventorys[Select];
+                InventoryWidget->ConditionalBeginDestroy();
+                ListInventory->RemoveSlot(InventoryWidget->TakeWidget());
+                InventoryWidget->RemoveFromParent();
+                Inventorys.Remove(Select);
+            }
+        }
+
+        CurrentSelectActors.Empty();
+    }
+    EnableTick = true;
+}
+
 void UEditorWidget::AddSelect(TArray<UObject*> NewSelectActors)
 {
+    EnableTick = false;
+
     for (auto& NewSelect : NewSelectActors) {
 
         if (CurrentSelectActors.Find(NewSelect) == INDEX_NONE) {
@@ -153,10 +177,13 @@ void UEditorWidget::AddSelect(TArray<UObject*> NewSelectActors)
     }
 
     CurrentSelectActors = NewSelectActors;
+    EnableTick = true;
 }
 
 void UEditorWidget::RemoveSelect(TArray<UObject*> NewSelectActors)
 {
+    EnableTick = false;
+
     for (auto& Select : CurrentSelectActors) {
 
         if (NewSelectActors.Find(Select) == INDEX_NONE) {
@@ -172,6 +199,7 @@ void UEditorWidget::RemoveSelect(TArray<UObject*> NewSelectActors)
     }
 
     CurrentSelectActors = NewSelectActors;
+    EnableTick = true;
 }
 
 void UEditorWidget::ReleaseSlateResources(bool bReleaseChildren)
@@ -183,6 +211,9 @@ void UEditorWidget::ReleaseSlateResources(bool bReleaseChildren)
 
 void UEditorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
+    if (!EnableTick)
+        return;
+
     TArray<UObject*> L_Select = GetSelectedActors();
 
     if (L_Select.Num() > CurrentSelectActors.Num()) {
@@ -222,8 +253,7 @@ void UEditorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
                 }
             }
         }
-    }
-    else if (L_Select.Num() < CurrentSelectActors.Num()) {
+    }else if (L_Select.Num() < CurrentSelectActors.Num()) {
         RemoveSelect(L_Select);
 
         if (L_Select.Num() == 1) {
@@ -309,15 +339,17 @@ void UInventoryWidget::SwitchPanel(uint8 NewPanel)
 
     if (!IsValid(Inventory))
         return;
-
+   
     switch (Panel)
     {
     case 0:
+     
         InventoryList->SetInventory(nullptr);
         InventoryGrid->SetInventory(Inventory);
         break;
 
     case 1:
+
         InventoryList->SetInventory(Inventory);
         InventoryGrid->SetInventory(nullptr);
         break;
@@ -411,7 +443,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
             TitlePanel.ToSharedRef()
         ];
 
-      UScaleBox * InventoryGridUWidget = NewObject<UScaleBox>(this);
+      InventoryGridUWidget = NewObject<UScaleBox>(this);
        
       InventoryGrid = NewObject<UInventoryGrid>(InventoryGridUWidget);
       InventoryGrid->NoneSlot = USlotNoneWidget::StaticClass();
@@ -421,7 +453,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
       SlotGrid->SetHorizontalAlignment(HAlign_Fill);
       SlotGrid->SetVerticalAlignment(VAlign_Fill);
 
-      UScaleBox* InventoryListUWidget = NewObject<UScaleBox>(this);
+      InventoryListUWidget = NewObject<UScaleBox>(this);
       InventoryList = NewObject<UInventoryList>(InventoryListUWidget);
       InventoryList->SizeSlot = 62.0f;
       InventoryList->ItemSlot = USlotItemListWidget::StaticClass();
@@ -466,6 +498,44 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
     ];
 
     return MyPanel.ToSharedRef();
+}
+
+void UInventoryWidget::RemoveFromParent()
+{   
+    Inventory = nullptr;
+
+    if (IsValid(InventoryGrid)) {
+        if (InventoryGrid->Inventory != nullptr) {
+ 
+            for (int32 ChildIndex = InventoryGrid->GetChildrenCount() - 1; ChildIndex >= 0; ChildIndex--) {
+                InventoryGrid->GetChildAt(ChildIndex)->MarkPendingKill();
+            }
+
+            InventoryGrid->SetInventory(nullptr);
+            InventoryGridUWidget->RemoveChild(InventoryGrid);
+            InventoryGridUWidget->RemoveFromParent();
+        }
+
+        if (Panel == 0)
+            InventoryGrid->RemoveFromParent();
+    }
+
+    if (IsValid(InventoryList)) {
+        if (InventoryList->Inventory != nullptr) {
+
+            for (int32 ChildIndex = InventoryList->GetChildrenCount() - 1; ChildIndex >= 0; ChildIndex--) {
+                InventoryList->GetChildAt(ChildIndex)->MarkPendingKill();
+            }
+
+            InventoryList->SetInventory(nullptr);
+            InventoryListUWidget->RemoveChild(InventoryGrid);
+            InventoryListUWidget->RemoveFromParent();
+        }
+
+        if (Panel == 1)
+            InventoryList->RemoveFromParent();
+    }
+    Super::RemoveFromParent();
 }
 
 FReply UBrowserAssetsWidget::OoClickUpData()
