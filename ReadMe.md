@@ -4,6 +4,15 @@ D:\NameProject\Plugins
 ``` Console
 git clone --branch=Experiment https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
 ```
+
+* Setting Plugin
+
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/23.jpg)
+
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/22.jpg)
+
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/21.jpg)
+
 #### ItemActor class:
 The actor's logic includes two functions: "initData", which returns a read string and uses the "DataItem" function to obtain an associative array Map[Key (String), Value(String)], and "getData" function, which also uses the DataItem function, takes an associative array Map[Key (String), Value(String)] as input and returns data in a JSON-like format as a string.
 
@@ -160,14 +169,3 @@ The method DataItemSetValue takes an associative array (TMap), a key, and a new 
 The method GetSlotSize takes an FInventorySlot object representing a slot in the inventory as input and returns its size as an FIntPoint structure.
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/20.jpg)
-
-* Setting Plugin
-
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/21.jpg)
- 
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/21.jpg)
-
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/22.jpg)
-
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/23.jpg)
-
