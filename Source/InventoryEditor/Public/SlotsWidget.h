@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+//Copyright(c) 2022, Viktor.F.P
 
 #pragma once
 
@@ -63,7 +63,6 @@ protected:
 
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
-	
 };
 
 UCLASS()

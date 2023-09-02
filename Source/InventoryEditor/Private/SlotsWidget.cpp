@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+//Copyright(c) 2022, Viktor.F.P
 
 #include "SlotsWidget.h"
 #include "Inventory.h"
@@ -85,25 +85,25 @@ void USlotItemWidget::NativePreConstruct()
 
 FReply USlotItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-		if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
+	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
 
-			FEventReply Reply;
-			TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
+		FEventReply Reply;
+		TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
 
-			if (SlateWidgetDetectingDrag.IsValid())
-			{
-				Reply.NativeReply = FReply::Handled();
+		if (SlateWidgetDetectingDrag.IsValid())
+		{
+			Reply.NativeReply = FReply::Handled();
 
-				Reply.NativeReply = Reply.NativeReply.DetectDrag(SlateWidgetDetectingDrag.ToSharedRef(), EKeys::LeftMouseButton);
-			}
-			return Reply.NativeReply;
+			Reply.NativeReply = Reply.NativeReply.DetectDrag(SlateWidgetDetectingDrag.ToSharedRef(), EKeys::LeftMouseButton);
 		}
+		return Reply.NativeReply;
+	}
 
-		FVector2D Position = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
+	FVector2D Position = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
 
-		SlotMenu->Offset(FMargin(Position.X, Position.Y));
-		MenuAnchor->SetIsOpen(true, true);
-		ContextMenu->SetItem(MenuAnchor,Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
+	SlotMenu->Offset(FMargin(Position.X, Position.Y));
+	MenuAnchor->SetIsOpen(true, true);
+	ContextMenu->SetItem(MenuAnchor,Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
 		
 
 	return FReply::Handled();

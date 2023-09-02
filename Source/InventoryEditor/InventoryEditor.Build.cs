@@ -22,6 +22,7 @@ public class InventoryEditor : ModuleRules
 				"SlateCore",
 				"MainFrame",
                 "UMGEditor",
+                "AssetTools",
                 "UnrealEd"
             }
 		);

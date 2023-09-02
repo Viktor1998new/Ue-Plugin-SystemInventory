@@ -30,8 +30,8 @@ struct INVENTORY_API FItemData
 		bool NoneData = false;
 };
 
-UCLASS(BlueprintType, Blueprintable)
-class INVENTORY_API UItemAsset : public UPrimaryDataAsset
+UCLASS(BlueprintType, Blueprintable, meta = (ShortTooltip = "Base class for storing item information."))
+class INVENTORY_API UItemAsset : public UObject
 {
 	GENERATED_BODY()
 

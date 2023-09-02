@@ -15,6 +15,7 @@ enum class EInventoryFlag : uint8
     LimitY   = 0x01 << 4,
     OnlyX    = 0x01 << 5
 };
+
 ENUM_CLASS_FLAGS(EInventoryFlag)
 
 UCLASS(config = Engine, defaultconfig)
