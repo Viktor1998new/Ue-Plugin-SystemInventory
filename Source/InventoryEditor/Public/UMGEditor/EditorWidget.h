@@ -15,7 +15,6 @@ class INVENTORYEDITOR_API UEditorWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	bool EnableTick = true;
 
 	TSharedPtr<class STextBlock> Text;
 	TSharedPtr<class SVerticalBox> ListInventory;
@@ -24,6 +23,17 @@ public:
 
 	uint8 Panel;
 
+	FDelegateHandle OnSelectHandle;
+
+	virtual void NativeConstruct() override;
+
+	virtual void NativeDestruct() override;
+
+	UFUNCTION()
+	void OnSelect(UObject* NewSelect);
+
+	void OnNoneSelect();
+
 	TMap<AActor*,UInventoryWidget*> Inventorys;
 
 	void AddSelect(TArray<UObject*> NewSelectActors);
@@ -31,8 +41,6 @@ public:
 	void RemoveSelect(TArray<UObject*> NewSelectActors);
 
 	void ReleaseSlateResources(bool bReleaseChildren) override;
-
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	FReply SwitchList();
 

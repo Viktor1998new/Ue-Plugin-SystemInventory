@@ -109,12 +109,119 @@ TSharedRef<SWidget> UEditorWidget::RebuildWidget()
 
 void UEditorWidget::PostRename(UObject* OldOuter, const FName OldName)
 {
-    EnableTick = false;
-
     CurrentSelectActors.Empty();
     ListInventory->ClearChildren();
     Inventorys.Empty();
-    
+}
+
+void UEditorWidget::NativeConstruct()
+{
+    UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine);
+ 
+    if (!EditorEngine) return;
+  
+    USelection* Selection = EditorEngine->GetSelectedActors();
+   
+    if (!Selection) return;
+
+    OnSelect(nullptr);
+
+    OnSelectHandle = Selection->SelectionChangedEvent.AddUFunction(this, FName("OnSelect"));
+}
+
+void UEditorWidget::NativeDestruct()
+{
+    CurrentSelectActors.Empty();
+    ListInventory->ClearChildren();
+    Inventorys.Empty();
+
+    UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine);
+    if (!EditorEngine) return;
+
+    USelection* Selection = EditorEngine->GetSelectedActors();
+    if (!Selection) return;
+
+    Selection->SelectionChangedEvent.Remove(OnSelectHandle);
+}
+
+void UEditorWidget::OnSelect(UObject* NewSelect)
+{
+    TArray<UObject*> L_Select = GetSelectedActors();
+
+    if (L_Select.Num() == 0 && CurrentSelectActors.Num() == 0)
+        return;
+
+    if (L_Select.Num() > CurrentSelectActors.Num()) {
+        AddSelect(L_Select);
+    }
+    else if (L_Select.Num() == CurrentSelectActors.Num()) {
+        if (L_Select.Num() == 1 && CurrentSelectActors.Num() == 1) {
+            if (L_Select[0] != CurrentSelectActors[0]) {
+
+                if (AActor* SelectActor = Cast<AActor>(CurrentSelectActors[0])) {
+                    if (Inventorys.Find(SelectActor)) {
+                        UInventoryWidget* InventoryWidget = Inventorys[SelectActor];
+                        ListInventory->RemoveSlot(InventoryWidget->TakeWidget());
+                        InventoryWidget->RemoveFromParent();
+                        Inventorys.Remove(SelectActor);
+                        CurrentSelectActors = L_Select;
+                    }
+                }
+
+                if (AActor* SelecActor = Cast<AActor>(L_Select[0])) {
+
+                    if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
+
+                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
+
+                        ListInventory->AddSlot()
+                            .AutoHeight()
+                            .VAlign(VAlign_Top)
+                            .HAlign(HAlign_Left)
+                            .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
+                            .AttachWidget(InventoryWidget->TakeWidget());
+
+                        InventoryWidget->SetInventory(NewInventory, Panel);
+                        Inventorys.Add(SelecActor, InventoryWidget);
+                        CurrentSelectActors = L_Select;
+                    }
+                }
+            }
+        }
+    }
+    else if (L_Select.Num() < CurrentSelectActors.Num()) {
+
+        RemoveSelect(L_Select);
+
+        if (L_Select.Num() == 1) {
+
+            if (CurrentSelectActors.Find(L_Select[0]) == INDEX_NONE) {
+
+                if (AActor* SelecActor = Cast<AActor>(L_Select[0])) {
+
+                    if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
+
+                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
+
+                        ListInventory->AddSlot()
+                            .AutoHeight()
+                            .VAlign(VAlign_Fill)
+                            .HAlign(HAlign_Left)
+                            .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
+                            .AttachWidget(InventoryWidget->TakeWidget());
+
+                        InventoryWidget->SetInventory(NewInventory, Panel);
+                        Inventorys.Add(SelecActor, InventoryWidget);
+                        CurrentSelectActors = L_Select;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void UEditorWidget::OnNoneSelect() {
+    OnSelect(nullptr);
 }
 
 void UEditorWidget::AddSelect(TArray<UObject*> NewSelectActors)
@@ -174,84 +281,6 @@ void UEditorWidget::ReleaseSlateResources(bool bReleaseChildren)
 	Super::ReleaseSlateResources(bReleaseChildren);
 
 	MyPanel.Reset();
-}
-
-void UEditorWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-    if (!EnableTick)
-        return;
-
-    TArray<UObject*> L_Select = GetSelectedActors();
-
-    if (L_Select.Num() == 0 && CurrentSelectActors.Num() == 0)
-        return;
-
-    if (L_Select.Num() > CurrentSelectActors.Num()) {
-        AddSelect(L_Select);
-    }
-    else if (L_Select.Num() == CurrentSelectActors.Num()) {
-        if (L_Select.Num() == 1 && CurrentSelectActors.Num() == 1) {
-            if (L_Select[0] != CurrentSelectActors[0]) {
-
-                if (AActor* SelectActor = Cast<AActor>(CurrentSelectActors[0])) {
-                    if (Inventorys.Find(SelectActor)) {
-                        UInventoryWidget* InventoryWidget = Inventorys[SelectActor];
-                        ListInventory->RemoveSlot(InventoryWidget->TakeWidget());
-                        InventoryWidget->RemoveFromParent();
-                        Inventorys.Remove(SelectActor);
-                        CurrentSelectActors = L_Select;
-                    }
-                }
-
-                if (AActor* SelecActor = Cast<AActor>(L_Select[0])) {
-
-                    if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
-
-                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
-
-                        ListInventory->AddSlot()
-                            .AutoHeight()
-                            .VAlign(VAlign_Top)
-                            .HAlign(HAlign_Left)
-                            .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
-                            .AttachWidget(InventoryWidget->TakeWidget());
-
-                        InventoryWidget->SetInventory(NewInventory, Panel);
-                        Inventorys.Add(SelecActor, InventoryWidget);
-                        CurrentSelectActors = L_Select;
-                    }
-                }
-            }
-        }
-    }else if (L_Select.Num() < CurrentSelectActors.Num()) {
-
-        RemoveSelect(L_Select);
-
-        if (L_Select.Num() == 1) {
-
-            if (CurrentSelectActors.Find(L_Select[0]) == INDEX_NONE) {
-                    
-                if (AActor* SelecActor = Cast<AActor>(L_Select[0])) {
-
-                    if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
-
-                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
-
-                        ListInventory->AddSlot()
-                            .AutoHeight()
-                            .VAlign(VAlign_Fill)
-                            .HAlign(HAlign_Left)
-                            .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
-                            .AttachWidget(InventoryWidget->TakeWidget());
-
-                        InventoryWidget->SetInventory(NewInventory, Panel);
-                        Inventorys.Add(SelecActor, InventoryWidget);
-                        CurrentSelectActors = L_Select;
-                    }
-                }
-            }
-        }
-    }
 }
 
 FReply UEditorWidget::SwitchList()

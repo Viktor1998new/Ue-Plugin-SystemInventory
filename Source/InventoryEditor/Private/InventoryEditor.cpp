@@ -202,6 +202,7 @@ void FInventoryEditorModule::ChangeTabWorld(UWorld* World, EMapChangeType MapCha
 		if (CreatedUMGWidget)
 		{
 			CreatedUMGWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+			CreatedUMGWidget = nullptr;
 		}
 
 		ULevel* OldLevel = World->PersistentLevel;
@@ -211,11 +212,7 @@ void FInventoryEditorModule::ChangeTabWorld(UWorld* World, EMapChangeType MapCha
 		{
 			Actor->Destroy();
 		}
-			
-		if (CreatedUMGWidget) {
-			CreatedUMGWidget->EnableTick = true;
-			CreatedUMGWidget = nullptr;
-		}
+		
 		if (BrowserAssetsWidget)
 		{
 			BrowserAssetsWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
