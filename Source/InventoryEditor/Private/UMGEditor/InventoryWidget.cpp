@@ -72,7 +72,7 @@ void UInventoryWidget::SetInventory(UInventoryComponent* NewInventory, uint8 New
 
     SwitchPanel(NewPanel);
 
-    TextNameActor->SetText(FText::Format(FText::FromString("Actor name: {0}"), FText::FromString(Inventory->GetOwner()->GetName())));
+    TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(Inventory->GetOwner()->GetName())));
 
     if (HasInventoryFlag(EInventoryFlag::Mass)) {
         Recalculation->SetVisibility(EVisibility::Visible);
@@ -112,22 +112,19 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         SNew(SSpacer).Size(FVector2D(5.0f, 0.0f))
     ];
 
-    TitlePanel->AddSlot().AutoWidth()
+    Recalculation = SNew(SHorizontalBox);
+
+    Recalculation->AddSlot()
+        .AutoWidth()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
-            SAssignNew(Recalculation, SHorizontalBox)
-                + SHorizontalBox::Slot()
-                .AutoWidth()
-                .HAlign(HAlign_Fill)
-                .VAlign(VAlign_Center)[
-                    SAssignNew(MassText, STextBlock)
-                        .Font(TextFont)
-                        .Text(FText::FromString(""))
-
-                ]
+            SAssignNew(MassText, STextBlock)
+                .Font(TextFont)
+                .Text(FText::FromString(""))
         ];
 
-    TitlePanel->AddSlot().AutoWidth()
+    Recalculation->AddSlot()
+        .AutoWidth()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SNew(SButton)
@@ -138,6 +135,14 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
                         .Text(FText::FromString("Recalculation Mass"))
                 ]
         ];
+
+
+    TitlePanel->AddSlot().AutoWidth()
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Center)[
+            Recalculation.ToSharedRef()
+        ];
+
 
     TSharedPtr<SBorder> BorderButtons = SNew(SBorder)
         .BorderImage(BrushButtons)

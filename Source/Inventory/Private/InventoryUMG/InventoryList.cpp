@@ -15,14 +15,12 @@ UInventoryList::UInventoryList(const FObjectInitializer& ObjectInitializer)
 void UInventoryList::SetInventory(UInventoryComponent* NewInventory)
 {
 	Super::SetInventory(NewInventory);
-	
-	if (!IsValid(NewInventory))
-		return;
 
-	for (int i = 0; i < Inventory->Items.Num(); i++)
-	{
-		AddSlot(i);
-	}
+	if (!IsValid(NewInventory)) return;
+	
+	if (Inventory->Items.Num() == 0) return;
+
+	for (int i = 0; i < Inventory->Items.Num(); i++) AddSlot(i);
 
 }
 
@@ -76,17 +74,17 @@ void UInventoryList::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		for (int32 i = Index; i < ItemSlots.Num(); i++) {
 			FInventorySlot L_Slot = Inventory->Items[i];
 			ItemSlots[i]->ChangeSlot(L_Slot);
-			SetSlotPosition(ItemSlots[i], Index);
+			SetSlotPosition(ItemSlots[i], SizeSlot * i);
 		}
 		break;
 
 	case ETypeSetItem::ChangeSlot:
 		ItemSlots[Index]->ChangeSlot(NewData);
-		SetSlotPosition(ItemSlots[Index], Index* SizeSlot);
+		SetSlotPosition(ItemSlots[Index], SizeSlot * Index);
 		break;
 
 	case ETypeSetItem::SetPosition:
-		SetSlotPosition(ItemSlots[Index], Index * SizeSlot);
+		SetSlotPosition(ItemSlots[Index], SizeSlot * Index);
 		break;
 	}
 }

@@ -126,10 +126,10 @@ void UInventoryGrid::ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetIt
 		for (int32 i = Index; i < ItemSlots.Num(); i++) {
 			FInventorySlot L_Slot = Inventory->Items[i];
 			ItemSlots[i]->ChangeSlot(L_Slot);
-			SetSlotTranstrorm(ItemSlots[Index], L_Slot.PositionSlot, E_Position);
-			SetSlotTranstrorm(ItemSlots[Index], L_Slot.GetSize(), E_Size);
-
+			SetSlotTranstrorm(ItemSlots[i], L_Slot.PositionSlot, E_Position);
+			SetSlotTranstrorm(ItemSlots[i], L_Slot.GetSize(), E_Size);
 		}
+
 		break;
 
 	case ETypeSetItem::ChangeSlot:

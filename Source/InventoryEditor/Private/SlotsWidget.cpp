@@ -214,7 +214,7 @@ TSharedRef<SWidget> USlotItemWidget::HandleGetMenuContent()
 
 TSharedRef<SWidget> USlotItemWidget::RebuildWidget()
 {
-	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 15);
+	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
 
 	MyPanel = SNew(SConstraintCanvas)
 		+ SConstraintCanvas::Slot()
@@ -233,7 +233,7 @@ TSharedRef<SWidget> USlotItemWidget::RebuildWidget()
 		.AutoSize(true)[
 		SAssignNew(MenuAnchor, SMenuAnchor)
 			.Placement(EMenuPlacement::MenuPlacement_ComboBox)
-			.OnGetMenuContent_UObject(this, &USlotItemWidget::HandleGetMenuContent)];
+			.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemWidget::HandleGetMenuContent))];
 		
 	return MyPanel.ToSharedRef();
 }
@@ -400,6 +400,11 @@ void UMenuContextItemWidget::OnPropertyValueChanged(FName Name)
 	if (!Inventory)
 		return;
 
+	if (!Asset) {
+		Asset = Inventory->Items[Index].ItemAsset;
+		return;
+	}
+
 	FInventorySlot L_SlotItem = Inventory->Items[Index];
 	FInventorySlot L_NewSlotItem;
 	L_NewSlotItem.ItemAsset = Asset;
@@ -512,7 +517,7 @@ void USlotItemListWidget::OnChangedSlot(int32 NewIndex, FInventorySlot NewSlot)
 
 				FString AddValue = FString("Name: ") + Keys[i] + " " + FString("Value: ") + L_Data[Keys[i]];
 
-				if (L_Data.Num() == i)
+				if (L_Data.Num() == (i+1))
 					StringResult += AddValue;
 				else
 					StringResult += AddValue + ",";
@@ -595,7 +600,7 @@ TSharedRef<SWidget> USlotItemListWidget::RebuildWidget()
 		.AutoSize(true)[
 	 	 SAssignNew(MenuAnchor, SMenuAnchor)
 		.Placement(EMenuPlacement::MenuPlacement_ComboBox)
-		.OnGetMenuContent_UObject(this, &USlotItemListWidget::HandleGetMenuContent)];
+		.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemListWidget::HandleGetMenuContent))];
 
 	return Panel.ToSharedRef();
 }

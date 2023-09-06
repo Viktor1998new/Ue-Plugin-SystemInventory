@@ -6,7 +6,7 @@
 	"Description": "A great tool for creating an inverter of any type. All the code is written in C++ with an easily customizable and convenient Inventory editor",
 	"EngineVersion": "4.27",
 	"Category": "Other",
-	"DocsURL" : "https://drive.google.com/file/d/1teZ6rl9H0WimvEpWoK2beZMedcm8JS7W/view?usp=sharing",
+	"DocsURL" : "https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/tree/Experiment#readme",
 	"WhitelistPlatforms": [ "Win64", "Win32"],
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
 	"EnabledByDefault": true,

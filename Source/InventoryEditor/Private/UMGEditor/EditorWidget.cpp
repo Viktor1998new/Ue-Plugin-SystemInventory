@@ -177,7 +177,7 @@ void UEditorWidget::OnSelect(UObject* NewSelect)
                         ListInventory->AddSlot()
                             .AutoHeight()
                             .VAlign(VAlign_Top)
-                            .HAlign(HAlign_Left)
+                            .HAlign(HAlign_Fill)
                             .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
                             .AttachWidget(InventoryWidget->TakeWidget());
 
@@ -239,7 +239,7 @@ void UEditorWidget::AddSelect(TArray<UObject*> NewSelectActors)
                     ListInventory->AddSlot()
                         .AutoHeight()
                         .VAlign(VAlign_Top)
-                        .HAlign(HAlign_Left)
+                        .HAlign(HAlign_Fill)
                         .Padding(FMargin(0.0f,0.0f,0.0f,0.0f))
                         .AttachWidget(InventoryWidget->TakeWidget());
 

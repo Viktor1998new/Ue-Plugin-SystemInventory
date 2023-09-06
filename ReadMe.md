@@ -16,6 +16,8 @@ git clone --branch=Experiment https://github.com/Viktor1998new/Ue-Plugin-SystemI
 #### ItemActor class:
 The actor's logic includes two functions: "initData", which returns a read string and uses the "DataItem" function to obtain an associative array Map[Key (String), Value(String)], and "getData" function, which also uses the DataItem function, takes an associative array Map[Key (String), Value(String)] as input and returns data in a JSON-like format as a string.
 
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/25.jpg)
+
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/0.jpg)
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/1.jpg)
