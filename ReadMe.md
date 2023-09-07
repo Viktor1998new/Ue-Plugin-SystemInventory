@@ -35,7 +35,7 @@ The actor's logic includes two functions: "initData", which returns a read strin
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/1.jpg)
 
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/3.jpg)
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/3.png)
 
 #### ItemAsset Class:
 * The UItemAsset class is derived from the UPrimaryDataAsset class and declared using the UCLASS(BlueprintType, Blueprintable) macros for use in material graphs and Blueprint scripts.
