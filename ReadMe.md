@@ -1,8 +1,25 @@
 #### Init
 D:\NameProject\Plugins
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/24.png)
+
+ue4.27
 ``` Console
-git clone --branch=Experiment https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
+git clone --branch=ue4.27 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
+```
+
+ue5.0
+``` Console
+git clone --branch=ue5.0 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
+```
+
+ue5.1
+``` Console
+git clone --branch=ue5.1 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
+```
+
+ue5.2
+``` Console
+git clone --branch=ue5.2 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
 ```
 
 * Setting Plugin
