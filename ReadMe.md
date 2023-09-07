@@ -33,15 +33,9 @@ git clone --branch=ue5.2 https://github.com/Viktor1998new/Ue-Plugin-SystemInvent
 #### ItemActor class:
 The actor's logic includes two functions: "initData", which returns a read string and uses the "DataItem" function to obtain an associative array Map[Key (String), Value(String)], and "getData" function, which also uses the DataItem function, takes an associative array Map[Key (String), Value(String)] as input and returns data in a JSON-like format as a string.
 
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/25.jpg)
-
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/0.jpg)
-
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/1.jpg)
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/3.jpg)
-
-![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/4.jpg)
 
 #### ItemAsset Class:
 * The UItemAsset class is derived from the UPrimaryDataAsset class and declared using the UCLASS(BlueprintType, Blueprintable) macros for use in material graphs and Blueprint scripts.
@@ -51,6 +45,10 @@ The actor's logic includes two functions: "initData", which returns a read strin
 * ClassItemActor - an object of type TSubclassOf<AItemActor> that contains a reference to the AItemActor class that represents this item in the game. This property is set through the Unreal Editor and is read-only.
 
 * SlotItemData - a structure FItemData that contains item data that will be saved in the inventory slot when placing this item in the slot. This data can also be viewed and modified through the Unreal Editor. The property is read-only.
+
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/25.jpg)
+
+![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/0.jpg)
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/5.jpg)
 
