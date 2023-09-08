@@ -22,6 +22,11 @@ ue5.2
 git clone --branch=ue5.2 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
 ```
 
+ue5.3
+``` Console
+git clone --branch=ue5.3 https://github.com/Viktor1998new/Ue-Plugin-SystemInventory.git Inventory
+```
+
 * Setting Plugin
 
 ![Image](https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/blob/Experiment/Images/23.jpg)
