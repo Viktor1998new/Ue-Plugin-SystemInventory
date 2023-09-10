@@ -36,6 +36,11 @@ struct INVENTORY_API FInventorySlot
 		return ItemAsset == A.ItemAsset && ItemData == A.ItemData;
 	}
 
+	bool operator != (const FInventorySlot& A) {
+
+		return ItemAsset != A.ItemAsset && ItemData != A.ItemData;
+	}
+
 	void operator ++() {
 		Count++;
 	}
