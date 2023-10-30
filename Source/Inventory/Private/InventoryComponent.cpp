@@ -73,6 +73,7 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 
 	DOREPLIFETIME_CONDITION(UInventoryComponent, Items, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(UInventoryComponent, CurrentMassa, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UInventoryComponent, MaxSlot, COND_OwnerOnly);
 }
 
 void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
