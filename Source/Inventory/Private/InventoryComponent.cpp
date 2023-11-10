@@ -141,8 +141,12 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 	if (HasInventoryFlag(EInventoryFlag::Stack)) {
 
-		if (!NewSlot.ItemAsset->SlotItemData.StackItem && NewSlot.Count > NewSlot.ItemAsset->SlotItemData.MaxStack)  return false;
-		else NewSlot.Count = 1;
+	if (NewSlot.ItemAsset->SlotItemData.StackItem) {
+		if (NewSlot.Count > NewSlot.ItemAsset->SlotItemData.MaxStack) 
+			return false;
+	}
+	else NewSlot.Count = 1;
+
 	}
 	else  {
 		NewSlot.Count = 1;
