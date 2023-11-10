@@ -28,6 +28,9 @@ struct INVENTORY_API FItemData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
 		bool NoneData = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|ItemActor|Slot")
+		int32 MaxStack = 1;
 };
 
 UCLASS(BlueprintType, Blueprintable, meta = (ShortTooltip = "Base class for storing item information."))

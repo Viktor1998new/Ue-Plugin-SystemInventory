@@ -26,6 +26,9 @@ public:
     UFUNCTION(BlueprintPure, Category = "InventoryLibrary")
         static FIntPoint GetSlotSize(FInventorySlot Slot);
 
+    UFUNCTION(BlueprintPure, Category = "InventoryLibrary")
+        static FItemData GetItemData(FInventorySlot Slot);
+        
     UFUNCTION(BlueprintPure, Category = "Inventory")
         static UInventorySettings* GetInventorySetting();
 };

@@ -73,6 +73,7 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 
 	DOREPLIFETIME_CONDITION(UInventoryComponent, Items, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(UInventoryComponent, CurrentMassa, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UInventoryComponent, MaxSlot, COND_OwnerOnly);
 }
 
 void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
@@ -82,7 +83,7 @@ void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FIn
 
 bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
 
-	if (!NewValue.ItemAsset || !Items.IsValidIndex(Index) || NewValue.Count <= 0)
+	if (!NewValue.ItemAsset || !Items.IsValidIndex(Index) || NewValue.Count <= 0 || NewValue.Count <= NewValue.ItemAsset->SlotItemData.MaxStack)
 		return false;
 
 	if (Items[Index].ItemAsset != NewValue.ItemAsset || Items[Index].PositionSlot != NewValue.PositionSlot)
@@ -139,11 +140,14 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 	}
 
 	if (HasInventoryFlag(EInventoryFlag::Stack)) {
+
+		if (NewSlot.ItemAsset->SlotItemData.StackItem && NewSlot.Count <= NewSlot.ItemAsset->SlotItemData.MaxStack)  return false;
+		else NewSlot.Count = 1;
+	}
+	else  {
 		NewSlot.Count = 1;
 	}
-	else if (NewSlot.ItemAsset->SlotItemData.StackItem == false) {
-		NewSlot.Count = 1;
-	}
+
 
 	if (HasInventoryFlag(EInventoryFlag::Mass)) {
 		CurrentMassa += NewSlot.ItemAsset->SlotItemData.MassItem * NewSlot.Count;
@@ -166,18 +170,28 @@ bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
 
 bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index)
 {
-	if (!ItemAsset || Count <= 0) return false;
+	if (!ItemAsset || Count <= 0 || Count <= ItemAsset->SlotItemData.MaxStack) return false;
 
 	if (HasInventoryFlag(EInventoryFlag::Stack) && ItemAsset->SlotItemData.StackItem) {
 		
 		int32 FindIndex = INDEX_NONE;
 
-		if (ItemAsset->SlotItemData.NoneData)
-			FindItem(ItemAsset, FindIndex);
-		else 
-			for (int32 i = 0; i < Items.Num(); i++)
-				if (Items[i].ItemAsset == ItemAsset && Items[i].ItemData == Data) 
+		if (ItemAsset->SlotItemData.NoneData) {
+			for (int32 i = 0; i < Items.Num(); i++) {
+				if (Items[i].ItemAsset == ItemAsset && Items[i].Count + Count <= ItemAsset->SlotItemData.MaxStack){
 					FindIndex = i;
+					break;
+				}
+			}
+		}
+		else {
+			for (int32 i = 0; i < Items.Num(); i++) {
+				if (Items[i].ItemAsset == ItemAsset && Items[i].ItemData == Data && Items[i].Count + Count <= ItemAsset->SlotItemData.MaxStack) {
+					FindIndex = i;
+					break;
+				}
+			}
+		}
 
 		if (FindIndex != INDEX_NONE) {
 
@@ -195,7 +209,7 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 
 	FInventorySlot NewSlot;
 	NewSlot.ItemAsset = ItemAsset;
-	NewSlot.Count = 1;
+	NewSlot.Count = Count;
 	
 	return AddSlot(NewSlot, true, Index);
 }
