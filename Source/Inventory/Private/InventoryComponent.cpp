@@ -457,7 +457,7 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NO
 		if (Count <= 0 || Count > Items[IndexItem].Count) return false;
 
 		if (IndexItem != ToIndex) {
-			if (Items[IndexItem].ItemAsset->SlotItemData.StackItem && Items[IndexItem] == Items[ToIndex])
+			if (Items[IndexItem].ItemAsset->SlotItemData.StackItem && Items[IndexItem] == Items[ToIndex] && Items[ToIndex].Count + Count <= Items[ToIndex].ItemAsset->SlotItemData.MaxStack)
 			{
 				Items[IndexItem].Count -= Count;
 				Items[ToIndex].Count += Count;
