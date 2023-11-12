@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "SystemInventory",
+	"Description": "A great tool for creating an inverter of any type. All the code is written in C++ with an easily customizable and convenient Inventory editor",
+	"EngineVersion": "4.27",
+	"Category": "Other",
+	"DocsURL" : "https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/tree/Experiment#readme",
+	"WhitelistPlatforms": [ "Win64", "Win32"],
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/inventory-system-04",
+	"EnabledByDefault": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "Inventory",
+			"Type": "Runtime",
+			"LoadingPhase" : "Default",
+			"WhitelistPlatforms": ["Win64","Win32"]
+		},
+		{
+			"Name": "InventoryEditor",
+			"Type": "Editor",
+			"LoadingPhase" : "PostEngineInit",
+			"WhitelistPlatforms": ["Win64"]
+		}
+	]
+}
