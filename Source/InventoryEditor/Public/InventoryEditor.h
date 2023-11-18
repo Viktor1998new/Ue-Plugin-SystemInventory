@@ -1,11 +1,9 @@
 //Copyright(c) 2022, Viktor.F.P
 #pragma once
 #include "CoreMinimal.h"
-#include "Widgets/Docking/SDockableTab.h"
-#include "Widgets/Docking/SDockTabStack.h"
-#include "Widgets/Docking/SDockTab.h"
-
 #include "Modules/ModuleInterface.h"
+
+class SDockTab;
 
 class FInventoryEditorModule : public IModuleInterface
 {
@@ -17,9 +15,11 @@ public:
 
 	TSharedPtr<FTabManager::FLayout> TabManagerLayout;
 
-	class UEditorWidget* CreatedUMGWidget;
+	TWeakPtr<SDockTab> MainTab;
 
-	class UBrowserAssetsWidget* BrowserAssetsWidget;
+	class UEditorWidget* InventoryTab;
+
+	class UBrowserAssetsWidget* BrowserAssetsTab;
 
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;

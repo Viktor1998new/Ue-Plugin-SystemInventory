@@ -1,6 +1,7 @@
 ﻿//Copyright(c) 2022, Viktor.F.P
 
-#include "InventoryEditor.h"
+#include "CoreMinimal.h"
+
 #include "Widgets/SWindow.h"
 #include "UMGEditor/EditorWidget.h"
 #include "UMGEditor/BrowserAssetsWidget.h"
@@ -9,8 +10,7 @@
 #include "InventoryEditorStyle.h"
 #include "Inventory/ItemActor.h"
 #include "FItemAsset_Action.h"
-
-#include "CoreMinimal.h"
+#include "Widgets/Docking/SDockTab.h"
 #include "UObject/ObjectMacros.h"
 #include "UObject/Object.h"
 #include "UObject/UnrealType.h"
@@ -18,6 +18,7 @@
 #include "Modules/ModuleManager.h"
 #include "AssetToolsModule.h"
 #include "IAssetTools.h"
+#include "InventoryEditor.h"
 
 IMPLEMENT_MODULE(FInventoryEditorModule, InventoryEditorModule);
 
@@ -85,12 +86,12 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterBrowserAssetsTab(const FS
 	UWorld* World = GEditor->GetEditorWorldContext().World();
 	if (World)
 	{
-		if (BrowserAssetsWidget)
+		if (BrowserAssetsTab)
 		{
-			BrowserAssetsWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
-			BrowserAssetsWidget = nullptr;
+			BrowserAssetsTab->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+			BrowserAssetsTab = nullptr;
 		}
-		BrowserAssetsWidget = CreateWidget<UBrowserAssetsWidget>(World, UBrowserAssetsWidget::StaticClass());
+		BrowserAssetsTab = CreateWidget<UBrowserAssetsWidget>(World, UBrowserAssetsWidget::StaticClass());
 	}
 
 	return SNew(SDockTab)
@@ -100,7 +101,7 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterBrowserAssetsTab(const FS
 			+ SVerticalBox::Slot()
 		.HAlign(HAlign_Fill)
 		[
-			BrowserAssetsWidget->TakeWidget()
+			BrowserAssetsTab->TakeWidget()
 		]
 		];
 }
@@ -110,15 +111,15 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawn
 	UWorld* World = GEditor->GetEditorWorldContext().World();
 	if (World)
 	{
-		if (CreatedUMGWidget)
+		if (InventoryTab)
 		{
-			CreatedUMGWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
-			CreatedUMGWidget = nullptr;
+			InventoryTab->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
+			InventoryTab = nullptr;
 		}
-		CreatedUMGWidget = CreateWidget<UEditorWidget>(World, UEditorWidget::StaticClass());
+		InventoryTab = CreateWidget<UEditorWidget>(World, UEditorWidget::StaticClass());
 	}
 
-	if (CreatedUMGWidget)
+	if (InventoryTab)
 	{
 		return SNew(SDockTab)
 			.TabRole(ETabRole::NomadTab)
@@ -127,7 +128,7 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawn
 				+ SVerticalBox::Slot()
 			.HAlign(HAlign_Fill)
 			[
-				CreatedUMGWidget->TakeWidget()
+				InventoryTab->TakeWidget()
 			]
 			];
 	}
@@ -140,16 +141,16 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawn
 
 void FInventoryEditorModule::UpdateRespawnListIfNeeded(TSharedRef<SDockTab> TabBeingClosed)
 {
-	if (CreatedUMGWidget)
+	if (InventoryTab)
 	{
-		CreatedUMGWidget->Rename(nullptr, GetTransientPackage());
-		CreatedUMGWidget = nullptr;
+		InventoryTab->Rename(nullptr, GetTransientPackage());
+		InventoryTab = nullptr;
 	}
 
-	if (BrowserAssetsWidget)
+	if (BrowserAssetsTab)
 	{
-		BrowserAssetsWidget->Rename(nullptr, GetTransientPackage());
-		BrowserAssetsWidget = nullptr;
+		BrowserAssetsTab->Rename(nullptr, GetTransientPackage());
+		BrowserAssetsTab = nullptr;
 	}
 }
 
@@ -190,33 +191,31 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnSpawnPluginTab(const FSpawnTabArg
 	TSharedRef<SWidget> TabContents = TabManager->RestoreFrom(TabManagerLayout.ToSharedRef(), TSharedPtr<SWindow>(),false, EOutputCanBeNullptr::IfNoTabValid).ToSharedRef();
 
 	NomadTab->SetContent(TabContents);
-
+	MainTab = NomadTab;
 	return NomadTab;
 }
 
 
 void FInventoryEditorModule::ChangeTabWorld(UWorld* World, EMapChangeType MapChangeType)
 {
-	if (MapChangeType == EMapChangeType::TearDownWorld) {
-			
-		if (CreatedUMGWidget)
+	if (MapChangeType == EMapChangeType::TearDownWorld)
+	{
+		if (MainTab.IsValid())
 		{
-			CreatedUMGWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
-			CreatedUMGWidget = nullptr;
-		}
+			if (InventoryTab) {
+				InventoryTab->RemoveSelect(TArray<UObject*>());
+				InventoryTab->Rename(nullptr, GetTransientPackage());
+				InventoryTab = nullptr;
+			}
 
-		ULevel* OldLevel = World->PersistentLevel;
-		OldLevel->GetWorld()->RemoveLevel(OldLevel);
-			
-		for (AActor* Actor : OldLevel->Actors)
-		{
-			Actor->Destroy();
-		}
-		
-		if (BrowserAssetsWidget)
-		{
-			BrowserAssetsWidget->Rename(nullptr, GetTransientPackage(), REN_DoNotDirty);
-			BrowserAssetsWidget = nullptr;
+			if (BrowserAssetsTab) {
+				BrowserAssetsTab->Rename(nullptr, GetTransientPackage());
+				BrowserAssetsTab = nullptr;
+			}
+
+			MainTab.Pin()->SetContent(SNullWidget::NullWidget);
+			MainTab.Pin()->RequestCloseTab();
+
 		}
 	}
 }
