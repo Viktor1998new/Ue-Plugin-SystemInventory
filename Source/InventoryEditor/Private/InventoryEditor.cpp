@@ -1,5 +1,6 @@
 ﻿//Copyright(c) 2022, Viktor.F.P
 
+#include "InventoryEditor.h"
 #include "CoreMinimal.h"
 
 #include "Widgets/SWindow.h"
@@ -18,7 +19,6 @@
 #include "Modules/ModuleManager.h"
 #include "AssetToolsModule.h"
 #include "IAssetTools.h"
-#include "InventoryEditor.h"
 
 IMPLEMENT_MODULE(FInventoryEditorModule, InventoryEditorModule);
 

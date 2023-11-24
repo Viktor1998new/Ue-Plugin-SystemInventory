@@ -117,10 +117,11 @@ bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
 	return true;
 }
 
-bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index)
-{
-	if (!NewSlot.ItemAsset || NewSlot.Count <= 0)
+bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index) {
+
+	if (!NewSlot.ItemAsset || NewSlot.Count <= 0) {
 		return false;
+	}
 
 	FIntPoint NewPosition;
 	int32 IndexFull;
@@ -141,10 +142,12 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 	if (HasInventoryFlag(EInventoryFlag::Stack)) {
 
-		if (!NewSlot.ItemAsset->SlotItemData.StackItem && NewSlot.Count > NewSlot.ItemAsset->SlotItemData.MaxStack)  return false;
+		if (!NewSlot.ItemAsset->SlotItemData.StackItem && NewSlot.Count > NewSlot.ItemAsset->SlotItemData.MaxStack) {
+			return false;
+		}
 		else NewSlot.Count = 1;
 	}
-	else  {
+	else {
 		NewSlot.Count = 1;
 	}
 
@@ -165,7 +168,6 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
 {
 	return AddAssetItem(Item->ItemAsset, 1, Item->GetData(), Index);
-
 }
 
 bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index)
@@ -178,7 +180,7 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 
 		if (ItemAsset->SlotItemData.NoneData) {
 			for (int32 i = 0; i < Items.Num(); i++) {
-				if (Items[i].ItemAsset == ItemAsset && Items[i].Count + Count <= ItemAsset->SlotItemData.MaxStack){
+				if (Items[i].ItemAsset == ItemAsset){
 					FindIndex = i;
 					break;
 				}
@@ -186,7 +188,7 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 		}
 		else {
 			for (int32 i = 0; i < Items.Num(); i++) {
-				if (Items[i].ItemAsset == ItemAsset && Items[i].ItemData == Data && Items[i].Count + Count <= ItemAsset->SlotItemData.MaxStack) {
+				if (Items[i].ItemAsset == ItemAsset && Items[i].ItemData == Data) {
 					FindIndex = i;
 					break;
 				}
@@ -195,14 +197,15 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 
 		if (FindIndex != INDEX_NONE) {
 
-			Items[FindIndex].Count += Count;
-
-			if (HasInventoryFlag(EInventoryFlag::Mass)) {
-				CurrentMassa += ItemAsset->SlotItemData.MassItem * Count;
-			}
-
-			OnAddItem.Broadcast(FindIndex);
-			ChangeSlot(FindIndex, Items[FindIndex], ETypeSetItem::ChangeSlot);
+			auto L_ChangeSlot = Items[FindIndex];
+				
+			L_ChangeSlot.Count += Count;
+			
+			bool L_IsAdd = SetSlot(FindIndex, L_ChangeSlot);
+			
+			if(L_IsAdd)
+				OnAddItem.Broadcast(FindIndex);
+			
 			return true;
 		}
 	}

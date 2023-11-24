@@ -90,29 +90,29 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable, BlueprintType)
-class INVENTORY_API UInventoryComponent : public UActorComponent
-{
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), NotBlueprintable, BlueprintType)
+class INVENTORY_API UInventoryComponent : public UActorComponent {
+	
 	GENERATED_BODY()
 
 public:
 
-	UPROPERTY(EditInstanceOnly,BlueprintReadOnly, Replicated, Category = "Inventory")
-		TArray<FInventorySlot> Items;
-	
+	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Replicated, Category = "Inventory")
+	TArray<FInventorySlot> Items;
+
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Replicated, Category = "Inventory")
-		float CurrentMassa;
+	float CurrentMassa;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Slot")
-		FIntPoint MaxSlot;
+	FIntPoint MaxSlot;
 
 	UPROPERTY(BlueprintAssignable)
-		FOnAddItem OnAddItem;
+	FOnAddItem OnAddItem;
 
 	UPROPERTY(BlueprintAssignable)
-		FOnRemoveItem OnRemoveItem;
+	FOnRemoveItem OnRemoveItem;
 
-		FNewDataSlot NewDataSlot;
+	FNewDataSlot NewDataSlot;
 
 	// Sets default values for this component's properties
 	UInventoryComponent();
@@ -136,17 +136,17 @@ public:
 	 * @param NewSlot - The new active state of the component
 	  Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
-		bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
+		virtual	bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
 
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
-		bool AddActorItem(AItemActor* Item, int32& Index );
+		bool AddActorItem(AItemActor* Item, int32& Index);
 
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
-		bool SetSlot(int32 Index, FInventorySlot NewValue);
+		virtual bool SetSlot(int32 Index, FInventorySlot NewValue);
 
 	/*Adding an item
 	 Use only in Server*/
@@ -155,11 +155,11 @@ public:
 
 	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool FindFreeSlot(FIntPoint Size,FIntPoint &ReturnPosition);
+		bool FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition);
 
 	/*search function for an item by class or class child*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool FindItem(UItemAsset* ItemAsset,int32& Index);
+		bool FindItem(UItemAsset* ItemAsset, int32& Index);
 
 	/*Removing an item
 	 Use only in Server*/
@@ -169,11 +169,11 @@ public:
 	/*the function sends an item from the current inventory to another one
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool SendItem(int32 Index, class UInventoryComponent* ToIntentory, int32 Count, bool FindSlot , FIntPoint Position);
+		bool SendItem(int32 Index, class UInventoryComponent* ToIntentory, int32 Count, bool FindSlot, FIntPoint Position);
 
 	/*the function checks whether the element can be placed in this position*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32 &Index);
+		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32& Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		void SetRotateSlot(int32 Index, bool NewRotate);
@@ -190,6 +190,55 @@ public:
 		void RecalculationMass();
 #endif
 
-	private:
+protected:
 	void ChangeSlot(int32 Index, FInventorySlot Slot, ETypeSetItem Type);
+
+};
+
+
+UCLASS(Abstract, ClassGroup = (Inventory), meta = (BlueprintSpawnableComponent), Blueprintable, BlueprintType)
+class INVENTORY_API UInventoryComponent_Blueprintable : public UInventoryComponent {
+
+	GENERATED_BODY()
+public:
+
+	virtual bool SetSlot(int32 Index, FInventorySlot NewValue) override {
+
+		float DelMass = 0, AddMass = 0;
+		if (Items[Index].ItemAsset != NewValue.ItemAsset || Items[Index].Count != NewValue.Count) {
+			DelMass = Items[Index].ItemAsset->SlotItemData.MassItem * Items[Index].Count;
+			AddMass = NewValue.ItemAsset->SlotItemData.MassItem * NewValue.Count;
+		}
+
+		bool Is_Seted = ReceiveSetSlot(Index, NewValue);
+
+		if (Is_Seted) {
+			CurrentMassa -= DelMass;
+			CurrentMassa += AddMass;
+			ChangeSlot(Index, NewValue, ETypeSetItem::ChangeSlot);
+		}
+
+		return Is_Seted;
+	};
+
+	virtual	bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index) override {
+
+		bool L_IsAdding = ReceiveAddSlot(NewSlot, FindPositionSlot, Index);
+
+		if (L_IsAdding) {
+			OnAddItem.Broadcast(Index);
+			CurrentMassa += NewSlot.ItemAsset->SlotItemData.MassItem * NewSlot.Count;
+			ChangeSlot(Index, NewSlot, ETypeSetItem::Add);
+		}
+
+		return L_IsAdding;
+	};
+
+protected:
+	
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Add Slot"))
+		bool ReceiveAddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
+		
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Set Slot"))
+		bool ReceiveSetSlot(int32 Index, FInventorySlot NewValue);
 };
