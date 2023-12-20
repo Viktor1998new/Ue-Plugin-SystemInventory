@@ -4,7 +4,7 @@
 	"VersionName": "1.0",
 	"FriendlyName": "SystemInventory",
 	"Description": "A great tool for creating an inverter of any type. All the code is written in C++ with an easily customizable and convenient Inventory editor",
-	"EngineVersion": "4.27",
+	"EngineVersion": "5.2",
 	"Category": "Other",
 	"DocsURL" : "https://github.com/Viktor1998new/Ue-Plugin-SystemInventory/tree/Experiment#readme",
 	"WhitelistPlatforms": [ "Win64", "Win32"],
@@ -17,7 +17,7 @@
 			"Name": "Inventory",
 			"Type": "Runtime",
 			"LoadingPhase" : "Default",
-			"WhitelistPlatforms": ["Win64","Win32"]
+			"WhitelistPlatforms": ["Win64"]
 		},
 		{
 			"Name": "InventoryEditor",
