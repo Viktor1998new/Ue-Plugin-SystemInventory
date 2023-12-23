@@ -17,7 +17,7 @@ void UInventoryPanelSlot::SetMargin(FMargin NewMargin) {
 	Transform.Offsets = NewMargin;
 
 	if (Slot) 
-		Slot->Offset(Transform.Offsets);
+		Slot->SetOffset(Transform.Offsets);
 }
 
 void UInventoryPanelSlot::ChangeSlot(FInventorySlot NewData) {
@@ -44,7 +44,7 @@ void UInventoryPanelSlot::SetZOrder(int32 InZOrder)
 	ZOrder = InZOrder;
 
 	if (Slot)
-		Slot->ZOrder(InZOrder);
+		Slot->SetZOrder(InZOrder);
 }
 
 void UInventoryPanelSlot::SetAnchors(FAnchors Anchors)
@@ -52,7 +52,7 @@ void UInventoryPanelSlot::SetAnchors(FAnchors Anchors)
 	Transform.Anchors = Anchors;
 
 	if (Slot)
-		Slot->Anchors(Transform.Anchors);
+		Slot->SetAnchors(Transform.Anchors);
 }
 
 void UInventoryPanelSlot::SetIndexItem(int32 NewIndex)
@@ -61,14 +61,12 @@ void UInventoryPanelSlot::SetIndexItem(int32 NewIndex)
 
 	IndexItem = NewIndex;
 
-	OnChangedSlot.Broadcast(IndexItem, ParentPanel->Inventory->Items[IndexItem]);
+	OnChangedSlot.Broadcast(IndexItem, ParentPanel->Inventory->GetItem(IndexItem));
 }
 
 void UInventoryPanelSlot::SynchronizeProperties() {
 
 	if (IndexItem == INDEX_NONE || !Slot) return;
 
-	FInventorySlot L_Slot = ParentPanel->Inventory->Items[IndexItem];
-	FIntPoint L_SlotSize = L_Slot.GetSize();
-	OnChangedSlot.Broadcast(IndexItem, ParentPanel->Inventory->Items[IndexItem]);
+	OnChangedSlot.Broadcast(IndexItem, ParentPanel->Inventory->GetItem(IndexItem));
 }

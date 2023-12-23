@@ -24,7 +24,7 @@ void UBrowserAssetsWidget::GenerationSlots()
 {
     FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
     FARFilter Filter;
-    Filter.ClassNames.Add(UItemAsset::StaticClass()->GetFName());
+    Filter.ClassPaths.Add(FTopLevelAssetPath(TEXT("/Script/Inventory"), TEXT("ItemAsset")));
     Filter.PackagePaths.Add("/Game");
     Filter.bRecursivePaths = true;
     Filter.bRecursiveClasses = true;
@@ -64,26 +64,26 @@ TSharedRef<SWidget> UBrowserAssetsWidget::RebuildWidget()
                 .Text(FText::FromString("Up Assets"))
         ].HAlign(HAlign_Center).VAlign(VAlign_Center);
 
-            return SNew(SVerticalBox)
-                + SVerticalBox::Slot()
-                .FillHeight(1.0f)
+    return SNew(SVerticalBox)
+        + SVerticalBox::Slot()
+        .FillHeight(1.0f)
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Fill)[
+            SNew(SScrollBox)
+                + SScrollBox::Slot()
                 .HAlign(HAlign_Fill)
                 .VAlign(VAlign_Fill)[
-                    SNew(SScrollBox)
-                        + SScrollBox::Slot()
-                        .HAlign(HAlign_Fill)
-                        .VAlign(VAlign_Fill)[
-                            SAssignNew(ListAsset, SWrapBox)
-                                .Orientation(EOrientation::Orient_Horizontal)
-                                .InnerSlotPadding(FVector2D(6.f))
-                                .UseAllottedWidth(true)
-                        ]
+                    SAssignNew(ListAsset, SWrapBox)
+                        .Orientation(EOrientation::Orient_Horizontal)
+                        .InnerSlotPadding(FVector2D(6.f))
+                        .UseAllottedWidth(true)
                 ]
+        ]
 
-                + SVerticalBox::Slot()
-                                .AutoHeight()
-                                .HAlign(HAlign_Fill)
-                                .VAlign(VAlign_Bottom)[
-                                    ButtonUpData.ToSharedRef()
-                                ];
+        + SVerticalBox::Slot()
+            .AutoHeight()
+            .HAlign(HAlign_Fill)
+            .VAlign(VAlign_Bottom)[
+                ButtonUpData.ToSharedRef()
+            ];
 }
