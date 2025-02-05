@@ -1,7 +1,8 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "InventoryUMG/InventoryPanel.h"
-#include "InventoryUMG/InventoryPanelSlot.h"
+#include "InventoryPanel.h"
+#include "InventoryPanelSlot.h"
+//#include "Layout/SInventoryPanel.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -97,7 +98,7 @@ void UInventoryPanel::ReleaseSlateResources(bool bReleaseChildren)
 TSharedRef<SWidget> UInventoryPanel::RebuildWidget()
 {
 	MyPanel = SNew(SConstraintCanvas);
-	
+
 	if (Slots.Num() != 0 && Inventory)
 		for (UPanelSlot* PanelSlot : Slots)
 		{

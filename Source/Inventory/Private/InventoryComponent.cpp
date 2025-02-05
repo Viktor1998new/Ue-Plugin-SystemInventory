@@ -1,6 +1,6 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "Inventory/InventoryComponent.h"
+#include "InventoryComponent.h"
 #include "InventorySettings.h"
 #include "Net/UnrealNetwork.h"
 

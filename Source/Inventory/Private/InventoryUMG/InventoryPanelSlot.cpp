@@ -1,9 +1,9 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 #pragma once
-#include "InventoryUMG/InventoryPanelSlot.h"
+#include "InventoryPanelSlot.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
-#include "InventoryUMG/PanelInventorySlotInterface.h"
-#include "InventoryUMG/InventoryPanel.h"
+#include "PanelInventorySlotInterface.h"
+#include "InventoryPanel.h"
 
 UInventotySlot_Drag::UInventotySlot_Drag(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

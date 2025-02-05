@@ -1,5 +1,6 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
+using System.IO;
 using UnrealBuildTool;
 
 public class Inventory : ModuleRules
@@ -28,5 +29,21 @@ public class Inventory : ModuleRules
 				"UMG",
 			}
 			);
-	}
+
+		PublicIncludePaths.AddRange(
+			new string[] {
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/Inventory"),
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG"),
+
+				// ... add public include paths required here ...
+			});
+		
+		PrivateIncludePaths.AddRange(
+			new string[] {
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/Inventory"),
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG"),
+
+				// ... add public include paths required here ...
+			});
+    }
 }
