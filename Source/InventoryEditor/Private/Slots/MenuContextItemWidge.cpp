@@ -61,19 +61,12 @@ void UMenuContextItemWidget::SetItem(TSharedPtr<class SMenuAnchor> MewMenu, UInv
 
 	FInventorySlot L_SlotItem = NewInventory->GetItem(NewIndex);
 	ItemSettings->Asset = L_SlotItem.ItemAsset;
-	
+	ItemSettings->Count = L_SlotItem.Count;
 	CheckSettingsData(L_SlotItem);
 
 	Inventory = NewInventory;
 	Index = NewIndex;
 	Menu = MewMenu;
-}
-
-FReply UMenuContextItemWidget::OnClickedRemoveItem()
-{
-	Inventory->RemoveItem(Index, Inventory->GetItem(Index).Count);
-	Menu->SetIsOpen(false, false);
-	return FReply::Handled();
 }
 
 TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
@@ -84,13 +77,19 @@ TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
 		ItemSettings->Asset = Inventory->GetItem(Index).ItemAsset;
 	}
 	FDetailsViewArgs DetailsViewArgs;
+
 	DetailsViewArgs.bUpdatesFromSelection = false;
 	DetailsViewArgs.bLockable = false;
 	DetailsViewArgs.bAllowSearch = false;
+	DetailsViewArgs.bShowPropertyMatrixButton = false;
 	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
+	DetailsViewArgs.ViewIdentifier = NAME_None;
+	DetailsViewArgs.bShowCustomFilterOption = false;
+	DetailsViewArgs.bShowOptions = false;
+	DetailsViewArgs.bShowScrollBar = false;
 
 	TSharedPtr<IDetailsView> MyDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-
+	
  	MyDetailsView->SetObject(ItemSettings);
 	MyDetailsView->OnFinishedChangingProperties().AddLambda([this](const FPropertyChangedEvent& Property) {
 
@@ -122,17 +121,6 @@ TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
 			+ SVerticalBox::Slot()
 			.FillHeight(1.0f)[
 				MyDetailsView.ToSharedRef()
-			]
-			+ SVerticalBox::Slot()
-			.AutoHeight()[
-				SNew(SButton)
-					.OnClicked(FOnClicked::CreateUObject(this, &UMenuContextItemWidget::OnClickedRemoveItem))
-					.Content()
-					[
-						SNew(STextBlock)
-							.Font(NumderFont)
-							.Text(FText::FromString("Remove Item"))
-					].HAlign(HAlign_Center).VAlign(VAlign_Center)
 			]
 	];
 }

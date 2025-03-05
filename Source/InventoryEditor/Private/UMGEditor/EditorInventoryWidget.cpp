@@ -103,7 +103,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                 .HAlign(HAlign_Fill)[
                     SNew(STextBlock)
                         .Font(ButtonFont)
-                        .Text(FText::FromString("Drag: LMB, Menu: RMB, Rotate item: Drag + Left Shift"))
+                        .Text(FText::FromString("Drag: LMB, Menu: RMB, Rotate item: Drag + Left Shift, Remove item: LMB + Left ctrl"))
                 ]
         ];
 

@@ -6,6 +6,15 @@
 
 FReply USlotItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	if (InMouseEvent.IsLeftControlDown()) {
+
+		if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
+
+			Cast<UInventoryPanel>(GetParent())->Inventory->RemoveItem(Item_Index, Item_Slot.Count);
+			return FReply::Handled();
+		}
+	}
+
 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
 
 		SetKeyboardFocus();

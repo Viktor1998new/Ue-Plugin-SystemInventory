@@ -154,8 +154,6 @@ public:
 
 	void SetItem(TSharedPtr<class SMenuAnchor> NewMenu, UInventoryComponent* NewInventory, int32 NewIndex);
 
-	FReply OnClickedRemoveItem();
-
 protected:
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
