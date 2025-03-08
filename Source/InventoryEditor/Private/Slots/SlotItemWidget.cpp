@@ -128,7 +128,8 @@ TSharedRef<SWidget> USlotItemWidget::HandleGetMenuContent()
 TSharedRef<SWidget> USlotItemWidget::RebuildWidget()
 {
 	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
-	bIsFocusable = true;
+	SetFocus();
+
 	MyPanel = SNew(SConstraintCanvas).Visibility(EVisibility::Visible)
 		+ SConstraintCanvas::Slot()
 		.Anchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f))

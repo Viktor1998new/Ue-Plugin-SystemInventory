@@ -63,7 +63,6 @@ bool UItemAssetFactory::ConfigureProperties() {
 
 	TSharedPtr<FItemAssetParentFilter> Filter = MakeShareable(new FItemAssetParentFilter);
 	Options.ClassFilter = Filter;
-
 	Filter->DisallowedClassFlags = CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists;
 	Filter->AllowedChildrenOfClasses.Add(UItemAsset::StaticClass());
 

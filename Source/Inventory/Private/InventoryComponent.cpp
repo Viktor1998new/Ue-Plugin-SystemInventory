@@ -4,7 +4,7 @@
 #include "InventorySettings.h"
 #include "Net/UnrealNetwork.h"
 
-#define MaXCountRow FMath::CeilToInt(Inventory.MaxSlot / Inventory.CountRow) + 1
+#define MaXCountRow FMath::CeilToInt((float)Inventory.MaxSlot / (float)Inventory.CountRow) + 1
 
 #define HasInventoryFlag(Flag) UInventorySettings::Get()->HasInventoryFlag(Flag)
 
@@ -13,7 +13,7 @@ void UInventoryComponent::ChangeSlot(int32 Index, FInventorySlot Slot, ETypeSetI
 	if(GIsServer)
 		ClientRPC_EventSetItem(Index, Slot, Type);
 	else
-		NewDataSlot.Broadcast(Index, Slot, Type);
+		NewDataSlot.ExecuteIfBound(Index, Slot, Type);
 }
 
 FInventory::FInventory() {
@@ -112,7 +112,7 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 
 void UInventoryComponent::ClientRPC_EventSetItem_Implementation(int32 Index, FInventorySlot NewData, ETypeSetItem Type)
 {
-	NewDataSlot.Broadcast(Index, NewData, Type);
+	NewDataSlot.ExecuteIfBound(Index, NewData, Type);
 }
 
 bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {

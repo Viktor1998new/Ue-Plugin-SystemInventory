@@ -76,7 +76,8 @@ TSharedRef<SWidget> UBrowserAssetsWidget::RebuildWidget()
                     SAssignNew(ListAsset, SWrapBox)
                         .Orientation(EOrientation::Orient_Horizontal)
                         .InnerSlotPadding(FVector2D(6.f))
-                        .UseAllottedWidth(true)
+                        .UseAllottedSize(true)
+                       
                 ]
         ]
 

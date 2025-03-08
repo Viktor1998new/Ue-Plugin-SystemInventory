@@ -81,7 +81,7 @@ enum class ETypeSetItem : uint8
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddItem, int32, Index);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnRemoveItem, int32, Index);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
+DECLARE_DYNAMIC_DELEGATE_ThreeParams(FNewDataSlot, int32, Index, FInventorySlot, NewData, ETypeSetItem, SetType);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), NotBlueprintable, BlueprintType)
 class INVENTORY_API UInventoryComponent : public UActorComponent {

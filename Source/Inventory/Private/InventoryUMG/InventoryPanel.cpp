@@ -2,7 +2,6 @@
 
 #include "InventoryPanel.h"
 #include "InventoryPanelSlot.h"
-//#include "Layout/SInventoryPanel.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -14,7 +13,7 @@ UInventoryPanel::UInventoryPanel(const FObjectInitializer& ObjectInitializer)
 void UInventoryPanel::RemoveFromParent() {
 
 	if (Inventory)
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryPanel::OnChangeSlot);
+		Inventory->NewDataSlot.Clear();
 
 	Super::RemoveFromParent();
 }
@@ -22,7 +21,7 @@ void UInventoryPanel::RemoveFromParent() {
 void UInventoryPanel::SetInventory(UInventoryComponent * NewInventory)
 {
 	if (Inventory) {
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryPanel::OnChangeSlot);
+		Inventory->NewDataSlot.Clear();
 		ClearChildren();
 	}
 
@@ -30,7 +29,7 @@ void UInventoryPanel::SetInventory(UInventoryComponent * NewInventory)
 
 	Inventory = NewInventory;
 
-	Inventory->NewDataSlot.AddDynamic(this, &UInventoryPanel::OnChangeSlot);
+	Inventory->NewDataSlot.BindDynamic(this, &UInventoryPanel::OnChangeSlot);
 }
 
 UInventoryPanelSlot* UInventoryPanel::SlotAsInventorySlot(UWidget* Widget)
@@ -88,7 +87,7 @@ UInventoryPanelSlot* UInventoryPanel::AddChildToInventoryPanel(UWidget* Content)
 void UInventoryPanel::ReleaseSlateResources(bool bReleaseChildren)
 {
 	if (Inventory)
-		Inventory->NewDataSlot.RemoveDynamic(this, &UInventoryPanel::OnChangeSlot);
+		Inventory->NewDataSlot.Clear();
 
 	Super::ReleaseSlateResources(bReleaseChildren);
 
