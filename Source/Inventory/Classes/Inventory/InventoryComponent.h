@@ -16,7 +16,7 @@ struct INVENTORY_API FInventorySlot
 		UItemAsset* ItemAsset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-		FIntPoint PositionSlot;
+		FIntPoint PositionSlot = FIntPoint::ZeroValue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
 		FString ItemData;

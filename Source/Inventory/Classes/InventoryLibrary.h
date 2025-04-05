@@ -2,10 +2,10 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "UObject/Script.h"
-#include "JsonUtilities/Public/JsonObjectConverter.h"
+#include "JsonObjectConverter.h"
 #include "UObject/ObjectMacros.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Inventory/Classes/Inventory/InventoryComponent.h"
+#include "InventoryComponent.h"
 #include "InventoryLibrary.generated.h"
 
 UCLASS()
