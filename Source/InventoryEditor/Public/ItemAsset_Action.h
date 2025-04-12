@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Inventory/ItemActor.h"
+#include "ItemActor.h"
 #include "AssetTypeActions_Base.h"
 
 class FItemAsset_Action : public FAssetTypeActions_Base

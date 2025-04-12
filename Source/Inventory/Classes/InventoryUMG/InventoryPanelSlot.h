@@ -6,7 +6,7 @@
 #include "Layout/Margin.h"
 #include "UObject/Interface.h"
 #include "Components/PanelSlot.h"
-#include "Inventory/InventoryComponent.h"
+#include "Components/InventoryComponent.h"
 #include "InventoryPanelSlot.generated.h"
 
 UCLASS()

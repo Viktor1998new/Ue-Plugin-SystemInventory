@@ -8,6 +8,51 @@ UInventoryComponent* USlotWidget::GetInventory()
 	return Cast<UInventoryPanel>(GetParent())->Inventory;
 }
 
+FMargin USlotWidget::GetOffsetMouse() const
+{
+	return FMargin(MousePosition.X, MousePosition.Y);
+}
+
+FReply USlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	if (InMouseEvent.IsLeftControlDown()) {
+
+		if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
+
+			Cast<UInventoryPanel>(GetParent())->Inventory->RemoveItem(Item_Index, Item_Slot.Count);
+			return FReply::Handled();
+		}
+	}
+
+	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
+
+		SetKeyboardFocus();
+
+		TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
+
+		if (SlateWidgetDetectingDrag.IsValid())
+		{
+			return FReply::Handled().DetectDrag(SlateWidgetDetectingDrag.ToSharedRef(), EKeys::LeftMouseButton);
+		}
+	}
+
+	return FReply::Unhandled();
+}
+
+FReply USlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+
+	if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton) {
+		MousePosition = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
+		MenuAnchor->SetIsOpen(true, true);
+		ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
+
+		return FReply::Handled();
+	}
+
+	return FReply::Unhandled();
+}
+
 void UVisualDragWidget::SetItem(UTexture2D* Texture, FVector2D Size)
 {
 	if (SizeBox.IsValid()) {

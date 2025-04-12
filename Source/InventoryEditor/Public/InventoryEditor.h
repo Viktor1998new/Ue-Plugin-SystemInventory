@@ -19,6 +19,8 @@ public:
 
 	TWeakPtr<SDockTab> MainTab;
 
+	TSharedPtr<FWorkspaceItem> WorkspaceMenuCategory;
+
 	class UEditorInventoryWidget* InventoryTab;
 
 	class UBrowserAssetsWidget* BrowserAssetsTab;

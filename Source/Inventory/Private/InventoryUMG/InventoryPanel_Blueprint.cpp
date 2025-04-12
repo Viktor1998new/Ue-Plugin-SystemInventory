@@ -3,8 +3,6 @@
 #include "InventoryUMG/InventoryPanel_Blueprint.h"
 #include "InventoryUMG/InventoryPanelSlot.h"
 
-#define LOCTEXT_NAMESPACE "UMG"
-
 UInventoryPanel_Blueprint::UInventoryPanel_Blueprint(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

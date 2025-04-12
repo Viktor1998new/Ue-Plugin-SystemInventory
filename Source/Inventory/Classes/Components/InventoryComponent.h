@@ -2,53 +2,9 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "InventorySlot.h"
 #include "ItemActor.h"
 #include "InventoryComponent.generated.h"
-
-class UInventorySettings;
-
-USTRUCT(BlueprintType)
-struct INVENTORY_API FInventorySlot
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-		UItemAsset* ItemAsset;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-		FIntPoint PositionSlot = FIntPoint::ZeroValue;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-		FString ItemData;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Slot")
-		int32 Count;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Slot")
-		bool IsRotate = false;
-
-	bool IsPosition(FIntPoint Position, FIntPoint Size);
-
-	bool operator == (const FInventorySlot& A) const {
-
-		return ItemAsset == A.ItemAsset && ItemData == A.ItemData;
-	}
-
-	void operator ++() {
-		Count++;
-	}
-
-	void operator --() {
-		Count--;
-	}
-
-	FIntPoint GetSize();
-	
-	FIntPoint GetSize(bool NewRotate);
-
-	FItemData& GetData();
-
-};
 
 USTRUCT(BlueprintType)
 struct INVENTORY_API FInventory
@@ -204,52 +160,4 @@ private:
 
 	bool SetPositionItem(int32 IndexItem, int32 Count, bool Rotate, FIntPoint NewPosition);
 
-};
-
-
-UCLASS(Abstract, ClassGroup = (Inventory), meta = (BlueprintSpawnableComponent), Blueprintable, BlueprintType)
-class INVENTORY_API UInventoryComponent_Blueprintable : public UInventoryComponent {
-
-	GENERATED_BODY()
-public:
-
-	virtual bool SetSlot(int32 Index, FInventorySlot NewValue) override {
-
-		float DelMass = 0, AddMass = 0;
-		if (Inventory.Items[Index].ItemAsset != NewValue.ItemAsset || Inventory.Items[Index].Count != NewValue.Count) {
-			DelMass = Inventory.Items[Index].ItemAsset->SlotItemData.MassItem * Inventory.Items[Index].Count;
-			AddMass = NewValue.ItemAsset->SlotItemData.MassItem * NewValue.Count;
-		}
-
-		bool Is_Seted = ReceiveSetSlot(Index, NewValue);
-
-		if (Is_Seted) {
-			Inventory.Massa -= DelMass;
-			Inventory.Massa += AddMass;
-			ChangeSlot(Index, NewValue, ETypeSetItem::ChangeSlot);
-		}
-
-		return Is_Seted;
-	};
-
-	virtual	bool AddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index) override {
-
-		bool L_IsAdding = ReceiveAddSlot(NewSlot, FindPositionSlot, Index);
-
-		if (L_IsAdding) {
-			OnAddItem.Broadcast(Index);
-			Inventory.Massa += NewSlot.ItemAsset->SlotItemData.MassItem * NewSlot.Count;
-			ChangeSlot(Index, NewSlot, ETypeSetItem::Add);
-		}
-
-		return L_IsAdding;
-	};
-
-protected:
-	
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Add Slot"))
-		bool ReceiveAddSlot(FInventorySlot NewSlot, bool FindPositionSlot, int32& Index);
-		
-	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Set Slot"))
-		bool ReceiveSetSlot(int32 Index, FInventorySlot NewValue);
 };

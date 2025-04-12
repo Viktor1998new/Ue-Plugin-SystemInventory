@@ -54,12 +54,38 @@ void UMenuContextItemWidget::CheckSettingsData(FInventorySlot InventorySlot) {
 	}
 }
 
+void UMenuContextItemWidget::OnChangingProperties(const FPropertyChangedEvent& Property)
+{
+	if (!Inventory)
+		return;
+
+	FInventorySlot L_SlotItem = Inventory->GetItem(Index);
+	FInventorySlot L_NewSlotItem = L_SlotItem;
+	L_NewSlotItem.ItemAsset = ItemSettings->Asset;
+	L_NewSlotItem.ItemData = ItemSettings->Data;
+
+	if (ItemSettings->Asset->SlotItemData.MaxStack < ItemSettings->Count)
+		ItemSettings->Count = ItemSettings->Asset->SlotItemData.MaxStack;
+
+	L_NewSlotItem.Count = L_NewSlotItem.ItemAsset->SlotItemData.StackItem ? ItemSettings->Count : 1;
+
+	if (!Inventory->SetSlot(Index, L_NewSlotItem)) {
+
+		ItemSettings->Asset = L_SlotItem.ItemAsset;
+
+		CheckSettingsData(L_SlotItem);
+
+		return;
+	}
+}
+
 void UMenuContextItemWidget::SetItem(TSharedPtr<class SMenuAnchor> MewMenu, UInventoryComponent* NewInventory, int32 NewIndex)
 {
 	if(!IsValid(ItemSettings))
 		ItemSettings = NewObject<UItemSettings>();
 
 	FInventorySlot L_SlotItem = NewInventory->GetItem(NewIndex);
+	ItemSettings->Index = NewIndex;
 	ItemSettings->Asset = L_SlotItem.ItemAsset;
 	ItemSettings->Count = L_SlotItem.Count;
 	CheckSettingsData(L_SlotItem);
@@ -76,6 +102,7 @@ TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
 	if (!ItemSettings->Asset) {
 		ItemSettings->Asset = Inventory->GetItem(Index).ItemAsset;
 	}
+
 	FDetailsViewArgs DetailsViewArgs;
 
 	DetailsViewArgs.bUpdatesFromSelection = false;
@@ -91,30 +118,8 @@ TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
 	TSharedPtr<IDetailsView> MyDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 	
  	MyDetailsView->SetObject(ItemSettings);
-	MyDetailsView->OnFinishedChangingProperties().AddLambda([this](const FPropertyChangedEvent& Property) {
 
-		if (!Inventory)
-			return;
-
-		FInventorySlot L_SlotItem = Inventory->GetItem(Index);
-		FInventorySlot L_NewSlotItem = L_SlotItem;
-		L_NewSlotItem.ItemAsset = ItemSettings->Asset;
-		L_NewSlotItem.ItemData = ItemSettings->Data;
-
-		if(ItemSettings->Asset->SlotItemData.MaxStack < ItemSettings->Count)
-			ItemSettings->Count = ItemSettings->Asset->SlotItemData.MaxStack;
-
-		L_NewSlotItem.Count = L_NewSlotItem.ItemAsset->SlotItemData.StackItem ? ItemSettings->Count : 1;
-
-		if (!Inventory->SetSlot(Index, L_NewSlotItem)) {
-
-			ItemSettings->Asset = L_SlotItem.ItemAsset;
-			
-			CheckSettingsData(L_SlotItem);
-
-			return;
-		}
-	});
+	MyDetailsView->OnFinishedChangingProperties().AddUObject(this, &UMenuContextItemWidget::OnChangingProperties);
 
 	return SNew(SBox)[
 		SNew(SVerticalBox)

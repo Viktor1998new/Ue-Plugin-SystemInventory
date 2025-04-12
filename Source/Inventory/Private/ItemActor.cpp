@@ -1,6 +1,6 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "Inventory/ItemActor.h"
+#include "ItemActor.h"
 
 // Sets default values
 AItemActor::AItemActor()

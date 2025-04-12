@@ -8,7 +8,7 @@
 #include "Widgets/SWidget.h"
 #include "Layout/Margin.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
-#include "Inventory/InventoryComponent.h"
+#include "Components/InventoryComponent.h"
 #include "InventoryPanel.generated.h"
 
 class UInventoryPanelSlot;

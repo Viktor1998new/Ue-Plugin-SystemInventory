@@ -13,8 +13,8 @@ public class Inventory : ModuleRules
 			new string[]
 			{
 				"Core",
-                "Json",
-                "JsonUtilities",
+                		"Json",
+                		"JsonUtilities"
 			}
 			);
 			
@@ -26,24 +26,20 @@ public class Inventory : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"UMG",
+				"UMG"
 			}
 			);
 
 		PublicIncludePaths.AddRange(
 			new string[] {
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/Inventory"),
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG"),
-
-				// ... add public include paths required here ...
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes"),
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG")
 			});
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/Inventory"),
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG"),
-
-				// ... add public include paths required here ...
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/"),
+				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG")
 			});
     }
 }

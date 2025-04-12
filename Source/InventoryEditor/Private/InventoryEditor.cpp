@@ -38,7 +38,7 @@ void FInventoryEditorModule::StartupModule()
 		EExtensionHook::After,
 		NULL,
 		FMenuExtensionDelegate::CreateRaw(this, &FInventoryEditorModule::AddMenuEntry));
-		
+
 	LevelEditor.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
 
 	FInventoryEditorStyle::Get();
@@ -46,10 +46,10 @@ void FInventoryEditorModule::StartupModule()
 
 void FInventoryEditorModule::AddMenuEntry(FMenuBuilder& MenuBuilder)
 {
-	MenuBuilder.BeginSection("InventoryMenu", TAttribute<FText>(FText::FromString("Inventory")));
+	MenuBuilder.BeginSection("InventoryMenu", LOCTEXT("Inventory", "Inventory"));
 	{
-		MenuBuilder.AddMenuEntry(FText::FromString("Editor Inventory"),
-			FText::FromString("Open Inventory Editor"),
+		MenuBuilder.AddMenuEntry(LOCTEXT("InventoryEditor", "InventoryEditor"),
+			LOCTEXT("OpenInventoryEditor", "Open Inventory Editor"),
 			FSlateIcon(),
 			FUIAction(FExecuteAction::CreateRaw(this, &FInventoryEditorModule::RegisterEditor)));
 	}
@@ -57,7 +57,7 @@ void FInventoryEditorModule::AddMenuEntry(FMenuBuilder& MenuBuilder)
 }
 
 void FInventoryEditorModule::RegisterEditor() {
-	
+
 	if (!TabManager.IsValid()) {
 		FGlobalTabmanager::Get()->RegisterNomadTabSpawner("InventoryEditorTabName", FOnSpawnTab::CreateRaw(this, &FInventoryEditorModule::OnSpawnPluginTab))
 			.SetDisplayName(LOCTEXT("InventoryEditor", "InventoryEditor"))
@@ -68,7 +68,7 @@ void FInventoryEditorModule::RegisterEditor() {
 }
 
 TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterBrowserAssetsTab(const FSpawnTabArgs& SpawnTabArgs) {
-	
+
 	UWorld* World = GEditor->GetEditorWorldContext().World();
 	if (World)
 	{
@@ -97,7 +97,7 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterBrowserAssetsTab(const FS
 }
 
 TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawnTabArgs& SpawnTabArgs) {
-		
+
 	UWorld* World = GEditor->GetEditorWorldContext().World();
 	if (World)
 	{
@@ -113,11 +113,11 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawn
 		.TabRole(ETabRole::NumRoles)
 		[
 			SNew(SVerticalBox)
-			+ SVerticalBox::Slot()
-			.HAlign(HAlign_Fill)
-			[
-				InventoryTab->TakeWidget()
-			]
+				+ SVerticalBox::Slot()
+				.HAlign(HAlign_Fill)
+				[
+					InventoryTab->TakeWidget()
+				]
 		];
 
 	L_Dock->SetTabManager(TabManager);
@@ -143,10 +143,10 @@ void FInventoryEditorModule::UpdateRespawnListIfNeeded(TSharedRef<SDockTab> TabB
 TSharedRef<SDockTab> FInventoryEditorModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
 	const TSharedRef<SDockTab> NomadTab = SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab);
+		.TabRole(ETabRole::MajorTab);
 
 	NomadTab->SetOnTabClosed(SDockTab::FOnTabClosedCallback::CreateRaw(this, &FInventoryEditorModule::UpdateRespawnListIfNeeded));
-	
+
 	TabManager = FGlobalTabmanager::Get()->NewTabManager(NomadTab);
 
 	TabManagerLayout = FTabManager::NewLayout("InventoryEditorWindow")
@@ -167,7 +167,7 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnSpawnPluginTab(const FSpawnTabArg
 				->AddTab(TabBrowserAssetsName, ETabState::OpenedTab)
 			)
 		);
-	
+
 	TabManager.Get()->RegisterTabSpawner(TabInventoryName, FOnSpawnTab::CreateRaw(this, &FInventoryEditorModule::OnRegisterInventoryTab))
 		.SetDisplayName(LOCTEXT("Inventory", "Inventory"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
@@ -176,7 +176,7 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnSpawnPluginTab(const FSpawnTabArg
 		.SetDisplayName(LOCTEXT("BrowserAssets", "BrowserAssets"))
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
-	TSharedRef<SWidget> TabContents = TabManager->RestoreFrom(TabManagerLayout.ToSharedRef(), TSharedPtr<SWindow>(),false, EOutputCanBeNullptr::IfNoTabValid).ToSharedRef();
+	TSharedRef<SWidget> TabContents = TabManager->RestoreFrom(TabManagerLayout.ToSharedRef(), TSharedPtr<SWindow>(), false, EOutputCanBeNullptr::IfNoTabValid).ToSharedRef();
 
 	NomadTab->SetContent(TabContents);
 	MainTab = NomadTab;
@@ -212,7 +212,7 @@ void FInventoryEditorModule::ChangeTabWorld(UWorld* World, EMapChangeType MapCha
 void FInventoryEditorModule::ShutdownModule()
 {
 	if (!FModuleManager::Get().IsModuleLoaded("AssetTools")) return;
-	
+
 	FAssetToolsModule::GetModule().Get().UnregisterAssetTypeActions(ItemAssetAction.ToSharedRef());
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner("InventoryEditorTabName");

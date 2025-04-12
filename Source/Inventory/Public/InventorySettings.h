@@ -42,3 +42,5 @@ public:
         return EnumHasAnyFlags<EInventoryFlag>((EInventoryFlag)InventoryFlags, Contains);
     }
 };
+
+#define HasInventoryFlag(Flag) UInventorySettings::Get()->HasInventoryFlag(Flag)

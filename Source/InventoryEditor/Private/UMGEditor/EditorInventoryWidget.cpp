@@ -4,7 +4,7 @@
 #include "UMGEditor/InventoryWidget.h"
 
 #include "InventorySettings.h"
-#include "Inventory/InventoryComponent.h"
+#include "Components/InventoryComponent.h"
 
 #include "Editor.h"
 #include "Editor/EditorEngine.h"

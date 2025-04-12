@@ -5,7 +5,7 @@
 #include "UObject/ObjectMacros.h"
 #include "InventoryUMG/InventoryPanel.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
-#include "Inventory/InventoryComponent.h"
+#include "Components/InventoryComponent.h"
 #include "InventoryGrid.generated.h"
 
 UCLASS()

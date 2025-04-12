@@ -1,26 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 #include "SlotsWidget.h"
 #include "InventoryUMG/InventoryPanel.h"
-#include "InventoryUMG/InventoryPanelSlot.h"
 #include "Brushes/SlateColorBrush.h"
-
-FMargin USlotItemListWidget::GetOffsetMouse() const
-{
-	return FMargin(MousePosition.X, MousePosition.Y);
-}
-
-FReply USlotItemListWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
-{
-
-	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton)) {
-
-		MousePosition = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
-		MenuAnchor->SetIsOpen(true, true);
-		ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
-	}
-
-	return FReply::Handled();
-}
 
 void USlotItemListWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot)
 {

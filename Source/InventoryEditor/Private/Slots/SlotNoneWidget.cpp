@@ -1,6 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 #include "SlotsWidget.h"
 #include "InventoryUMG/InventoryPanelSlot.h"
+#include "InventoryUMG/InventoryPanel.h"
 #include "Brushes/SlateColorBrush.h"
 
 bool USlotNoneWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
@@ -15,7 +16,7 @@ bool USlotNoneWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 		if (auto SlotAsset = Cast<USlotAssetWidget>(L_Operation->Payload))
 		{
 			FIntPoint L_CurrentPositin = FIntPoint(L_Slot->Transform.Offsets.Left / SizeSlot, L_Slot->Transform.Offsets.Top / SizeSlot);
-			UInventoryComponent* L_Inventory = GetInventory();
+			UInventoryComponent* L_Inventory = Cast<UInventoryPanel>(GetParent())->Inventory;
 			FInventorySlot L_NewSlot;
 			L_NewSlot.ItemAsset = SlotAsset->Asset;
 			L_NewSlot.PositionSlot = L_CurrentPositin;
@@ -46,11 +47,6 @@ TSharedRef<SWidget> USlotNoneWidget::RebuildWidget()
 		];
 
 	return  MyPanel.ToSharedRef();
-}
-
-FMargin USlotItemWidget::GetOffsetMouse() const
-{
-	return FMargin(MousePosition.X, MousePosition.Y);
 }
 
 void USlotItemWidget::SetVisible()

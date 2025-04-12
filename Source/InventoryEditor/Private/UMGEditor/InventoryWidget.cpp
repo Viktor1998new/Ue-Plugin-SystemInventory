@@ -4,7 +4,7 @@
 
 #include "SlotsWidget.h"
 #include "InventorySettings.h"
-#include "Inventory/InventoryComponent.h"
+#include "Components/InventoryComponent.h"
 
 #include "InventoryUMG/InventoryGrid.h"
 #include "InventoryUMG/InventoryList.h"
@@ -14,9 +14,7 @@
 #include "Components/ScaleBox.h"
 #include "Components/ScaleBoxSlot.h"
 #include "Brushes/SlateColorBrush.h"
-#include <InventoryUMG/InventoryPanelSlot.h>
-
-#define HasInventoryFlag(Flag) UInventorySettings::Get()->HasInventoryFlag(Flag)
+#include "InventoryUMG/InventoryPanelSlot.h"
 
 FReply UInventoryWidget::RecalculationMass()
 {
