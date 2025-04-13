@@ -1,11 +1,11 @@
-//Copyright(c) 2022 - 2025, Viktor.F.P
+ //Copyright(c) 2022 - 2025, Viktor.F.P
 #include "SlotsWidget.h"
 #include "InventoryUMG/InventoryPanel.h"
 #include "Brushes/SlateColorBrush.h"
 
 void USlotItemListWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot)
 {
-	Item_Index = NewIndex;
+	USlotWidget::OnChangedSlot_Implementation(NewIndex, NewSlot);
 
 	if (!NewSlot.ItemAsset)
 		return;
@@ -30,18 +30,9 @@ void USlotItemListWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventor
 		else
 			Text_Name.ToSharedRef()->SetText(Asset->SlotItemData.NameItem);
 
-		Image.ToSharedRef()->SetImage(Brush);
+		ImageItem.ToSharedRef()->SetImage(Brush);
 	}
 
-}
-
-TSharedRef<SWidget> USlotItemListWidget::HandleGetMenuContent()
-{
-	UInventoryPanel* Panel = Cast<UInventoryPanel>(GetParent());
-
-	ContextMenu = CreateWidget<UMenuContextItemWidget>(this);
-	ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
-	return ContextMenu->TakeWidget();
 }
 
 TSharedRef<SWidget> USlotItemListWidget::RebuildWidget()
@@ -50,24 +41,26 @@ TSharedRef<SWidget> USlotItemListWidget::RebuildWidget()
 	FSlateFontInfo FontName = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
 	FSlateFontInfo FontData = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
 
-	TSharedPtr<SHorizontalBox> Horizontal = SNew(SHorizontalBox);
+	TSharedPtr<SHorizontalBox> Horizontal;
+		
+	SAssignNew(Horizontal,SHorizontalBox)
+		.Visibility(EVisibility::Visible)
+		+ SHorizontalBox::Slot()
+			.AutoWidth()
+			.Padding(FMargin(10.0f, 0.0f, 0.0f, 0.0f))
+			.HAlign(HAlign_Center)
+			.VAlign(VAlign_Center)[
+				SAssignNew(ImageItem, SImage)
+		]
 
-	Horizontal->AddSlot()
-		.AutoWidth()
-		.Padding(FMargin(10.0f, 0.0f, 0.0f, 0.0f))
-		.HAlign(HAlign_Center)
-		.VAlign(VAlign_Center)[
-			SAssignNew(Image, SImage)
-		];
-
-	Horizontal->AddSlot()
+		+ SHorizontalBox::Slot()
 		.AutoWidth()
 		.VAlign(VAlign_Center)[
 			SNew(SSpacer)
 				.Size(FVector2D(20.0f, 0.0f))
-		];
+		]
 
-	Horizontal->AddSlot()
+		+ SHorizontalBox::Slot()
 		.AutoWidth()
 		.VAlign(VAlign_Center)
 		.HAlign(HAlign_Center)[
@@ -92,25 +85,24 @@ TSharedRef<SWidget> USlotItemListWidget::RebuildWidget()
 				]
 		];
 
-	TSharedPtr<SConstraintCanvas> Panel = SNew(SConstraintCanvas)
+	A_Offset.BindUObject(this, &USlotItemListWidget::GetOffsetMouse);
+
+	return SNew(SConstraintCanvas)
 		+ SConstraintCanvas::Slot()
 		.AutoSize(true)
 		.Anchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f))
 		.Offset(FMargin(0.0f, 0.0f, 0.0f, 0.0f))[
 			SNew(SBorder)
+				.Visibility(EVisibility::Visible)
 				.BorderImage(BrushSlot)[
 					Horizontal.ToSharedRef()
 				]
-		];
-
-	A_Offset.BindUObject(this, &USlotItemListWidget::GetOffsetMouse);
-
-	Panel.ToSharedRef()->AddSlot()
+		]
+		+SConstraintCanvas::Slot()
 		.Offset(A_Offset)
 		.AutoSize(true)[
 			SAssignNew(MenuAnchor, SMenuAnchor)
 				.Placement(EMenuPlacement::MenuPlacement_ComboBox)
-				.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemListWidget::HandleGetMenuContent))];
-
-	return Panel.ToSharedRef();
+				.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemListWidget::HandleGetMenuContent))
+		];
 }

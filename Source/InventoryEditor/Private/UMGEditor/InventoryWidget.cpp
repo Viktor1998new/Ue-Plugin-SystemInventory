@@ -14,6 +14,7 @@
 #include "Components/ScaleBox.h"
 #include "Components/ScaleBoxSlot.h"
 #include "Brushes/SlateColorBrush.h"
+#include "Blueprint/WidgetTree.h"
 #include "InventoryUMG/InventoryPanelSlot.h"
 
 FReply UInventoryWidget::RecalculationMass()
@@ -43,8 +44,8 @@ void UInventoryWidget::SwitchPanel(uint8 NewPanel)
 
     case 1:
 
-        InventoryList->SetInventory(Inventory);
         InventoryGrid->SetInventory(nullptr);
+        InventoryList->SetInventory(Inventory);
         break;
     }
 }
@@ -63,7 +64,8 @@ bool UInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
             L_NewSlot.Count = 1;
             L_NewSlot.IsRotate = L_Operation->GetRotateItem();
             int32 L_Index;
-            return Inventory->AddSlot(L_NewSlot, true, L_Index);   
+            return Inventory->AddSlot(L_NewSlot, true, L_Index);
+            
         }
     }
 
@@ -89,45 +91,24 @@ void UInventoryWidget::SetInventory(UInventoryComponent* NewInventory, uint8 New
 
 TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
 {
+    Super::RebuildWidget();
+
     FSlateColorBrush* BrushButtons = new FSlateColorBrush(FLinearColor(0.0f, 0.0f, 0.0f));
     FSlateColorBrush* BrushInventory = new FSlateColorBrush(FLinearColor(0.01f, 0.01f, 0.01f));
 
     FSlateFontInfo TextFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
     FSlateFontInfo ButtonFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
 
-    TSharedPtr<SHorizontalBox> TitlePanel = SNew(SHorizontalBox)
+    SAssignNew(Recalculation,SHorizontalBox) 
         + SHorizontalBox::Slot()
-        .AutoWidth()
-        .HAlign(HAlign_Fill)
-        .VAlign(VAlign_Center)[
-            SAssignNew(TextNameActor, STextBlock)
-                .Font(TextFont)
-        ];
-                   
-    TitlePanel->AddSlot()
-        .AutoWidth()
-        .HAlign(HAlign_Fill)
-        .VAlign(VAlign_Center)[
-            SAssignNew(TextNameActor, STextBlock)
-                .Font(TextFont)
-        ];
-                    
-    TitlePanel->AddSlot().AutoWidth()[
-        SNew(SSpacer).Size(FVector2D(5.0f, 0.0f))
-    ];
-
-    Recalculation = SNew(SHorizontalBox);
-
-    Recalculation->AddSlot()
         .AutoWidth()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SAssignNew(MassText, STextBlock)
                 .Font(TextFont)
                 .Text(FText::FromString(""))
-        ];
-
-    Recalculation->AddSlot()
+        ]
+        + SHorizontalBox::Slot()
         .AutoWidth()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
@@ -137,11 +118,32 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
                     SNew(STextBlock)
                         .Font(TextFont)
                         .Text(FText::FromString("Recalculation Mass"))
-                ]
-        ];
+                    ]
+         ];
 
-
-    TitlePanel->AddSlot().AutoWidth()
+    TSharedPtr<SHorizontalBox> TitlePanel;
+    
+    SAssignNew(TitlePanel,SHorizontalBox)
+        + SHorizontalBox::Slot()
+        .AutoWidth()
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Center)[
+            SAssignNew(TextNameActor, STextBlock)
+                .Font(TextFont)
+        ]
+        + SHorizontalBox::Slot()
+        .AutoWidth()
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Center)[
+            SAssignNew(TextNameActor, STextBlock)
+                .Font(TextFont)
+        ]
+        + SHorizontalBox::Slot()
+        .AutoWidth()[
+            SNew(SSpacer).Size(FVector2D(5.0f, 0.0f))
+        ]
+        + SHorizontalBox::Slot()
+        .AutoWidth()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             Recalculation.ToSharedRef()
@@ -154,62 +156,53 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
             TitlePanel.ToSharedRef()
         ];
 
-    InventoryGridBox = NewObject<UScaleBox>(this);
-
-    InventoryGrid = NewObject<UInventoryGrid>(InventoryGridBox);
+    InventoryGrid = WidgetTree->ConstructWidget<UInventoryGrid>(UInventoryGrid::StaticClass(), TEXT("C_InventoryGrid"));
+    
     InventoryGrid->NoneSlot = USlotNoneWidget::StaticClass();
     InventoryGrid->ItemSlot = USlotItemWidget::StaticClass();
 
-    auto SlotGrid = Cast<UScaleBoxSlot>(InventoryGridBox->AddChild(InventoryGrid));
-    SlotGrid->SetHorizontalAlignment(HAlign_Fill);
-    SlotGrid->SetVerticalAlignment(VAlign_Fill);
-
-    InventoryListBox = NewObject<UScaleBox>(this);
-    InventoryList = NewObject<UInventoryList>(InventoryListBox);
+    InventoryList = WidgetTree->ConstructWidget<UInventoryList>(UInventoryList::StaticClass(), TEXT("C_InventoryList"));
     InventoryList->SizeSlot = 62.0f;
     InventoryList->ItemSlot = USlotItemListWidget::StaticClass();
-
-    auto SlotList = Cast<UScaleBoxSlot>(InventoryListBox->AddChild(InventoryList));
-    SlotList->SetHorizontalAlignment(HAlign_Fill);
-    SlotList->SetVerticalAlignment(VAlign_Fill);
-
-    MyPanel = SNew(SVerticalBox);
-
-    MyPanel->AddSlot()
-    .AutoHeight()
-    .VAlign(VAlign_Fill)
-    .HAlign(HAlign_Fill)[
-        SNew(SBox)
-            .Content()[
-                BorderButtons.ToSharedRef()
-            ]
-    ];
-
-    MyPanel->AddSlot()
-    .AutoHeight()
-    .HAlign(HAlign_Fill)
-    .VAlign(VAlign_Fill)[
-        SNew(SBorder)
-            .BorderImage(BrushInventory)
-            .Content()[
-                SAssignNew(Switcher, SWidgetSwitcher)
-                    + SWidgetSwitcher::Slot()[
-                        InventoryGridBox->TakeWidget()
-                    ]
-
-                    + SWidgetSwitcher::Slot()[
-                        InventoryListBox->TakeWidget()
-                    ]
-            ]
-    ];
-
-    MyPanel->AddSlot()
-    .AutoHeight()[
-        SNew(SSpacer).Size(FVector2D(0.0f, 10.0f))
-
-    ];
-
-    return MyPanel.ToSharedRef();
+    
+    return SNew(SVerticalBox)
+        + SVerticalBox::Slot()
+        .AutoHeight()
+        .VAlign(VAlign_Fill)
+        .HAlign(HAlign_Fill)[
+            SNew(SBox)
+                .Content()[
+                    BorderButtons.ToSharedRef()
+                ]
+        ]
+        + SVerticalBox::Slot()
+        .AutoHeight()
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Fill)[
+            SNew(SBorder)
+                .BorderImage(BrushInventory)
+                .Content()[
+                    SAssignNew(Switcher, SWidgetSwitcher)
+                        + SWidgetSwitcher::Slot()
+                        .HAlign(HAlign_Left)
+                        .VAlign(VAlign_Top)[
+                            SNew(SScaleBox)[
+                                InventoryGrid->TakeWidget()
+                            ]
+                        ]
+                        + SWidgetSwitcher::Slot()[
+                            SNew(SScaleBox)
+                                .HAlign(HAlign_Fill)
+                                .VAlign(VAlign_Fill)[
+                                InventoryList->TakeWidget()
+                            ]
+                        ]
+                ] 
+        ]
+        + SVerticalBox::Slot()
+          .AutoHeight()[
+            SNew(SSpacer).Size(FVector2D(0.0f, 10.0f))
+        ];
 }
 
 void UInventoryWidget::RemoveFromParent()
@@ -226,8 +219,6 @@ void UInventoryWidget::RemoveFromParent()
             
             InventoryGrid->SetInventory(nullptr);
             InventoryGrid->ClearChildren();
-            InventoryGridBox->RemoveChild(InventoryGrid);
-            InventoryGridBox->RemoveFromParent();
             InventoryGrid->RemoveFromParent();
         }
 
@@ -237,8 +228,6 @@ void UInventoryWidget::RemoveFromParent()
         if (IsValid(InventoryList)) {
             InventoryList->SetInventory(nullptr);
             InventoryList->ClearChildren();
-            InventoryListBox->RemoveChild(InventoryList);
-            InventoryListBox->RemoveFromParent();
             InventoryList->RemoveFromParent();
         }
 

@@ -11,7 +11,7 @@
 #include "ItemAsset_Action.h"
 #include "Widgets/Docking/SDockTab.h"
 
-IMPLEMENT_MODULE(FInventoryEditorModule, InventoryEditorModule);
+IMPLEMENT_MODULE(FInventoryEditorModule, InventoryEditor);
 
 static const FName TabInventoryName = "Inventory";
 static const FName TabBrowserAssetsName = "BrowserAssets";

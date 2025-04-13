@@ -101,16 +101,20 @@ class INVENTORYEDITOR_API USlotWidget : public UUserWidget, public IPanelInvento
 	GENERATED_BODY()
 public:
 
-	UInventoryComponent* GetInventory();
+	UInventoryComponent* GetInventory() const;
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 protected:
+
+	virtual void OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot) override;
+
 	FMargin GetOffsetMouse() const;
 
-	TSharedPtr<class SBorder> ImageItem;
-	TSharedPtr<class STextBlock> NumberText;
+	TSharedRef<SWidget> HandleGetMenuContent();
+
+	TSharedPtr<class SImage> ImageItem;
 	TSharedPtr<class SMenuAnchor> MenuAnchor;
 
 	TAttribute<FMargin> A_Offset;
@@ -129,11 +133,7 @@ class INVENTORYEDITOR_API USlotItemWidget : public USlotWidget
 
 	class UInventotySlot_Drag* operation;
 
-public:
-
 	void SetVisible();
-protected:
-
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual FReply NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
@@ -142,9 +142,24 @@ protected:
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	TSharedPtr<SConstraintCanvas> MyPanel;
+	TSharedPtr<class STextBlock> NumberText;
 
-	TSharedRef<SWidget> HandleGetMenuContent();
+	// UWidget interface
+	virtual TSharedRef<SWidget> RebuildWidget() override;
 
+};
+
+UCLASS()
+class INVENTORYEDITOR_API USlotItemListWidget : public USlotWidget
+{
+	GENERATED_BODY()
+
+	virtual void OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot) override;
+
+	TSharedPtr<class STextBlock> Text_Name;
+	TSharedPtr<class STextBlock> Text_Data;
+
+	
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 
@@ -164,29 +179,4 @@ public:
 protected:
 
 	virtual TSharedRef<SWidget> RebuildWidget() override;
-};
-
-UCLASS()
-class INVENTORYEDITOR_API USlotItemListWidget : public USlotWidget
-{
-
-	GENERATED_BODY()
-
-
-protected:
-
-	UFUNCTION(BlueprintNativeEvent, Category = "InventoryPanel|Slot")
-	void OnChangedSlot(int32 NewIndex, FInventorySlot NewSlot);
-
-	virtual void OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot) override;
-
-	TSharedPtr<class SImage> Image;
-	TSharedPtr<class STextBlock> Text_Name;
-	TSharedPtr<class STextBlock> Text_Data;
-
-	TSharedRef<SWidget> HandleGetMenuContent();
-
-	// UWidget interface
-	virtual TSharedRef<SWidget> RebuildWidget() override;
-
 };

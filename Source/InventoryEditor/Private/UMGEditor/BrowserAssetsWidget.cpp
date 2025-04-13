@@ -5,6 +5,7 @@
 #include "SlotsWidget.h"
 #include "Widgets/Layout/SWrapBox.h"
 #include "Widgets/Layout/SScrollBox.h"
+#include "Misc/EngineVersionComparison.h"
 
 FReply UBrowserAssetsWidget::OoClickUpData()
 {
@@ -24,7 +25,13 @@ void UBrowserAssetsWidget::GenerationSlots()
 {
     FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
     FARFilter Filter;
+
+#if UE_VERSION_OLDER_THAN(5, 1, 1)
     Filter.ClassNames.Add(UItemAsset::StaticClass()->GetFName());
+#elif UE_VERSION_NEWER_THAN(5, 1, 1)
+    Filter.ClassPaths.Add(UItemAsset::StaticClass()->GetClassPathName());
+#endif
+
     Filter.PackagePaths.Add("/Game");
     Filter.bRecursivePaths = true;
     Filter.bRecursiveClasses = true;

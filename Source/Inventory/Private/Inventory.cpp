@@ -5,6 +5,8 @@
 #include "Developer/Settings/Public/ISettingsModule.h"
 #include "Engine/World.h"
 
+IMPLEMENT_MODULE(FInventoryModule, Inventory)
+
 #define LOCTEXT_NAMESPACE "FInventoryModule"
 DEFINE_LOG_CATEGORY(LogInventory)
 
@@ -36,5 +38,4 @@ UInventorySettings* FInventoryModule::GetSettings() const
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FInventoryModule, Inventory)
 

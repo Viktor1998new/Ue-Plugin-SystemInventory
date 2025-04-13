@@ -10,16 +10,13 @@ bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
 
 		FIntPoint SizeItem = GetSize();
 
-		SizeItem -= 1;
-		Size -= 1;
+//		Position.Y >= PositionSlot.Y ? Position.Y <= PositionSlot.Y + SizeItem.Y : Position.Y + Size.Y >= PositionSlot.Y
 
-		if ((Position.X >= PositionSlot.X && Position.X <= PositionSlot.X + SizeItem.X) ||
-			(Position.X + Size.X >= PositionSlot.X)) {
+		if (IsRang(Position.X, PositionSlot.X, (SizeItem.X - 1), (Size.X - 1))) {
 
 			if (HasInventoryFlag(EInventoryFlag::OnlyX)) return true;
 
-			return (Position.Y >= PositionSlot.Y && Position.Y <= PositionSlot.Y + SizeItem.Y) || 
-				(Position.Y + Size.Y >= PositionSlot.Y);
+			return IsRang(Position.Y, PositionSlot.Y, (SizeItem.Y - 1), (Size.Y - 1));
 		}
 	}
 
@@ -28,6 +25,15 @@ bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
 
 FItemData& FInventorySlot::GetData() {
 	return ItemAsset->SlotItemData;
+}
+
+bool FInventorySlot::IsRang(int Value, int Pos, int Min, int Max)
+{
+	if (Value >= Pos) {
+		return	Value <= Pos + Min;
+	}
+
+	return Value + Max >= Pos;
 }
 
 FIntPoint FInventorySlot::GetSize()

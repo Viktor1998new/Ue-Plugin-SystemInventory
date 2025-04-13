@@ -18,10 +18,6 @@ public:
 
 	uint8 Panel = 0;
 
-	TSharedPtr<class STextBlock> TextNameActor;
-	TSharedPtr<class SHorizontalBox> Recalculation;
-	TSharedPtr<class SWidgetSwitcher> Switcher;
-	TSharedPtr<class STextBlock> MassText;
 
 	FReply RecalculationMass();
 
@@ -33,12 +29,12 @@ public:
 
 protected:
 
-	class UScaleBox* InventoryGridBox;
-	class UScaleBox* InventoryListBox;
+	TSharedPtr<class STextBlock> TextNameActor;
+	TSharedPtr<class SHorizontalBox> Recalculation;
+	TSharedPtr<class SWidgetSwitcher> Switcher;
+	TSharedPtr<class STextBlock> MassText;
 
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
-
-	TSharedPtr<SVerticalBox> MyPanel;
 
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;

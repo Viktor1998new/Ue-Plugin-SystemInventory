@@ -49,7 +49,7 @@ void UInventoryGrid::AddNoneSlot(FIntPoint Position)
 }
 
 void UInventoryGrid::AddSlot(int32 IndexItem)
-{
+{	
 	UUserWidget* WidgetSlot = CreateWidget<UUserWidget>(this,ItemSlot);
 	UInventoryPanelSlot* NewSlot = Cast<UInventoryPanelSlot>(Super::AddChild(WidgetSlot));
 	FInventorySlot L_ItemSlot = Inventory->GetItem(IndexItem);

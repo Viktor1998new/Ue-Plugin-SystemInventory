@@ -42,8 +42,6 @@ protected:
 	
 	virtual void OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type) override;
 
-protected:
-
 	UFUNCTION()
 		void ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 

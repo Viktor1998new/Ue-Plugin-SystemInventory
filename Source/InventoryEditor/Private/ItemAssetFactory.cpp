@@ -5,6 +5,7 @@
 #include "ClassViewerFilter.h"
 #include "Kismet2/SClassPickerDialog.h"
 #include "Kismet2/KismetEditorUtilities.h"
+#include "Misc/EngineVersionComparison.h"
 
 class FItemAssetParentFilter : public IClassViewerFilter
 {
@@ -62,7 +63,13 @@ bool UItemAssetFactory::ConfigureProperties() {
 	Options.ExtraPickerCommonClasses.Add(UItemAsset::StaticClass());
 
 	TSharedPtr<FItemAssetParentFilter> Filter = MakeShareable(new FItemAssetParentFilter);
+	
+#if UE_VERSION_OLDER_THAN(5, 0, 3)
 	Options.ClassFilter = Filter;
+#elif UE_VERSION_NEWER_THAN(5, 0, 3)
+	Options.ClassFilters.Add(Filter.ToSharedRef());
+#endif
+	
 	Filter->DisallowedClassFlags = CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists;
 	Filter->AllowedChildrenOfClasses.Add(UItemAsset::StaticClass());
 

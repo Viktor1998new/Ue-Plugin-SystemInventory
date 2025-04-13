@@ -13,7 +13,7 @@ UInventoryPanel::UInventoryPanel(const FObjectInitializer& ObjectInitializer)
 void UInventoryPanel::RemoveFromParent() {
 
 	if (Inventory)
-		Inventory->NewDataSlot.Clear();
+		Inventory->NewDataSlot.Unbind();
 
 	Super::RemoveFromParent();
 }
@@ -21,15 +21,16 @@ void UInventoryPanel::RemoveFromParent() {
 void UInventoryPanel::SetInventory(UInventoryComponent * NewInventory)
 {
 	if (Inventory) {
-		Inventory->NewDataSlot.Clear();
+		Inventory->NewDataSlot.Unbind();
 		ClearChildren();
+		Inventory = nullptr;
 	}
 
 	if (!NewInventory) return;
 
 	Inventory = NewInventory;
 
-	Inventory->NewDataSlot.BindDynamic(this, &UInventoryPanel::OnChangeSlot);
+	Inventory->NewDataSlot.BindUFunction(this, TEXT("OnChangeSlot"));
 }
 
 UInventoryPanelSlot* UInventoryPanel::SlotAsInventorySlot(UWidget* Widget)

@@ -45,4 +45,8 @@ struct INVENTORY_API FInventorySlot
 
 	FItemData& GetData();
 
+private:
+
+	bool IsRang(int Value,int Pos, int Min, int Max);
+
 };

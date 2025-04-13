@@ -30,7 +30,8 @@ protected:
 
 	virtual	void OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetItem Type) override;
 
-	void ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
+	UFUNCTION()
+		void ChangeSlots(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
 
 	void SetSlotPosition(UInventoryPanelSlot* ChangeSlot, float Position);
 };

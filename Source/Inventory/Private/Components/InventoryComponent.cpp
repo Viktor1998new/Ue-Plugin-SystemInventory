@@ -80,6 +80,11 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 		return false;
 	}
 
+	if (!NewSlot.GetData().StackItem && NewSlot.Count > NewSlot.GetData().MaxStack) {
+		return false;
+	}
+	else NewSlot.Count = 1;
+
 	int32 IndexFull;
 
 	if (!IsPositionFree(NewSlot.PositionSlot, NewSlot.GetSize(), IndexFull)) {
@@ -99,11 +104,6 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 			return false;
 		}
 	}
-
-	if (!NewSlot.GetData().StackItem && NewSlot.Count > NewSlot.GetData().MaxStack) {
-		return false;
-	}
-	else NewSlot.Count = 1;
 
 	if (HasInventoryFlag(EInventoryFlag::Mass)) {
 		Inventory.Massa += NewSlot.GetData().MassItem * NewSlot.Count;

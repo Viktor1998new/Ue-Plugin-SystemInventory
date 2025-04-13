@@ -48,9 +48,3 @@ TSharedRef<SWidget> USlotNoneWidget::RebuildWidget()
 
 	return  MyPanel.ToSharedRef();
 }
-
-void USlotItemWidget::SetVisible()
-{
-	SetVisibility(ESlateVisibility::Visible);
-	ImageItem->SetVisibility(TAttribute<EVisibility>(EVisibility::Visible));
-}

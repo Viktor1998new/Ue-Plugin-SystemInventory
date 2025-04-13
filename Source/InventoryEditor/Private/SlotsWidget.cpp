@@ -3,9 +3,15 @@
 #include "InventoryUMG/InventoryPanel.h"
 #include "Brushes/SlateColorBrush.h"
 
-UInventoryComponent* USlotWidget::GetInventory()
+UInventoryComponent* USlotWidget::GetInventory() const
 {
 	return Cast<UInventoryPanel>(GetParent())->Inventory;
+}
+
+void USlotWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot)
+{
+	Item_Index = NewIndex;
+	Item_Slot = NewSlot;
 }
 
 FMargin USlotWidget::GetOffsetMouse() const
@@ -15,33 +21,40 @@ FMargin USlotWidget::GetOffsetMouse() const
 
 FReply USlotWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	if(!InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
+		return FReply::Unhandled();
+
 	if (InMouseEvent.IsLeftControlDown()) {
 
-		if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
-
-			Cast<UInventoryPanel>(GetParent())->Inventory->RemoveItem(Item_Index, Item_Slot.Count);
-			return FReply::Handled();
-		}
+		GetInventory()->RemoveItem(Item_Index, Item_Slot.Count);
+		return FReply::Handled();
 	}
 
-	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
+	SetKeyboardFocus();
 
-		SetKeyboardFocus();
+	TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
 
-		TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
-
-		if (SlateWidgetDetectingDrag.IsValid())
-		{
-			return FReply::Handled().DetectDrag(SlateWidgetDetectingDrag.ToSharedRef(), EKeys::LeftMouseButton);
-		}
+	if (SlateWidgetDetectingDrag.IsValid())
+	{
+		return FReply::Handled().DetectDrag(SlateWidgetDetectingDrag.ToSharedRef(), EKeys::LeftMouseButton);
 	}
 
 	return FReply::Unhandled();
 }
 
+
+TSharedRef<SWidget> USlotWidget::HandleGetMenuContent()
+{
+	UInventoryPanel* Panel = Cast<UInventoryPanel>(GetParent());
+
+	ContextMenu = CreateWidget<UMenuContextItemWidget>(this);
+	ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
+	return ContextMenu->TakeWidget();
+}
+
+
 FReply USlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-
 	if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton) {
 		MousePosition = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
 		MenuAnchor->SetIsOpen(true, true);

@@ -3,6 +3,13 @@
 #include "InventoryUMG/InventoryPanelSlot.h"
 #include "InventoryUMG/InventoryPanel.h"
 
+void USlotItemWidget::SetVisible()
+{
+	SetVisibility(ESlateVisibility::Visible);
+	ImageItem->SetVisibility(EVisibility::Visible);
+	NumberText->SetVisibility(EVisibility::Visible);
+}
+
 void USlotItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
 	operation = NewObject<UInventotySlot_Drag>();
@@ -24,7 +31,8 @@ void USlotItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FP
 	operation->Inventory = Cast<UInventoryPanel>(GetParent())->Inventory;
 
 	SetVisibility(ESlateVisibility::HitTestInvisible);
-	ImageItem->SetVisibility(TAttribute<EVisibility>(EVisibility::Hidden));
+	ImageItem->SetVisibility(EVisibility::Hidden);
+	NumberText->SetVisibility(EVisibility::Hidden);
 
 	OutOperation = operation;
 }
@@ -47,13 +55,12 @@ FReply USlotItemWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyE
 
 void USlotItemWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot)
 {
-	Item_Index = NewIndex;
-	Item_Slot = NewSlot;
+	USlotWidget::OnChangedSlot_Implementation(NewIndex, NewSlot);
 
 	FSlateBrush* BrushButtons = new FSlateBrush();
 	BrushButtons->TintColor = FLinearColor(1.0f, 1.0f, 1.0f);
 	BrushButtons->SetResourceObject(NewSlot.ItemAsset->SlotItemData.ImageItem);
-	ImageItem->SetBorderImage(BrushButtons);
+	ImageItem->SetImage(BrushButtons);
 
 	if (NewSlot.ItemAsset->SlotItemData.StackItem)
 		NumberText->SetText(FText::AsNumber(NewSlot.Count));
@@ -81,41 +88,44 @@ bool USlotItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 	return IsSussen;
 }
 
-TSharedRef<SWidget> USlotItemWidget::HandleGetMenuContent()
-{
-	UInventoryPanel* Panel = Cast<UInventoryPanel>(GetParent());
-
-	ContextMenu = CreateWidget<UMenuContextItemWidget>(this);
-	ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);
-	return ContextMenu->TakeWidget();
-}
-
 TSharedRef<SWidget> USlotItemWidget::RebuildWidget()
 {
-	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
-	SetFocus();
+	bIsFocusable = true;
 
-	MyPanel = SNew(SConstraintCanvas).Visibility(EVisibility::Visible)
-		+ SConstraintCanvas::Slot()
-		.Anchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f))
-		.Offset(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
-		[
-			SAssignNew(ImageItem, SBorder)
-				.Content()[
-					SAssignNew(NumberText, STextBlock)
-						.Font(NumderFont)
-						.Text(FText::FromString(""))
-				]
-		];
+	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
 
 	A_Offset.BindUObject(this, &USlotItemWidget::GetOffsetMouse);
 
-	MyPanel->AddSlot()
-		.Offset(A_Offset)
-		.AutoSize(true)[
-			SAssignNew(MenuAnchor, SMenuAnchor)
-				.Placement(EMenuPlacement::MenuPlacement_ComboBox)
-				.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemWidget::HandleGetMenuContent))];
+	MyPanel = SNew(SConstraintCanvas)
+		.Visibility(EVisibility::Visible)
+		+ SConstraintCanvas::Slot()
+			.Offset(A_Offset)
+			.AutoSize(true)[
+				SAssignNew(MenuAnchor, SMenuAnchor)
+					.Placement(EMenuPlacement::MenuPlacement_ComboBox)
+					.OnGetMenuContent(FOnGetContent::CreateUObject(this, &USlotItemWidget::HandleGetMenuContent))
+			]
 
-	return SNew(SBox).WidthOverride(32.f).HeightOverride(32.f)[MyPanel.ToSharedRef()];
+		+ SConstraintCanvas::Slot()
+			.Anchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f))
+			.Offset(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
+			[
+				SAssignNew(ImageItem, SImage)
+			]
+		
+		+ SConstraintCanvas::Slot()
+			.Anchors(FAnchors(0.0f, 0.0f, 1.0f, 1.0f))
+			.Offset(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
+			[
+				SAssignNew(NumberText, STextBlock)
+					.Font(NumderFont)
+					.Text(FText::FromString(""))
+			];
+
+	return SNew(SBox)
+			.WidthOverride(32.f)
+			.HeightOverride(32.f)
+			[
+				MyPanel.ToSharedRef()
+			];
 }

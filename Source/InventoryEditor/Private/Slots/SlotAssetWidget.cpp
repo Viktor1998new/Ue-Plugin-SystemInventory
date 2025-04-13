@@ -37,7 +37,7 @@ FReply USlotAssetWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
 	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton)) {
 
 		SetKeyboardFocus();
-
+		
 		TSharedPtr<SWidget> SlateWidgetDetectingDrag = GetCachedWidget();
 
 		if (SlateWidgetDetectingDrag.IsValid())
@@ -91,7 +91,7 @@ FReply USlotAssetWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 
 TSharedRef<SWidget> USlotAssetWidget::RebuildWidget() {
 	
-	SetFocus();
+	bIsFocusable = true;
 
 	FSlateColorBrush* Brush = new  FSlateColorBrush(FLinearColor(0.0f, 0.0f, 0.0f, 0.6f));
 	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 9);
