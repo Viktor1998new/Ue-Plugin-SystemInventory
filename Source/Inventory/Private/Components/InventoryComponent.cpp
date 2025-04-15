@@ -5,7 +5,7 @@
 #include "InventorySlot.h"
 #include "Net/UnrealNetwork.h"
 
-#define MaXCountRow FMath::CeilToInt((float)Inventory.MaxSlot / (float)Inventory.CountRow) + 1
+#define MaXCountRow FMath::Floor((float)Inventory.MaxSlot / (float)Inventory.CountRow) + 1
 
 FInventory::FInventory() {
 	Massa = 0.0f;
@@ -240,31 +240,37 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 	/* the cycle will end if IsNoFree == true (an empty space is found)
 	or Y reaches a linite, 
 	if there is no limit it will continue until it finds a free space */
+	int NextY = L_MaXCountRow;
 
 	do {
-		if (L_IsOnlyX) {
-			if (NewPosition.X + (Size.X - 1) > (GetCountRow(Size.Y + NewPosition.Y == L_MaXCountRow) - 1)) {
+		if (NewPosition.X + Size.X > GetCountRow(Size.Y + NewPosition.Y == L_MaXCountRow)) {
+				
+			if(L_IsOnlyX)
 				return false;
-			}
-		}
-		else {
-			if (NewPosition.X + (Size.X - 1) > (GetCountRow(Size.Y + NewPosition.Y == L_MaXCountRow) - 1)) {
-				NewPosition.X = 0;
+				
+			NewPosition.X = 0;
 
-				if (L_IsLimitY)
-					if (NewPosition.Y + (Size.Y - 1) > (L_MaXCountRow - 1))
-						return false;
+			if (L_IsLimitY)
+				if (NewPosition.Y + Size.Y > L_MaXCountRow)
+					return false;
 
-				NewPosition.Y++;
-			}
+			NewPosition.Y = NextY;
+			NextY = L_MaXCountRow;
 		}
+		
 
 		IsNoFree = !IsPositionFree(NewPosition, Size, L_ItemIndex);
 
 		if (IsNoFree) {
 
 			if (L_IsSizeItem && Inventory.Items.IsValidIndex(L_ItemIndex))
-				NewPosition.X = Inventory.Items[L_ItemIndex].PositionSlot.X + Inventory.Items[L_ItemIndex].GetSize().X;
+			{
+				FIntPoint L_End = Inventory.Items[L_ItemIndex].PositionSlot + Inventory.Items[L_ItemIndex].GetSize();
+				NewPosition.X = L_End.X;
+
+				if (NextY >= L_End.Y)
+					NextY = L_End.Y;
+			}
 			else 
 				NewPosition.X++;
 			
@@ -465,10 +471,11 @@ bool UInventoryComponent::StackItem(int32 IndexItem, int32 ToIndex, int32 Count)
 
 bool UInventoryComponent::SetPositionItem(int32 IndexItem,int32 Count, bool Rotate, FIntPoint NewPosition)
 {
-	if (NewPosition.X + Inventory.Items[IndexItem].GetSize(Rotate).X > GetCountRow(NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y == MaXCountRow)) return false;
+	if (NewPosition.X + Inventory.Items[IndexItem].GetSize(Rotate).X > GetCountRow(NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y == MaXCountRow))
+		return false;
 
 	if (HasInventoryFlag(EInventoryFlag::LimitY))
-		if (NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y > MaXCountRow) return false;
+		if (NewPosition.Y + (Inventory.Items[IndexItem].GetSize(Rotate).Y -1) > MaXCountRow) return false;
 
 	for (int32 i = 0; i < Inventory.Items.Num(); i++)
 	{

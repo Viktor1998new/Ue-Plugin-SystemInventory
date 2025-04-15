@@ -10,6 +10,11 @@
 #include "InventoryEditorStyle.h"
 #include "ItemAsset_Action.h"
 #include "Widgets/Docking/SDockTab.h"
+#include "ContentBrowserModule.h"
+#include "Components/InventoryComponent.h"
+#include "AssetRegistry/AssetRegistryModule.h"
+#include "Engine/SCS_Node.h"
+#include "InventoryToolKit.h"
 
 IMPLEMENT_MODULE(FInventoryEditorModule, InventoryEditor);
 
@@ -17,6 +22,7 @@ static const FName TabInventoryName = "Inventory";
 static const FName TabBrowserAssetsName = "BrowserAssets";
 
 #define LOCTEXT_NAMESPACE "InventoryEditor"
+DEFINE_LOG_CATEGORY(LogInventoryEditor)
 
 void FInventoryEditorModule::StartupModule()
 {
@@ -40,6 +46,64 @@ void FInventoryEditorModule::StartupModule()
 		FMenuExtensionDelegate::CreateRaw(this, &FInventoryEditorModule::AddMenuEntry));
 
 	LevelEditor.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
+
+	FContentBrowserModule& ContentBrowserModule = FModuleManager::LoadModuleChecked<FContentBrowserModule>("ContentBrowser");
+	TArray<FContentBrowserMenuExtender_SelectedAssets>& MenuExtenders = ContentBrowserModule.GetAllAssetViewContextMenuExtenders();
+
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+
+	// Inject a menu entry on the asset menu every time one is opened by right clicking an asset.
+	MenuExtenders.Add(FContentBrowserMenuExtender_SelectedAssets::CreateLambda([&](const TArray<FAssetData>& InAssetData) {
+		TSharedRef<FExtender> B_MenuExtender = MakeShareable(new FExtender);
+
+		TArray<UObject*> InSupportedObjects;
+		for (FAssetData AssetDataX : InAssetData) {
+			if (!AssetDataX.GetClass()->IsChildOf(AActor::StaticClass())) {
+
+				UObject* LoadedObject = AssetDataX.GetAsset();
+
+				if (Cast<UBlueprint>(LoadedObject)){
+					if (auto bp = Cast<UBlueprint>(LoadedObject)->GeneratedClass)
+					{
+						UBlueprintGeneratedClass* BPClass = Cast<UBlueprintGeneratedClass>(bp);
+						const TArray<USCS_Node*>& AllSCSNodes = BPClass->SimpleConstructionScript->GetAllNodes();
+
+						for (const USCS_Node* NodeItr : AllSCSNodes)
+						{
+							if (NodeItr->ComponentClass->IsChildOf(UInventoryComponent::StaticClass()))
+							{
+								InSupportedObjects.Add(bp);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (InSupportedObjects.Num() == 0) {
+			return B_MenuExtender;
+		}
+
+		B_MenuExtender->AddMenuExtension(
+			"CommonAssetActions",
+			EExtensionHook::After,
+			NULL,
+			FMenuExtensionDelegate::CreateLambda([&, this, InSupportedObjects](FMenuBuilder& MenuBuilder) {
+
+				MenuBuilder.AddMenuEntry(LOCTEXT("InventoryEditor", "InventoryEditor"),
+					LOCTEXT("OpenInventoryEditor", "Open Inventory Editor"),
+					FSlateIcon(),
+					FUIAction(FExecuteAction::CreateLambda([this , InSupportedObjects]() {
+						for(auto L_OpenAsset : InSupportedObjects)
+						{
+							FInventoryToolKit::CreateEditor(EToolkitMode::Standalone, TSharedPtr<IToolkitHost>(), L_OpenAsset);
+						}
+					})));
+			})
+		);
+		return B_MenuExtender;
+		}));
 
 	FInventoryEditorStyle::Get();
 }
@@ -119,6 +183,8 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnRegisterInventoryTab(const FSpawn
 					InventoryTab->TakeWidget()
 				]
 		];
+
+	InventoryTab->SetSelecEvent();
 
 	L_Dock->SetTabManager(TabManager);
 

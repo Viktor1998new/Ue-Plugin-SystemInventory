@@ -5,6 +5,8 @@
 
 class SDockTab;
 
+DECLARE_LOG_CATEGORY_EXTERN(LogInventoryEditor, Log, All);
+
 class FInventoryEditorModule : public IModuleInterface
 {
 public:

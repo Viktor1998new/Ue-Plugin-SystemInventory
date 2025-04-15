@@ -17,6 +17,8 @@
 #include "Blueprint/WidgetTree.h"
 #include "InventoryUMG/InventoryPanelSlot.h"
 
+#define LOCTEXT_NAMESPACE "InventoryEditor"
+
 FReply UInventoryWidget::RecalculationMass()
 {
     if (HasInventoryFlag(EInventoryFlag::Mass))
@@ -78,7 +80,19 @@ void UInventoryWidget::SetInventory(UInventoryComponent* NewInventory, uint8 New
 
     SwitchPanel(NewPanel);
 
-    TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(Inventory->GetOwner()->GetName())));
+    if (!IsValid(Inventory))
+        return;
+
+    if(IsValid(Inventory->GetOwner()))
+    {
+        TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(Inventory->GetOwner()->GetName())));
+    }
+    else
+    {
+       FString L_NameComponent = Inventory->GetName();
+       L_NameComponent.RemoveFromEnd(TEXT("_GEN_VARIABLE"));
+       TextNameActor->SetText(FText::Format(FText::FromString("Component: {0}"), FText::FromString(L_NameComponent)));
+    }
 
     if (HasInventoryFlag(EInventoryFlag::Mass)) {
         Recalculation->SetVisibility(EVisibility::Visible);
@@ -234,3 +248,4 @@ void UInventoryWidget::RemoveFromParent()
         break;
     }
 }
+#undef LOCTEXT_NAMESPACE

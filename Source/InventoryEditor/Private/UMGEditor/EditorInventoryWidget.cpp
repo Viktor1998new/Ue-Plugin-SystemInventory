@@ -11,10 +11,13 @@
 #include "GameFramework/Actor.h"
 #include "Editor/UnrealEdEngine.h"
 #include "Engine/Selection.h"
+#include "Blueprint/WidgetTree.h"
 
+#include "Widgets/Layout/SScaleBox.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
 #include "Widgets/Layout/SScrollBox.h"
 #include "Brushes/SlateColorBrush.h"
+#include <EditorFontGlyphs.h>
 
 TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
 {
@@ -24,20 +27,62 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
     FSlateFontInfo ButtonFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
 
     TSharedPtr<SButton> ButtonList = SNew(SButton)
+        .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+        .ContentPadding(FMargin(12, 2))
         .OnClicked_UObject(this, &UEditorInventoryWidget::SwitchList)
         .Content()[
-            SNew(STextBlock)
-                .Font(ButtonFont)
-                .Text(FText::FromString("List"))
+            SNew(SScaleBox)[
+                SNew(SHorizontalBox)
+                    + SHorizontalBox::Slot()
+                    .VAlign(VAlign_Center)
+                    .HAlign(HAlign_Left)
+                    .AutoWidth()
+                    [
+                        SNew(STextBlock)
+                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
+                            .Text(FEditorFontGlyphs::Circle)
+                    ]
+                    + SHorizontalBox::Slot()
+                    .HAlign(HAlign_Fill)
+                    .VAlign(VAlign_Fill)
+                    [
+                        SNew(STextBlock)
+                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Text(FText::FromString("List"))
+                    ]
+            ]
         ];
 
     TSharedPtr<SButton> ButtonGrid = SNew(SButton)
+        .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+        .ContentPadding(FMargin(12, 2))
         .OnClicked_UObject(this, &UEditorInventoryWidget::SwitchGrid)
-        .Content()[
-            SNew(STextBlock)
-                .Font(ButtonFont)
-                .Text(FText::FromString("Grid"))
-        ];
+        [
+            SNew(SScaleBox)[
+                SNew(SHorizontalBox)
+                    + SHorizontalBox::Slot()
+                    .VAlign(VAlign_Center)
+                    .HAlign(HAlign_Left)
+                    .AutoWidth()
+                    [
+                        SNew(STextBlock)
+                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
+                            .Text(FEditorFontGlyphs::Circle)
+                    ]
+
+                    // Save All Text
+                    + SHorizontalBox::Slot()
+                    .HAlign(HAlign_Fill)
+                    .VAlign(VAlign_Fill)
+                    [
+                        SNew(STextBlock)
+                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Text(FText::FromString("Grid"))
+                    ]
+            ]
+       ];
 
 
     TSharedPtr<SHorizontalBox> ButtonsPanel = SNew(SHorizontalBox)
@@ -69,11 +114,11 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                         .VAlign(VAlign_Fill)
                         .HAlign(HAlign_Fill)
                         [
-                            SNew(SBorder)
-                                .BorderImage(BrushButtons)
-                                .Content()[
+                                SNew(SBorder)
+                                    .BorderImage(BrushButtons)
+                                    .Content()[
 
-                                    ButtonsPanel.ToSharedRef()
+                                        ButtonsPanel.ToSharedRef()
                                 ].HAlign(HAlign_Right)
                         ]
 
@@ -125,8 +170,8 @@ void UEditorInventoryWidget::PostRename(UObject* OldOuter, const FName OldName)
     Inventorys.Empty();
 }
 
-void UEditorInventoryWidget::NativeConstruct()
-{
+void UEditorInventoryWidget::SetSelecEvent() {
+
     UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine);
  
     if (!EditorEngine) return;
@@ -138,6 +183,8 @@ void UEditorInventoryWidget::NativeConstruct()
     OnSelect(nullptr);
 
     OnSelectHandle = Selection->SelectionChangedEvent.AddUFunction(this, FName("OnSelect"));
+
+    IsSelecEvent = true;
 }
 
 void UEditorInventoryWidget::NativeDestruct()
@@ -145,6 +192,9 @@ void UEditorInventoryWidget::NativeDestruct()
     CurrentSelectActors.Empty();
     ListInventory->ClearChildren();
     Inventorys.Empty();
+
+    if (!IsSelecEvent)
+        return;
 
     UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine);
     if (!EditorEngine) return;
@@ -183,7 +233,7 @@ void UEditorInventoryWidget::OnSelect(UObject* NewSelect)
 
                     if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
 
-                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
+                        UInventoryWidget* InventoryWidget = WidgetTree->ConstructWidget<UInventoryWidget>(UInventoryWidget::StaticClass(), FName(*FString::Printf(TEXT("C_UInventoryWidget_%s"),*SelecActor->GetName())));
 
                         ListInventory->AddSlot()
                             .AutoHeight()
@@ -212,7 +262,7 @@ void UEditorInventoryWidget::OnSelect(UObject* NewSelect)
 
                     if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
 
-                        UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
+                        UInventoryWidget* InventoryWidget = WidgetTree->ConstructWidget<UInventoryWidget>(UInventoryWidget::StaticClass(), FName(*FString::Printf(TEXT("C_UInventoryWidget_%s"), *SelecActor->GetName())));
 
                         ListInventory->AddSlot()
                             .AutoHeight()
@@ -235,6 +285,25 @@ void UEditorInventoryWidget::OnNoneSelect() {
     OnSelect(nullptr);
 }
 
+void UEditorInventoryWidget::SetInventory(UInventoryComponent* NewInventory) {
+
+    if (SinglInventory) {
+        SinglInventory->SetInventory(NewInventory, Panel);
+        return;
+    }
+
+    SinglInventory = WidgetTree->ConstructWidget<UInventoryWidget>(UInventoryWidget::StaticClass(), FName(*FString::Printf(TEXT("C_UInventoryWidget_%s"), *NewInventory->GetName())));
+    
+     ListInventory->AddSlot()
+        .AutoHeight()
+        .VAlign(VAlign_Top)
+        .HAlign(HAlign_Fill)
+        .Padding(FMargin(0.0f, 0.0f, 0.0f, 0.0f))
+        .AttachWidget(SinglInventory->TakeWidget());
+
+     SinglInventory->SetInventory(NewInventory, Panel);
+}
+
 void UEditorInventoryWidget::AddSelect(TArray<UObject*> NewSelectActors)
 {
     for (auto& NewSelect : NewSelectActors) {
@@ -245,7 +314,7 @@ void UEditorInventoryWidget::AddSelect(TArray<UObject*> NewSelectActors)
 
                 if (UInventoryComponent* NewInventory = Cast<UInventoryComponent>(SelecActor->GetComponentByClass(UInventoryComponent::StaticClass()))) {
                     
-                    UInventoryWidget* InventoryWidget = CreateWidget<UInventoryWidget>(this, UInventoryWidget::StaticClass());
+                    UInventoryWidget* InventoryWidget = WidgetTree->ConstructWidget<UInventoryWidget>(UInventoryWidget::StaticClass(), FName(*FString::Printf(TEXT("C_UInventoryWidget_%s"), *SelecActor->GetName())));
                     
                     ListInventory->AddSlot()
                         .AutoHeight()
@@ -297,6 +366,13 @@ void UEditorInventoryWidget::ReleaseSlateResources(bool bReleaseChildren)
 FReply UEditorInventoryWidget::SwitchList()
 {
     Panel = 1;
+
+    if (IsValid(SinglInventory))
+    {
+        SinglInventory->SwitchPanel(Panel);
+        return FReply::Handled();
+    }
+
     for (auto& Element : Inventorys) {
         Element.Value->SwitchPanel(Panel);
     }
@@ -307,6 +383,13 @@ FReply UEditorInventoryWidget::SwitchList()
 FReply UEditorInventoryWidget::SwitchGrid()
 {
     Panel = 0;
+
+    if (IsValid(SinglInventory))
+    {
+        SinglInventory->SwitchPanel(Panel);
+        return FReply::Handled();
+    }
+
     for (auto& Element : Inventorys) {
         Element.Value->SwitchPanel(Panel);
     }

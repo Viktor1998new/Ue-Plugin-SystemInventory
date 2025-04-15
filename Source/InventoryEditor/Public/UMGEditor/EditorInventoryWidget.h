@@ -8,6 +8,8 @@
 #include "EditorInventoryWidget.generated.h"
 
 class UInventoryWidget;
+class UInventoryComponent;
+ 
 
 UCLASS(HideDropdown)
 class INVENTORYEDITOR_API UEditorInventoryWidget : public UUserWidget
@@ -25,8 +27,6 @@ public:
 
 	FDelegateHandle OnSelectHandle;
 
-	virtual void NativeConstruct() override;
-
 	virtual void NativeDestruct() override;
 
 	UFUNCTION()
@@ -35,6 +35,8 @@ public:
 	void OnNoneSelect();
 
 	TMap<AActor*,UInventoryWidget*> Inventorys;
+
+	void SetInventory(UInventoryComponent* NewInventory);
 
 	void AddSelect(TArray<UObject*> NewSelectActors);
 
@@ -47,6 +49,8 @@ public:
 	FReply SwitchGrid();
 
 	TArray<UObject*> GetSelectedActors();
+	
+	void SetSelecEvent();
 
 protected:
 
@@ -56,4 +60,8 @@ protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	
 	virtual void PostRename(UObject* OldOuter, const FName OldName) override;
+
+private:
+	bool IsSelecEvent = false;
+	UInventoryWidget* SinglInventory;
 };

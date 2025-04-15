@@ -61,17 +61,31 @@ void UBrowserAssetsWidget::NativePreConstruct()
 
 TSharedRef<SWidget> UBrowserAssetsWidget::RebuildWidget()
 {
-    FSlateFontInfo ButtonFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
-
-    TSharedPtr<SButton> ButtonUpData = SNew(SButton)
-        .OnClicked_UObject(this, &UBrowserAssetsWidget::OoClickUpData)
-        .Content()[
-            SNew(STextBlock)
-                .Font(ButtonFont)
-                .Text(FText::FromString("Up Assets"))
-        ].HAlign(HAlign_Center).VAlign(VAlign_Center);
-
     return SNew(SVerticalBox)
+
+        + SVerticalBox::Slot()
+        .AutoHeight()
+        .HAlign(HAlign_Fill)
+        .VAlign(VAlign_Bottom)[
+            SNew(SButton)
+                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ContentPadding(FMargin(12, 2))
+                .OnClicked_UObject(this, &UBrowserAssetsWidget::OoClickUpData)
+                .HAlign(HAlign_Center)
+                .VAlign(VAlign_Center)
+                [
+                    SNew(STextBlock)
+                        .TextStyle( FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .Text(FText::FromString("Up Assets"))
+                ]
+        ]
+        + SVerticalBox::Slot()
+        .AutoHeight()
+        .VAlign(VAlign_Fill)
+        .HAlign(HAlign_Fill)[
+            SNew(SSpacer)
+                .Size(FVector2D(1.0f, 9.0f))
+        ]
         + SVerticalBox::Slot()
         .FillHeight(1.0f)
         .HAlign(HAlign_Fill)
@@ -86,12 +100,5 @@ TSharedRef<SWidget> UBrowserAssetsWidget::RebuildWidget()
                         .UseAllottedSize(true)
                        
                 ]
-        ]
-
-        + SVerticalBox::Slot()
-            .AutoHeight()
-            .HAlign(HAlign_Fill)
-            .VAlign(VAlign_Bottom)[
-                ButtonUpData.ToSharedRef()
-            ];
+        ];
 }
