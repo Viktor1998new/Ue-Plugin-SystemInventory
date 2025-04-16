@@ -2,7 +2,9 @@
 #include "SlotsWidget.h"
 #include "Brushes/SlateColorBrush.h"
 #include "PropertyEditorModule.h"
+#include "IPropertyTable.h"
 #include "InventoryLibrary.h"
+#include <ISinglePropertyView.h>
 
 FPropertyEditorModule& PropertyEditorModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
@@ -61,7 +63,7 @@ void UMenuContextItemWidget::OnChangingProperties(const FPropertyChangedEvent& P
 
 	FInventorySlot L_SlotItem = Inventory->GetItem(Index);
 	FInventorySlot L_NewSlotItem = L_SlotItem;
-	L_NewSlotItem.ItemAsset = ItemSettings->Asset;
+
 	L_NewSlotItem.ItemData = ItemSettings->Data;
 
 	if (ItemSettings->Asset->SlotItemData.MaxStack < ItemSettings->Count)
@@ -71,8 +73,6 @@ void UMenuContextItemWidget::OnChangingProperties(const FPropertyChangedEvent& P
 
 	if (!Inventory->SetSlot(Index, L_NewSlotItem)) {
 
-		ItemSettings->Asset = L_SlotItem.ItemAsset;
-
 		CheckSettingsData(L_SlotItem);
 
 		return;
@@ -81,6 +81,7 @@ void UMenuContextItemWidget::OnChangingProperties(const FPropertyChangedEvent& P
 
 void UMenuContextItemWidget::SetItem(TSharedPtr<class SMenuAnchor> MewMenu, UInventoryComponent* NewInventory, int32 NewIndex)
 {
+
 	if(!IsValid(ItemSettings))
 		ItemSettings = NewObject<UItemSettings>();
 
@@ -97,35 +98,28 @@ void UMenuContextItemWidget::SetItem(TSharedPtr<class SMenuAnchor> MewMenu, UInv
 
 TSharedRef<SWidget> UMenuContextItemWidget::RebuildWidget()
 {
-	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 9);
-
 	if (!ItemSettings->Asset) {
 		ItemSettings->Asset = Inventory->GetItem(Index).ItemAsset;
 	}
 
 	FDetailsViewArgs DetailsViewArgs;
 
+	DetailsViewArgs.bCustomNameAreaLocation = true;
 	DetailsViewArgs.bUpdatesFromSelection = false;
 	DetailsViewArgs.bLockable = false;
 	DetailsViewArgs.bAllowSearch = false;
 	DetailsViewArgs.bShowPropertyMatrixButton = false;
-	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::HideNameArea;
-	DetailsViewArgs.ViewIdentifier = NAME_None;
+	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::ObjectsUseNameArea;
 	DetailsViewArgs.bShowCustomFilterOption = false;
 	DetailsViewArgs.bShowOptions = false;
 	DetailsViewArgs.bShowScrollBar = false;
-
-	TSharedPtr<IDetailsView> MyDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 	
+	TSharedPtr<IDetailsView> MyDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
  	MyDetailsView->SetObject(ItemSettings);
-
+	
 	MyDetailsView->OnFinishedChangingProperties().AddUObject(this, &UMenuContextItemWidget::OnChangingProperties);
 
 	return SNew(SBox)[
-		SNew(SVerticalBox)
-			+ SVerticalBox::Slot()
-			.FillHeight(1.0f)[
-				MyDetailsView.ToSharedRef()
-			]
+		MyDetailsView.ToSharedRef()
 	];
 }

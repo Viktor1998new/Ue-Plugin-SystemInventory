@@ -56,6 +56,10 @@ TSharedRef<SWidget> USlotWidget::HandleGetMenuContent()
 FReply USlotWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton) {
+
+		if (!IsValid(Item_Slot.ItemAsset))
+			return FReply::Handled();
+
 		MousePosition = InGeometry.AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
 		MenuAnchor->SetIsOpen(true, true);
 		ContextMenu->SetItem(MenuAnchor, Cast<UInventoryPanel>(GetParent())->Inventory, Item_Index);

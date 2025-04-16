@@ -11,8 +11,10 @@ class FItemAssetParentFilter : public IClassViewerFilter
 {
 public:
 	FItemAssetParentFilter()
-		: DisallowedClassFlags(CLASS_None), bDisallowBlueprintBase(false)
-	{}
+		: DisallowedClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists), bDisallowBlueprintBase(false)
+	{
+		AllowedChildrenOfClasses.Add(UItemAsset::StaticClass());
+	}
 
 	TSet< const UClass* > AllowedChildrenOfClasses;
 	EClassFlags DisallowedClassFlags;
@@ -70,9 +72,6 @@ bool UItemAssetFactory::ConfigureProperties() {
 	Options.ClassFilters.Add(Filter.ToSharedRef());
 #endif
 	
-	Filter->DisallowedClassFlags = CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists;
-	Filter->AllowedChildrenOfClasses.Add(UItemAsset::StaticClass());
-
 	const FText TitleText = INVTEXT("Pick Item Asset Class");
 	UClass* ChosenClass = nullptr;
 	const bool bPressedOk = SClassPickerDialog::PickClass(TitleText, Options, ChosenClass, UItemAsset::StaticClass());

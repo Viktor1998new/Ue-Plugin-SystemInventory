@@ -4,6 +4,7 @@
 #include "InventoryUMG/InventoryPanelSlot.h"
 #include "GameFramework/PlayerState.h"
 #include "TimerManager.h"
+#include "Inventory.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 
@@ -20,7 +21,18 @@ void UInventoryList::SetInventory(UInventoryComponent* NewInventory)
 	
 	if (Inventory->CountItems() == 0) return;
 
-	for (int i = 0; i < Inventory->CountItems(); i++) AddSlot(i);
+	for (int i = 0; i < Inventory->CountItems(); i++)
+	{
+
+#if UE_EDITOR
+		if (!IsValid(Inventory->GetItem(i).ItemAsset)) {
+			FString PathError = Inventory->GetPathName();
+			PathError.RemoveFromEnd(TEXT("_GEN_VARIABLE"));
+			UE_LOG(LogInventory, Error, TEXT("Item Asset == nullptr, Need remove: %s  Index: %d"), *PathError, i);
+		}
+#endif
+		AddSlot(i);
+	}
 
 }
 

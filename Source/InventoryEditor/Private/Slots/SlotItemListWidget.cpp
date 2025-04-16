@@ -7,31 +7,34 @@ void USlotItemListWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventor
 {
 	USlotWidget::OnChangedSlot_Implementation(NewIndex, NewSlot);
 
-	if (!NewSlot.ItemAsset)
+	FSlateBrush* Brush = new FSlateBrush();
+
+	if (!IsValid(NewSlot.ItemAsset)) {
+
+		Brush->TintColor = FLinearColor(1.0f, 0.6f, 1.0f);
+		Brush->SetImageSize(FVector2D(SizeSlot));
+		ImageItem->SetImage(Brush);
+		Text_Name->SetText(FText::FromString("Null Item (Need Remove)"));
 		return;
+	}
 
 	UItemAsset* Asset = NewSlot.ItemAsset;
 	UTexture2D* Texture = Asset->SlotItemData.ImageItem;
 
-	FSlateBrush* Brush = new FSlateBrush();
+	Brush->SetResourceObject(Texture);
 
-	if (Brush->GetResourceObject() != Texture)
+	if (Texture)
 	{
-		Brush->SetResourceObject(Texture);
-
-		if (Texture)
-		{
-			Texture->bForceMiplevelsToBeResident = true;
-			Texture->bIgnoreStreamingMipBias = true;
-			Brush->ImageSize = FVector2D(32.f, 32.f);
-		}
-		if (Asset->SlotItemData.NameItem.IsEmpty())
-			Text_Name.ToSharedRef()->SetText(FText::FromString("No Name"));
-		else
-			Text_Name.ToSharedRef()->SetText(Asset->SlotItemData.NameItem);
-
-		ImageItem.ToSharedRef()->SetImage(Brush);
+		Texture->bForceMiplevelsToBeResident = true;
+		Texture->bIgnoreStreamingMipBias = true;
+		Brush->SetImageSize(FVector2D(32.f, 32.f));
 	}
+	if (Asset->SlotItemData.NameItem.IsEmpty())
+		Text_Name->SetText(FText::FromString("No Name"));
+	else
+		Text_Name->SetText(Asset->SlotItemData.NameItem);
+
+	ImageItem->SetImage(Brush);
 
 }
 

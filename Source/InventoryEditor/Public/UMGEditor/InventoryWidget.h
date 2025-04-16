@@ -14,18 +14,23 @@ public:
 
 	class UInventoryGrid* InventoryGrid;
 	class UInventoryList* InventoryList;
-	class UInventoryComponent* Inventory;
+	TArray<class UInventoryComponent*> Inventors;
+
+	int32 CurrentActive = 0;
+
+	bool IsListInventors = true;
 
 	uint8 Panel = 0;
-
 
 	FReply RecalculationMass();
 
 	void SwitchPanel(uint8 NewPanel);
 
 	void SetInventory(UInventoryComponent* NewInventory, uint8 NewPanel);
+	void SetInventory(TArray<UInventoryComponent*> NewInventors, uint8 NewPanel);
 
 	virtual void RemoveFromParent() override;
+	void SelectInventory(int32 Index);
 
 protected:
 
@@ -33,8 +38,11 @@ protected:
 	TSharedPtr<class SHorizontalBox> Recalculation;
 	TSharedPtr<class SWidgetSwitcher> Switcher;
 	TSharedPtr<class STextBlock> MassText;
+	TSharedPtr<class SComboButton> ListInventoryButtons;
 
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	TSharedRef<SWidget> GetListInventors();
 
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;

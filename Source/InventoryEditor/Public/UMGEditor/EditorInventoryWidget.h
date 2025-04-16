@@ -54,8 +54,11 @@ public:
 
 protected:
 
-	TSharedPtr<class SConstraintCanvas> MyPanel;
+	void AddInventory(AActor* NewActor);
 
+	TSharedPtr<class SConstraintCanvas> MyPanel;
+	TSharedPtr<class SButton> ButtonGrid;
+	TSharedPtr<class SButton> ButtonList;
 	// UWidget interface
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	

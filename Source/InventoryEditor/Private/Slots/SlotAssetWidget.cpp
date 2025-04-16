@@ -54,10 +54,11 @@ void USlotAssetWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
 	operation->Payload = this;
 	operation->Pivot = EDragPivot::TopLeft;
-
 	auto DragVisual = CreateWidget<UVisualDragWidget>(this);
 
 	FIntPoint Size = Asset->SlotItemData.SizeSlot;
+
+	DragVisual->SetRenderTransformPivot(FVector2D(((1 / (SizeSlot * Size.X)) * (SizeSlot / 2) * Size.X), ((1 / (SizeSlot * Size.Y)) * (SizeSlot / 2)*Size.X)));
 
 	if (!UInventorySettings::Get()->HasInventoryFlag(EInventoryFlag::Size))
 		Size = FIntPoint(1);
@@ -75,22 +76,19 @@ FReply USlotAssetWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 		if (IsValid(operation)) {
 			operation->RotateItem();
 
-			FIntPoint L_SizeItem;
 			if (operation->bRotateItem) {
-				L_SizeItem = FIntPoint(Asset->SlotItemData.SizeSlot.Y, Asset->SlotItemData.SizeSlot.X);
+				operation->DefaultDragVisual->SetRenderTransformAngle(-90);
 			}
 			else {
-				L_SizeItem = Asset->SlotItemData.SizeSlot;
+				operation->DefaultDragVisual->SetRenderTransformAngle(0);
 			}
-
-			Cast<class UVisualDragWidget>(operation->DefaultDragVisual)->SetItem(Asset->SlotItemData.ImageItem, L_SizeItem * SizeSlot);
 		}
 	}
 	return FReply::Handled();
 }
 
 TSharedRef<SWidget> USlotAssetWidget::RebuildWidget() {
-	
+		
 	bIsFocusable = true;
 
 	FSlateColorBrush* Brush = new  FSlateColorBrush(FLinearColor(0.0f, 0.0f, 0.0f, 0.6f));

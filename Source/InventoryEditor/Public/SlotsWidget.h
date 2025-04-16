@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/DragDropOperation.h"
 #include "Components/InventoryComponent.h"
+#include "Widgets/Layout/SConstraintCanvas.h"
 #include "Blueprint/UserWidget.h"
 #include "PanelInventorySlotInterface.h"
 #include "SlotsWidget.generated.h"
@@ -16,16 +17,16 @@ class INVENTORYEDITOR_API UItemSettings : public UObject
 	GENERATED_BODY()
 public:
 
-	UPROPERTY(VisibleAnywhere, Category = "AssetData")
-	int Index = -1;
+	UPROPERTY(VisibleAnywhere, Category = "ItemData")
+		int Index = -1;
 
-	UPROPERTY(EditAnywhere, Category = "AssetData")
+	UPROPERTY(VisibleAnywhere, Category = "ItemData")
 		class UItemAsset* Asset;
 
-	UPROPERTY(EditAnywhere, Category = "AssetData", meta = (MultiLine = "true"))
+	UPROPERTY(EditAnywhere, Category = "ItemData", meta = (MultiLine = "true"))
 		FString Data;
 
-	UPROPERTY(EditAnywhere, Category = "AssetData", meta = (ClampMin = 1))
+	UPROPERTY(EditAnywhere, Category = "ItemData", meta = (ClampMin = 1))
 		int32 Count;
 };
 
@@ -142,6 +143,7 @@ class INVENTORYEDITOR_API USlotItemWidget : public USlotWidget
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 	TSharedPtr<SConstraintCanvas> MyPanel;
+	SConstraintCanvas::FSlot* ImagePanel;
 	TSharedPtr<class STextBlock> NumberText;
 
 	// UWidget interface

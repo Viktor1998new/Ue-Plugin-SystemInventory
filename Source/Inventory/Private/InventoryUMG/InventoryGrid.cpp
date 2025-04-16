@@ -35,8 +35,18 @@ void UInventoryGrid::SetInventory(UInventoryComponent* NewInventory)
 	if (Inventory->CountItems() != 0) {
 
 		for (int32 i = 0; i < Inventory->CountItems(); i++)
-			if (Inventory->GetItem(i).ItemAsset)
-				AddSlot(i);
+		{
+
+#if UE_EDITOR
+			if (!IsValid(Inventory->GetItem(i).ItemAsset)) {
+				FString PathError = Inventory->GetPathName();
+				PathError.RemoveFromEnd(TEXT("_GEN_VARIABLE"));
+				UE_LOG(LogInventory, Error, TEXT("Item Asset == nullptr, Need remove: %s  Index: %d"), *PathError, i);
+			}
+#endif
+
+			AddSlot(i);
+		}
 	}
 }
 

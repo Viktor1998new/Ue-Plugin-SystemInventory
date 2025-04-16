@@ -8,7 +8,10 @@
 
 #include "InventoryUMG/InventoryGrid.h"
 #include "InventoryUMG/InventoryList.h"
+#include "EditorStyleSet.h"
+#include "EditorFontGlyphs.h"
 
+#include "Widgets/Input/SComboButton.h"
 #include "Widgets/Layout/SWidgetSwitcher.h"
 #include "Widgets/Layout/SScaleBox.h"
 #include "Components/ScaleBox.h"
@@ -22,7 +25,7 @@
 FReply UInventoryWidget::RecalculationMass()
 {
     if (HasInventoryFlag(EInventoryFlag::Mass))
-        MassText->SetText(FText::Format(FText::FromString("Mass: {0}"), FText::AsNumber(Inventory->Inventory.Massa)));
+        MassText->SetText(FText::Format(FText::FromString("Mass: {0}"), FText::AsNumber(Inventors[CurrentActive]->Inventory.Massa)));
 
     return FReply::Handled();
 }
@@ -33,7 +36,7 @@ void UInventoryWidget::SwitchPanel(uint8 NewPanel)
 
     Switcher->SetActiveWidgetIndex(Panel);
 
-    if (!IsValid(Inventory))
+    if (Inventors.Num() == 0)
         return;
 
     switch (Panel)
@@ -41,13 +44,13 @@ void UInventoryWidget::SwitchPanel(uint8 NewPanel)
     case 0:
 
         InventoryList->SetInventory(nullptr);
-        InventoryGrid->SetInventory(Inventory);
+        InventoryGrid->SetInventory(Inventors[CurrentActive]);
         break;
 
     case 1:
 
         InventoryGrid->SetInventory(nullptr);
-        InventoryList->SetInventory(Inventory);
+        InventoryList->SetInventory(Inventors[CurrentActive]);
         break;
     }
 }
@@ -66,7 +69,7 @@ bool UInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
             L_NewSlot.Count = 1;
             L_NewSlot.IsRotate = L_Operation->GetRotateItem();
             int32 L_Index;
-            return Inventory->AddSlot(L_NewSlot, true, L_Index);
+            return Inventors[CurrentActive]->AddSlot(L_NewSlot, true, L_Index);
             
         }
     }
@@ -74,33 +77,125 @@ bool UInventoryWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
     return false;
 }
 
-void UInventoryWidget::SetInventory(UInventoryComponent* NewInventory, uint8 NewPanel)
-{
-    Inventory = NewInventory;
+void UInventoryWidget::SetInventory(TArray<UInventoryComponent*> NewInventors, uint8 NewPanel) {
 
+    if (NewInventors.Num() == 1) {
+        SetInventory(NewInventors, NewPanel);
+        return;
+    }
+    
+    Inventors = NewInventors;
+    CurrentActive = 0;
     SwitchPanel(NewPanel);
 
-    if (!IsValid(Inventory))
-        return;
-
-    if(IsValid(Inventory->GetOwner()))
+    if (IsValid(Inventors[0]->GetOwner()))
     {
-        TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(Inventory->GetOwner()->GetName())));
+        TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(Inventors[0]->GetOwner()->GetName())));
     }
     else
     {
-       FString L_NameComponent = Inventory->GetName();
+        FString L_NameComponent = Inventors[0]->GetName();
+        L_NameComponent.RemoveFromEnd(TEXT("_GEN_VARIABLE"));
+        TextNameActor->SetText(FText::Format(FText::FromString("Component: {0}"), FText::FromString(L_NameComponent)));
+    }
+
+    if (HasInventoryFlag(EInventoryFlag::Mass)) {
+        Recalculation->SetVisibility(EVisibility::Visible);
+        MassText->SetText(FText::Format(FText::FromString("Mass: {0}"), FText::AsNumber(Inventors[0]->Inventory.Massa)));
+    }
+    else {
+        Recalculation->SetVisibility(EVisibility::Hidden);
+    }
+
+    ListInventoryButtons->SetVisibility(EVisibility::Visible);
+}
+
+
+void UInventoryWidget::SelectInventory(int32 Index)
+{
+    CurrentActive = Index;
+
+    switch (Panel)
+    {
+    case 0:
+
+        InventoryGrid->SetInventory(Inventors[CurrentActive]);
+        break;
+
+    case 1:
+
+        InventoryList->SetInventory(Inventors[CurrentActive]);
+        break;
+    }
+}
+
+void UInventoryWidget::SetInventory(UInventoryComponent* NewInventory, uint8 NewPanel)
+{
+    if (!IsValid(NewInventory))
+        return;
+
+    CurrentActive = 0;
+    Inventors.Empty();
+    Inventors.Add(NewInventory);
+
+    SwitchPanel(NewPanel);
+
+
+    if(IsValid(NewInventory->GetOwner()))
+    {
+        TextNameActor->SetText(FText::Format(FText::FromString("Actor: {0}"), FText::FromString(NewInventory->GetOwner()->GetName())));
+    }
+    else
+    {
+       FString L_NameComponent = NewInventory->GetName();
        L_NameComponent.RemoveFromEnd(TEXT("_GEN_VARIABLE"));
        TextNameActor->SetText(FText::Format(FText::FromString("Component: {0}"), FText::FromString(L_NameComponent)));
     }
 
     if (HasInventoryFlag(EInventoryFlag::Mass)) {
         Recalculation->SetVisibility(EVisibility::Visible);
-        MassText->SetText(FText::Format(FText::FromString("Mass: {0}"), FText::AsNumber(Inventory->Inventory.Massa)));
+        MassText->SetText(FText::Format(FText::FromString("Mass: {0}"), FText::AsNumber(NewInventory->Inventory.Massa)));
     }
     else {
         Recalculation->SetVisibility(EVisibility::Hidden);
     }
+
+    ListInventoryButtons->SetVisibility(EVisibility::Collapsed);
+}
+
+
+TSharedRef<SWidget> UInventoryWidget::GetListInventors()
+{
+    TSharedPtr<SVerticalBox> ListButtoms = SNew(SVerticalBox);
+    
+    for (int32 i = 0; i < Inventors.Num(); i++)
+    {
+        ListButtoms->AddSlot()[
+            SNew(SButton)
+                .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+                .ContentPadding(FMargin(12, 2))
+                .IsEnabled(CurrentActive != i)
+                .OnClicked_Lambda([this, i]()-> FReply {
+                
+                    SelectInventory(i);
+                    ListInventoryButtons->SetIsOpen(false);
+                    return FReply::Handled();
+                })
+                .Content()[
+                    SNew(SScaleBox)[
+
+                        SNew(STextBlock)
+                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Text(FText::FromString( Inventors[i]->GetFName().ToString()))
+                    ].HAlign(HAlign_Left)
+                ]
+        ];
+    }
+
+    return SNew(SBox)
+        [   
+            ListButtoms.ToSharedRef()
+        ];
 }
 
 TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
@@ -110,16 +205,14 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
     FSlateColorBrush* BrushButtons = new FSlateColorBrush(FLinearColor(0.0f, 0.0f, 0.0f));
     FSlateColorBrush* BrushInventory = new FSlateColorBrush(FLinearColor(0.01f, 0.01f, 0.01f));
 
-    FSlateFontInfo TextFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
-    FSlateFontInfo ButtonFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
-
     SAssignNew(Recalculation,SHorizontalBox) 
         + SHorizontalBox::Slot()
         .AutoWidth()
+        .Padding(FMargin(3, 3, 10, 3))
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SAssignNew(MassText, STextBlock)
-                .Font(TextFont)
+                .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
                 .Text(FText::FromString(""))
         ]
         + SHorizontalBox::Slot()
@@ -127,34 +220,46 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SNew(SButton)
+                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ContentPadding(FMargin(12, 2))
                 .OnClicked_UObject(this, &UInventoryWidget::RecalculationMass)
                 .Content()[
                     SNew(STextBlock)
-                        .Font(TextFont)
+                        .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
                         .Text(FText::FromString("Recalculation Mass"))
                     ]
          ];
 
     TSharedPtr<SHorizontalBox> TitlePanel;
-    
+   
     SAssignNew(TitlePanel,SHorizontalBox)
+        
         + SHorizontalBox::Slot()
         .AutoWidth()
+        .Padding(FMargin(3, 3,10,3))
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
-            SAssignNew(TextNameActor, STextBlock)
-                .Font(TextFont)
+
+            SAssignNew(ListInventoryButtons, SComboButton)
+                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ForegroundColor(FLinearColor::White)
+                .OnGetMenuContent_UObject(this, &UInventoryWidget::GetListInventors)
+                .HasDownArrow(true)
+                .ContentPadding(FMargin(3, 3))
+                .ButtonContent()
+                [
+                    SNew(STextBlock)
+                        .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .Text(FText::FromString("Components"))
+                ]
         ]
         + SHorizontalBox::Slot()
         .AutoWidth()
+        .Padding(FMargin(3, 3, 10, 3))
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SAssignNew(TextNameActor, STextBlock)
-                .Font(TextFont)
-        ]
-        + SHorizontalBox::Slot()
-        .AutoWidth()[
-            SNew(SSpacer).Size(FVector2D(5.0f, 0.0f))
+                .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
         ]
         + SHorizontalBox::Slot()
         .AutoWidth()
@@ -211,11 +316,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
                                 InventoryList->TakeWidget()
                             ]
                         ]
-                ] 
-        ]
-        + SVerticalBox::Slot()
-          .AutoHeight()[
-            SNew(SSpacer).Size(FVector2D(0.0f, 10.0f))
+                ]
         ];
 }
 
@@ -223,7 +324,7 @@ void UInventoryWidget::RemoveFromParent()
 {
     Super::RemoveFromParent();
 
-    Inventory = nullptr;
+    Inventors.Empty();
 
     switch (Panel)
     {

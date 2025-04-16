@@ -45,20 +45,20 @@ bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {
 
 			if (Inventory.Items[i].ItemAsset) {
 				if (Inventory.Items[i].IsPosition(NewValue.PositionSlot, NewValue.GetSize())) {
-					
+
 					return false;
 				}
 			}
 		}
 	}
-	
+
 	if (HasInventoryFlag(EInventoryFlag::Mass)) {
 		if (Inventory.Items[Index].ItemAsset != NewValue.ItemAsset || Inventory.Items[Index].Count != NewValue.Count) {
 			Inventory.Massa -= Inventory.Items[Index].GetData().MassItem * Inventory.Items[Index].Count;
 			Inventory.Massa += NewValue.GetData().MassItem * NewValue.Count;
 		}
 	}
-	
+
 	Inventory.Items[Index] = NewValue;
 
 	ChangeSlot(Index, NewValue, ETypeSetItem::ChangeSlot);
@@ -120,6 +120,9 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 
 bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
 {
+	if (!IsValid(Item))
+		return false;
+
 	return AddAssetItem(Item->ItemAsset, 1, Item->GetData(), Index);
 }
 
@@ -128,12 +131,12 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 	if (!ItemAsset || Count <= 0 || Count > ItemAsset->SlotItemData.MaxStack) return false;
 
 	if (ItemAsset->SlotItemData.StackItem) {
-		
+
 		int32 FindIndex = INDEX_NONE;
 
 		if (!IsValid(ItemAsset->StructType)) {
 			for (int32 i = 0; i < Inventory.Items.Num(); i++) {
-				if (Inventory.Items[i].ItemAsset == ItemAsset){
+				if (Inventory.Items[i].ItemAsset == ItemAsset) {
 					FindIndex = i;
 					break;
 				}
@@ -151,14 +154,14 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 		if (FindIndex != INDEX_NONE) {
 
 			auto L_ChangeSlot = Inventory.Items[FindIndex];
-				
+
 			L_ChangeSlot.Count += Count;
-			
+
 			bool L_IsAdd = SetSlot(FindIndex, L_ChangeSlot);
-			
-			if(L_IsAdd)
+
+			if (L_IsAdd)
 				OnAddItem.Broadcast(FindIndex);
-			
+
 			return true;
 		}
 	}
@@ -167,7 +170,7 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 	NewSlot.ItemAsset = ItemAsset;
 	NewSlot.ItemData = Data;
 	NewSlot.Count = Count;
-	
+
 	return AddSlot(NewSlot, true, Index);
 }
 
@@ -175,6 +178,14 @@ bool UInventoryComponent::RemoveItem(int32 Index, int32 Count) {
 
 	if (!Inventory.Items.IsValidIndex(Index))
 		return false;
+
+#if UE_EDITOR
+	if (!IsValid(Inventory.Items[Index].ItemAsset)) {
+		Inventory.Items.RemoveAt(Index);
+		ChangeSlot(Index, FInventorySlot(), ETypeSetItem::Remove);
+		return true;
+	}
+#endif
 
 	if (Inventory.Items[Index].GetData().StackItem) {
 
@@ -238,16 +249,16 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 	bool L_IsLimitY = HasInventoryFlag(EInventoryFlag::LimitY);
 
 	/* the cycle will end if IsNoFree == true (an empty space is found)
-	or Y reaches a linite, 
+	or Y reaches a linite,
 	if there is no limit it will continue until it finds a free space */
 	int NextY = L_MaXCountRow;
 
 	do {
 		if (NewPosition.X + Size.X > GetCountRow(Size.Y + NewPosition.Y == L_MaXCountRow)) {
-				
-			if(L_IsOnlyX)
+
+			if (L_IsOnlyX)
 				return false;
-				
+
 			NewPosition.X = 0;
 
 			if (L_IsLimitY)
@@ -257,7 +268,7 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 			NewPosition.Y = NextY;
 			NextY = L_MaXCountRow;
 		}
-		
+
 
 		IsNoFree = !IsPositionFree(NewPosition, Size, L_ItemIndex);
 
@@ -271,9 +282,9 @@ bool UInventoryComponent::FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition
 				if (NextY >= L_End.Y)
 					NextY = L_End.Y;
 			}
-			else 
+			else
 				NewPosition.X++;
-			
+
 		}
 
 	} while (IsNoFree);
@@ -302,17 +313,17 @@ bool UInventoryComponent::FindItem(UItemAsset* ItemAsset, int32& Index)
 
 bool UInventoryComponent::SendItem(int32 Index, UInventoryComponent* ToIntentory, int32 Count, bool FindSlot, FIntPoint Position, bool Rotate)
 {
-	if(!ToIntentory|| !Inventory.Items.IsValidIndex(Index) || this == ToIntentory || Inventory.Items[Index].Count < Count) return false;
+	if (!ToIntentory || !Inventory.Items.IsValidIndex(Index) || this == ToIntentory || Inventory.Items[Index].Count < Count) return false;
 
 	FInventorySlot NewStot = Inventory.Items[Index];
 	NewStot.Count = Count;
 	NewStot.IsRotate = Rotate;
 	NewStot.PositionSlot = Position;
-	
+
 	int32 AddIndex;
-	
+
 	if (ToIntentory->AddSlot(NewStot, FindSlot, AddIndex)) {
-		
+
 		RemoveItem(Index, Count);
 		return true;
 	}
@@ -347,13 +358,13 @@ void UInventoryComponent::SetRotateSlot(int32 Index, bool NewRotate)
 bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int32& Index)
 {
 
-	if (Position.X + Size.X > GetCountRow(Position.Y + Size.Y == MaXCountRow))
+	if (Position.X + Size.X > GetCountRow(Position.Y + Size.Y >= MaXCountRow))
 	{
 		Index = INDEX_NONE;
 		return false;
 	}
 
-	if(!HasInventoryFlag(EInventoryFlag::OnlyX) && HasInventoryFlag(EInventoryFlag::LimitY))
+	if (!HasInventoryFlag(EInventoryFlag::OnlyX) && HasInventoryFlag(EInventoryFlag::LimitY))
 		if (Position.Y + Size.Y > MaXCountRow)
 		{
 			Index = INDEX_NONE;
@@ -362,7 +373,7 @@ bool UInventoryComponent::IsPositionFree(FIntPoint Position, FIntPoint Size, int
 
 	for (int32 i = 0; i < Inventory.Items.Num(); i++)
 	{
-		if (Inventory.Items[i].ItemAsset) 
+		if (Inventory.Items[i].ItemAsset)
 			if (Inventory.Items[i].IsPosition(Position, Size)) {
 				Index = i;
 				return false;
@@ -391,8 +402,10 @@ bool UInventoryComponent::DropItem(int32 IndexItem = 0, int32 ToIndex = INDEX_NO
 		if (StackItem(IndexItem, ToIndex, Count)) {
 			return true;
 		}
-		else if (Change) 
+		else if (Change)
 			return ChangeItem(IndexItem, ToIndex, FindPosition);
+
+		return false;
 	}
 
 	return SetPositionItem(IndexItem, Count, Rotate, ToPosition);
@@ -469,13 +482,13 @@ bool UInventoryComponent::StackItem(int32 IndexItem, int32 ToIndex, int32 Count)
 	return false;
 }
 
-bool UInventoryComponent::SetPositionItem(int32 IndexItem,int32 Count, bool Rotate, FIntPoint NewPosition)
+bool UInventoryComponent::SetPositionItem(int32 IndexItem, int32 Count, bool Rotate, FIntPoint NewPosition)
 {
-	if (NewPosition.X + Inventory.Items[IndexItem].GetSize(Rotate).X > GetCountRow(NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y == MaXCountRow))
+	if (NewPosition.X + Inventory.Items[IndexItem].GetSize(Rotate).X > GetCountRow(NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y >= MaXCountRow))
 		return false;
 
 	if (HasInventoryFlag(EInventoryFlag::LimitY))
-		if (NewPosition.Y + (Inventory.Items[IndexItem].GetSize(Rotate).Y -1) > MaXCountRow) return false;
+		if (NewPosition.Y + Inventory.Items[IndexItem].GetSize(Rotate).Y > MaXCountRow) return false;
 
 	for (int32 i = 0; i < Inventory.Items.Num(); i++)
 	{
@@ -521,14 +534,14 @@ bool UInventoryComponent::SetPositionItem(int32 IndexItem,int32 Count, bool Rota
 
 #if WITH_EDITOR
 void UInventoryComponent::RecalculationMass() {
-	
+
 	if (!HasInventoryFlag(EInventoryFlag::Mass))
 		return;
 
 	Inventory.Massa = 0;
 
 	for (auto& Element : Inventory.Items) {
-		if(Element.ItemAsset)
+		if (Element.ItemAsset)
 			Inventory.Massa += Element.GetData().MassItem * Element.Count;
 	}
 }
