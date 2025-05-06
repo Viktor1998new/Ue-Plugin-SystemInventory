@@ -23,6 +23,9 @@ struct INVENTORY_API FInventorySlot
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory|Slot")
 		bool IsRotate = false;
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory|Slot")
+		bool IgnorePositoin = false;
 
 	bool IsPosition(FIntPoint Position, FIntPoint Size);
 

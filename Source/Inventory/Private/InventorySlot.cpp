@@ -3,14 +3,15 @@
 
 bool FInventorySlot::IsPosition(FIntPoint Position, FIntPoint Size) {
 
+	if (IgnorePositoin)
+		return false;
+
 	if (Position == PositionSlot)
 		return true;
 
 	if (HasInventoryFlag(EInventoryFlag::Size)) {
 
 		FIntPoint SizeItem = GetSize();
-
-//		Position.Y >= PositionSlot.Y ? Position.Y <= PositionSlot.Y + SizeItem.Y : Position.Y + Size.Y >= PositionSlot.Y
 
 		if (IsRang(Position.X, PositionSlot.X, (SizeItem.X - 1), (Size.X - 1))) {
 

@@ -60,35 +60,33 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-public:
-
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-	void SetInventory(FInventory NewInventory) {
-		Inventory = NewInventory;
-	};
+		void SetInventory(FInventory NewInventory) {
+			Inventory = NewInventory;
+		};
 
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
-	FInventory& GetInventory() {
-		return Inventory;
-	};
+		FInventory& GetInventory() {
+			return Inventory;
+		};
 
 	UFUNCTION(BlueprintPure, Category = "Inventory|Item")
-	FInventorySlot& GetItem(int32 Index) {
+		FInventorySlot& GetItem(int32 Index) {
 
-		checkf((Index >= 0) & (Index < Inventory.Items.Num()), TEXT("Array index out of bounds: %i from an array of size %i"), Index, Inventory.Items.Num())
-		return Inventory.Items[Index];
-	};
+			checkf((Index >= 0) & (Index < Inventory.Items.Num()), TEXT("Array index out of bounds: %i from an array of size %i"), Index, Inventory.Items.Num())
+			return Inventory.Items[Index];
+		};
 	
 	UFUNCTION(BlueprintPure, Category = "Inventory|Item")
-	bool IsValidIndex(int32 Index) {
-		return Inventory.Items.IsValidIndex(Index);
-	};
+		bool IsValidIndex(int32 Index) const {
+			return Inventory.Items.IsValidIndex(Index);
+		};
 	
 	UFUNCTION(BlueprintPure, Category = "Inventory|Item")
-	int32 CountItems() {
-		return Inventory.Items.Num();
-	};
+		int32 CountItems() const {
+			return Inventory.Items.Num();
+		};
 
 	/*Adding a slot
 	 * @param NewSlot - The new active state of the component
@@ -99,30 +97,37 @@ public:
 	/*Adding an item
 	 Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
+		bool AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index);
+
+	/*Adding an item
+		Use only in Server*/
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
 		bool AddActorItem(AItemActor* Item, int32& Index);
 
 	/*Adding an item
-	 Use only in Server*/
+		Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		virtual bool SetSlot(int32 Index, FInventorySlot NewValue);
 
-	/*Adding an item
-	 Use only in Server*/
-	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
-		bool AddAssetItem(UItemAsset* ItemAsset, int32 Count, const FString& Data, int32& Index);
-
-	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition);
-
-	/*search function for an item by class or class child*/
-	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		bool FindItem(UItemAsset* ItemAsset, int32& Index);
-
 	/*Removing an item
-	 Use only in Server*/
+		Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
 		bool RemoveItem(int32 Index, int32 count);
+
+	/*Rotate an item
+		Use only in Server*/
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
+		void SetRotateSlot(int32 Index, bool NewRotate);
+
+	/*Ignore position an item
+		Use only in Server*/
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
+		void SetIgnorePositionSlot(int32 Index, bool NewEnable);
+
+	/*Drop an item
+		Use only in Server*/
+	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
+		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition, bool Change, bool FindPosition, bool Rotate);
 
 	/*the function sends an item from the current inventory to another one
 	 Use only in Server*/
@@ -133,11 +138,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 		bool IsPositionFree(FIntPoint Position, FIntPoint Size, int32& Index);
 
+	/*The function for searching for free space and can also be used to check whether the slot fits into the inventory */
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
-		void SetRotateSlot(int32 Index, bool NewRotate);
+		bool FindFreeSlot(FIntPoint Size, FIntPoint& ReturnPosition);
 
-	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot")
-		bool DropItem(int32 IndexItem, int32 ToIndex, int32 Count, FIntPoint ToPosition, bool Change, bool FindPosition, bool Rotate);
+	/*search function for an item by class or class child*/
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+		bool FindItem(UItemAsset* ItemAsset, int32& Index);
 
 	UFUNCTION(Client, Reliable)
 		void ClientRPC_EventSetItem(int32 Index, FInventorySlot NewData, ETypeSetItem Type);
