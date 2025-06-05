@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "GameFramework/Actor.h"
+#include "GameplayTagContainer.h"
 #include "ItemActor.generated.h"
 
 USTRUCT(BlueprintType)
@@ -42,6 +43,9 @@ public:
 		
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")
 		UScriptStruct* StructType;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")
+		FGameplayTagContainer Tags;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")
 		FItemData SlotItemData;

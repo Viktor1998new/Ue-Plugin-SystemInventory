@@ -14,21 +14,17 @@ public:
 	FDelegateHandle HandleChangeTabWorld;
 
 	TSharedPtr<class FItemAsset_Action> ItemAssetAction;
-
 	TSharedPtr<FTabManager> TabManager;
-
 	TSharedPtr<FTabManager::FLayout> TabManagerLayout;
-
 	TWeakPtr<SDockTab> MainTab;
 
-	TSharedPtr<FWorkspaceItem> WorkspaceMenuCategory;
-
 	class UEditorInventoryWidget* InventoryTab;
-
 	class UBrowserAssetsWidget* BrowserAssetsTab;
 
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+
+	TSharedRef<FExtender> AddAssetMenu(const TArray<FAssetData>& InAssetData);
 
 	void AddMenuEntry(FMenuBuilder& MenuBuilder);
 	void RegisterEditor();

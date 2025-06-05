@@ -13,9 +13,10 @@ public class Inventory : ModuleRules
 			new string[]
 			{
 				"Core",
-                		"Json",
-                		"JsonUtilities"
-			}
+                "Json",
+                "JsonUtilities",
+                "GameplayTags"
+            }
 			);
 			
 		
