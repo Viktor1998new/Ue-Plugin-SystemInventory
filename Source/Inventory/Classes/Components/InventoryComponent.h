@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InventorySlot.h"
-#include "ItemActor.h"
 #include "InventoryComponent.generated.h"
 
 USTRUCT(BlueprintType)
@@ -102,7 +101,7 @@ public:
 	/*Adding an item
 		Use only in Server*/
 	UFUNCTION(BlueprintCallable, Category = "Inventory|Slot|Add")
-		bool AddActorItem(AItemActor* Item, int32& Index);
+		bool AddActorItem(AActor* Item, int32& Index);
 
 	/*Adding an item
 		Use only in Server*/

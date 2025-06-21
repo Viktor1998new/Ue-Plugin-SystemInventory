@@ -3,6 +3,7 @@
 #include "UMGEditor/BrowserAssetsWidget.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "SlotsWidget.h"
+#include "Blueprint/WidgetTree.h"
 #include "Widgets/Layout/SWrapBox.h"
 #include "Widgets/Layout/SScrollBox.h"
 #include "Misc/EngineVersionComparison.h"
@@ -43,7 +44,7 @@ void UBrowserAssetsWidget::GenerationSlots()
     {
         if (UItemAsset* Asset = Cast<UItemAsset>(Element.GetAsset())) {
 
-            USlotAssetWidget* NewSlotAsset = CreateWidget<USlotAssetWidget>(this, USlotAssetWidget::StaticClass());
+            USlotAssetWidget* NewSlotAsset = WidgetTree->ConstructWidget<USlotAssetWidget>(USlotAssetWidget::StaticClass(), FName(*FString::Printf(TEXT("C_UAssetWidget_%s"), *Asset->GetName())));
 
             ListAsset.ToSharedRef()->AddSlot()
                 [NewSlotAsset->TakeWidget()];

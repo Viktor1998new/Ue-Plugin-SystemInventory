@@ -225,7 +225,6 @@ TSharedRef<SDockTab> FInventoryEditorModule::OnSpawnPluginTab(const FSpawnTabArg
 			->Split
 			(
 				FTabManager::NewStack()
-				->SetSizeCoefficient(.4f)
 				->AddTab(TabInventoryName, ETabState::OpenedTab)
 			)
 			->Split

@@ -2,7 +2,7 @@
 
 #include "Components/InventoryComponent.h"
 #include "InventorySettings.h"
-#include "InventorySlot.h"
+#include "ItemAsset.h"
 #include "Net/UnrealNetwork.h"
 
 #define MaXCountRow FMath::Floor((float)Inventory.MaxSlot / (float)Inventory.CountRow) + 1
@@ -125,12 +125,17 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 	return AddSlot(NewSlot, true, Index);
 }
 
-bool UInventoryComponent::AddActorItem(AItemActor* Item, int32& Index)
+bool UInventoryComponent::AddActorItem(AActor* Item, int32& Index)
 {
-	if (!IsValid(Item))
+	if (!IsValid(Item) || !Item->GetClass()->ImplementsInterface(UItemInterface::StaticClass()))
+		return false;
+	
+	UItemAsset* L_Asset = IItemInterface::Execute_GetItemAsset(Item);
+
+	if (!IsValid(L_Asset))
 		return false;
 
-	return AddAssetItem(Item->ItemAsset, 1, Item->GetData(), Index);
+	return AddAssetItem(L_Asset, 1, IItemInterface::Execute_GetData(Item), Index);
 }
 
 bool UInventoryComponent::SetSlot(int32 Index, FInventorySlot NewValue) {

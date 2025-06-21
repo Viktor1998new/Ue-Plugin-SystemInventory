@@ -1,7 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
 #include "ItemAssetFactory.h"
-#include "ItemActor.h"
+#include "ItemAsset.h"
 #include "ClassViewerFilter.h"
 #include "Kismet2/SClassPickerDialog.h"
 #include "Kismet2/KismetEditorUtilities.h"

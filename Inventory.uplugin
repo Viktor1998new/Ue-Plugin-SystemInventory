@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.1.2",
+	"VersionName": "1.2.0",
 	"FriendlyName": "SystemInventory",
 	"Description": "A great tool for creating an inverter of any type. All the code is written in C++ with an easily customizable and convenient Inventory editor",
 	"EngineVersion": "4.27",

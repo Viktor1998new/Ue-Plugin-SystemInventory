@@ -1,9 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+//Copyright(c) 2022 - 2025, Viktor.F.P
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ItemActor.h"
+#include "ItemAsset.h"
 #include "AssetTypeActions_Base.h"
 
 class FItemAsset_Action : public FAssetTypeActions_Base

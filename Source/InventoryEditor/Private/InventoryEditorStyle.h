@@ -19,9 +19,6 @@ public:
 			SetContentRoot(FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("Inventory"), TEXT("Resources")));
 		else
 			SetContentRoot(FPaths::Combine(FPaths::EnginePluginsDir(), TEXT("Marketplace"), TEXT("Inventory"), TEXT("Resources")));
-
-		Set("ClassIcon.ItemActor", new IMAGE_BRUSH("ItemActor_16x", Icon16x16));
-		Set("ClassThumbnail.ItemActor", new IMAGE_BRUSH("ItemActor_64x", Icon64x64));
 		
 		Set("ClassIcon.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_16x", Icon16x16));
 		Set("ClassThumbnail.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_64x", Icon64x64));

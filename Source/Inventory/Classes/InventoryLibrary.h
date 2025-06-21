@@ -5,6 +5,8 @@
 #include "JsonObjectConverter.h"
 #include "UObject/ObjectMacros.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "InventorySlot.h"
+#include "ItemAsset.h"
 #include "Components/InventoryComponent.h"
 #include "InventoryLibrary.generated.h"
 

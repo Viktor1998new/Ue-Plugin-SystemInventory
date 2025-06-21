@@ -1,7 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 #pragma once
 #include "CoreMinimal.h"
-#include "ItemActor.h"
+#include "ItemAsset.h"
 #include "InventorySlot.generated.h"
 
 USTRUCT(BlueprintType)
