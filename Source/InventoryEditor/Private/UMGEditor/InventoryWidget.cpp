@@ -6,8 +6,8 @@
 #include "InventorySettings.h"
 #include "Components/InventoryComponent.h"
 
-#include "InventoryUMG/InventoryGrid.h"
-#include "InventoryUMG/InventoryList.h"
+#include "InventoryGrid.h"
+#include "InventoryList.h"
 #include "EditorStyleSet.h"
 #include "EditorFontGlyphs.h"
 
@@ -18,7 +18,7 @@
 #include "Components/ScaleBoxSlot.h"
 #include "Brushes/SlateColorBrush.h"
 #include "Blueprint/WidgetTree.h"
-#include "InventoryUMG/InventoryPanelSlot.h"
+#include "InventoryPanelSlot.h"
 
 #define LOCTEXT_NAMESPACE "InventoryEditor"
 

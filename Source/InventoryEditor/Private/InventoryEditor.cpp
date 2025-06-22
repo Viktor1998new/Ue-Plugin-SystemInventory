@@ -34,6 +34,7 @@ void FInventoryEditorModule::StartupModule()
 	AssetTypeActions->AssetCategory = CustomAssetCategory;
 
 	AssetTools.RegisterAssetTypeActions(AssetTypeActions);
+	ItemAssetAction = AssetTypeActions;
 
 	FLevelEditorModule& LevelEditor = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	HandleChangeTabWorld = LevelEditor.OnMapChanged().AddRaw(this, &FInventoryEditorModule::ChangeTabWorld);

@@ -1,6 +1,7 @@
  //Copyright(c) 2022 - 2025, Viktor.F.P
+
 #include "SlotsWidget.h"
-#include "InventoryUMG/InventoryPanel.h"
+#include "InventoryPanel.h"
 #include "Brushes/SlateColorBrush.h"
 
 void USlotItemListWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlot NewSlot)

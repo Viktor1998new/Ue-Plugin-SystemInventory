@@ -1,7 +1,8 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
+
 #include "SlotsWidget.h"
-#include "InventoryUMG/InventoryPanelSlot.h"
-#include "InventoryUMG/InventoryPanel.h"
+#include "InventoryPanelSlot.h"
+#include "InventoryPanel.h"
 #include "Brushes/SlateColorBrush.h"
 #include "InventorySettings.h"
 

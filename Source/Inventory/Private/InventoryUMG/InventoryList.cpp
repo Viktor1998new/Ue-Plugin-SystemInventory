@@ -1,7 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "InventoryUMG/InventoryList.h"
-#include "InventoryUMG/InventoryPanelSlot.h"
+#include "InventoryList.h"
+#include "InventoryPanelSlot.h"
 #include "GameFramework/PlayerState.h"
 #include "TimerManager.h"
 #include "Inventory.h"
