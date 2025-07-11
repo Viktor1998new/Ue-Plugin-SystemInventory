@@ -6,7 +6,7 @@
 #include "Components/InventoryComponent.h"
 #include "Widgets/Layout/SConstraintCanvas.h"
 #include "Blueprint/UserWidget.h"
-#include "PanelInventorySlotInterface.h"
+#include "UMG/PanelInventorySlotInterface.h"
 #include "SlotsWidget.generated.h"
 
 static const float SizeSlot = 32.f;

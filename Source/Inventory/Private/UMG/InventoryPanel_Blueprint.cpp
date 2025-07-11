@@ -1,7 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "InventoryPanel_Blueprint.h"
-#include "InventoryPanelSlot.h"
+#include "UMG/InventoryPanel_Blueprint.h"
+#include "UMG/InventoryPanelSlot.h"
 
 UInventoryPanel_Blueprint::UInventoryPanel_Blueprint(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

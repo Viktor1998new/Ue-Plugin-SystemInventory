@@ -1,7 +1,7 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 
-#include "InventoryPanel.h"
-#include "InventoryPanelSlot.h"
+#include "UMG/InventoryPanel.h"
+#include "UMG/InventoryPanelSlot.h"
 
 #define LOCTEXT_NAMESPACE "UMG"
 

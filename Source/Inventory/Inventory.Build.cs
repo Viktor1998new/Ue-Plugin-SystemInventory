@@ -31,16 +31,14 @@ public class Inventory : ModuleRules
 			}
 			);
 
-		PublicIncludePaths.AddRange(
-			new string[] {
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes"),
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG")
-			});
+		//PublicIncludePaths.AddRange(
+		//	new string[] {
+		//		Path.Combine(PluginDirectory,"Source/Inventory/Classes")
+		//	});
 		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/"),
-				Path.Combine(PluginDirectory,"Source/Inventory/Classes/InventoryUMG")
-			});
+		//PrivateIncludePaths.AddRange(
+		//	new string[] {
+		//		Path.Combine(PluginDirectory,"Source/Inventory/Classes/")
+		//	});
     }
 }
