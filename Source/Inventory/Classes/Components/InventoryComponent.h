@@ -16,10 +16,10 @@ struct INVENTORY_API FInventory
 	UPROPERTY(VisibleInstanceOnly,BlueprintReadOnly, Category = "Inventory")
 		float Massa;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Inventory")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Inventory", meta = (ClampMin = 1))
 		int CountRow;
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Inventory")
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Inventory", meta = (ClampMin = 1))
 		int MaxSlot;
 
 	FInventory();

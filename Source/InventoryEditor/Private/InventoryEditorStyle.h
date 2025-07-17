@@ -22,6 +22,9 @@ public:
 		
 		Set("ClassIcon.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_16x", Icon16x16));
 		Set("ClassThumbnail.InventoryComponent", new IMAGE_BRUSH("ComponentInventory_64x", Icon64x64));
+		
+		Set("ClassIcon.ItemAsset", new IMAGE_BRUSH("ItemAsset_16x", Icon16x16));
+		Set("ClassThumbnail.ItemAsset", new IMAGE_BRUSH("ItemAsset_64x", Icon64x64));
 
 		FSlateStyleRegistry::RegisterSlateStyle(*this);
 	}

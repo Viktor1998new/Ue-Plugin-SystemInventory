@@ -9,7 +9,8 @@
 
 FInventory::FInventory() {
 	Massa = 0.0f;
-	MaxSlot = 0;
+	CountRow = 1;
+	MaxSlot = 1;
 
 };
 
