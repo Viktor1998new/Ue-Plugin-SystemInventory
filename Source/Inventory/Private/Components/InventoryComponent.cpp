@@ -37,10 +37,11 @@ bool UInventoryComponent::AddSlot(FInventorySlot NewSlot, bool FindPositionSlot,
 		return false;
 	}
 
-	if (!NewSlot.GetData().StackItem && NewSlot.Count > NewSlot.GetData().MaxStack) {
+	if (NewSlot.GetData().StackItem && NewSlot.Count > NewSlot.GetData().MaxStack) {
 		return false;
 	}
-	else NewSlot.Count = 1;
+	else if(!NewSlot.GetData().StackItem)
+		NewSlot.Count = 1;
 
 	int32 IndexFull;
 
@@ -87,8 +88,7 @@ bool UInventoryComponent::AddAssetItem(UItemAsset* ItemAsset, int32 Count, const
 
 		for (int32 i = 0; i < Inventory.Items.Num(); i++) {
 		
-			if (Inventory.Items[i].ItemAsset == ItemAsset){
-
+			if (Inventory.Items[i].ItemAsset == ItemAsset && Inventory.Items[i].Count + Count <= ItemAsset->SlotItemData.MaxStack){
 				if (IsDataValid)
 				{
 					if (Inventory.Items[i].ItemData == Data) {
