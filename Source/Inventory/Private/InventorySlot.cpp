@@ -40,10 +40,10 @@ bool FInventorySlot::IsRang(int Value, int Pos, int Min, int Max)
 FIntPoint FInventorySlot::GetSize()
 {
 	if (!HasInventoryFlag(EInventoryFlag::Size))
-		return FIntPoint(1);
+		return FIntPoint(1, 1);
 
 	if (!IsValid(ItemAsset))
-		return FIntPoint(0);
+		return FIntPoint(0, 0);
 
 	FIntPoint L_ReturnValue = GetData().SizeSlot;
 
@@ -56,11 +56,11 @@ FIntPoint FInventorySlot::GetSize()
 FIntPoint FInventorySlot::GetSize(bool NewRotate)
 {
 	if (!HasInventoryFlag(EInventoryFlag::Size)) {
-		return FIntPoint(1);
+		return FIntPoint(1, 1);
 	}
 
 	if (!IsValid(ItemAsset))
-		return FIntPoint(0);
+		return FIntPoint(0, 0);
 
 	FIntPoint L_ReturnValue = GetData().SizeSlot;
 

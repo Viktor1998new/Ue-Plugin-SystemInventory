@@ -85,8 +85,8 @@ void USlotItemWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlo
 		BrushButtons->TintColor = FLinearColor(1.0f, 0.6f, 1.0f);
 		BrushButtons->SetImageSize(FVector2D(SizeSlot));
 		ImageItem->SetImage(BrushButtons);
-		ImagePanel->Anchors(FAnchors(0.0f, 0.0f, 0.0f, 0.0f));
-		ImagePanel->Offset(FMargin(0.0f, 0.0f, SizeSlot, SizeSlot));
+		ImagePanel->SetAnchors(FAnchors(0.0f, 0.0f, 0.0f, 0.0f));
+		ImagePanel->SetOffset(FMargin(0.0f, 0.0f, SizeSlot, SizeSlot));
 		return;
 	}
 
@@ -98,8 +98,8 @@ void USlotItemWidget::OnChangedSlot_Implementation(int32 NewIndex, FInventorySlo
 	ImageItem->SetImage(BrushButtons);
 
 	if (NewSlot.IsRotate) {
-		ImagePanel->Anchors(FAnchors(0.0f, 0.0f, 0.0f, 0.0f));
-		ImagePanel->Offset(FMargin(0.0f, 0.0f, Size.X, Size.Y));
+		ImagePanel->SetAnchors(FAnchors(0.0f, 0.0f, 0.0f, 0.0f));
+		ImagePanel->SetOffset(FMargin(0.0f, 0.0f, Size.X, Size.Y));
 	}
 
 	ImageItem->SetRenderTransformPivot(FVector2D(((1 / (SizeSlot * Size.X)) * (SizeSlot / 2) * Size.X), ((1 / (SizeSlot * Size.Y)) * (SizeSlot / 2) * Size.X)));
@@ -135,7 +135,12 @@ bool USlotItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropE
 
 TSharedRef<SWidget> USlotItemWidget::RebuildWidget()
 {
-	bIsFocusable = true ;
+
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION <= 1
+    bIsFocusable = true; 
+#else
+    SetIsFocusable(true); 
+#endif
 
 	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 10);
 	

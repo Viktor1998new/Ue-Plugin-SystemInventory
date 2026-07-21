@@ -28,7 +28,10 @@ void FInventoryEditorModule::StartupModule()
 {
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 
+	EAssetTypeCategories::Type CustomAssetCategory = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("InventoryCategory")), LOCTEXT("InventoryCategory", "Inventory"));
+
 	TSharedRef<FItemAsset_Action> AssetTypeActions = MakeShareable(new FItemAsset_Action());
+	AssetTypeActions->AssetCategory = CustomAssetCategory;
 
 	AssetTools.RegisterAssetTypeActions(AssetTypeActions);
 	ItemAssetAction = AssetTypeActions;

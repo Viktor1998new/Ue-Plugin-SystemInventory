@@ -5,7 +5,14 @@
 #include "Engine/DataAsset.h"
 #include "GameFramework/Actor.h"
 #include "GameplayTagContainer.h"
+#include "Misc/EngineVersionComparison.h"
 #include "ItemAsset.generated.h"
+
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+    #define UE_ITEM_PROPERTY UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item", meta = (MustImplement = "ItemInterface"))
+#else
+    #define UE_ITEM_PROPERTY UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item", meta = (MustImplement = "/Script/Inventory.ItemInterface"))
+#endif
 
 USTRUCT(BlueprintType)
 struct INVENTORY_API FItemData
@@ -38,7 +45,7 @@ class INVENTORY_API UItemAsset : public UObject
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, NoClear, BlueprintReadOnly, Category = "ItemAsset", meta = (MustImplement = ItemInterface))
+	UE_ITEM_PROPERTY
 	TSubclassOf<AActor> ClassItemActor;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ItemAsset")

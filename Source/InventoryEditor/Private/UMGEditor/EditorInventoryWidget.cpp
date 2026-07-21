@@ -27,7 +27,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
     FSlateFontInfo ButtonFont = FCoreStyle::GetDefaultFontStyle("Roboto", 12);
 
     ButtonList = SNew(SButton)
-        .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+        .ButtonStyle(FAppStyle::Get(), "FlatButton")
         .ContentPadding(FMargin(12, 2))
         .OnClicked_UObject(this, &UEditorInventoryWidget::SwitchList)
         .Content()[
@@ -39,8 +39,8 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                     .AutoWidth()
                     [
                         SNew(STextBlock)
-                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
-                            .Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
+                            .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Font(FAppStyle::Get().GetFontStyle("FontAwesome.11"))
                             .Text(FEditorFontGlyphs::Circle)
                     ]
                     + SHorizontalBox::Slot()
@@ -48,7 +48,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                     .VAlign(VAlign_Fill)
                     [
                         SNew(STextBlock)
-                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                             .Text(FText::FromString("List"))
                     ]
             ]
@@ -56,7 +56,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
 
         ButtonGrid = SNew(SButton)
         .IsEnabled(false)
-        .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+        .ButtonStyle(FAppStyle::Get(), "FlatButton")
         .ContentPadding(FMargin(12, 2))
         .OnClicked_UObject(this, &UEditorInventoryWidget::SwitchGrid)
         [
@@ -68,8 +68,8 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                     .AutoWidth()
                     [
                         SNew(STextBlock)
-                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
-                            .Font(FEditorStyle::Get().GetFontStyle("FontAwesome.11"))
+                            .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .Font(FAppStyle::Get().GetFontStyle("FontAwesome.11"))
                             .Text(FEditorFontGlyphs::Circle)
                     ]
 
@@ -79,7 +79,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                     .VAlign(VAlign_Fill)
                     [
                         SNew(STextBlock)
-                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                             .Text(FText::FromString("Grid"))
                     ]
             ]
@@ -147,7 +147,7 @@ TSharedRef<SWidget> UEditorInventoryWidget::RebuildWidget()
                 .VAlign(VAlign_Bottom)
                 .HAlign(HAlign_Fill)[
                     SNew(STextBlock)
-                        .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                         .Text(FText::FromString("Drag: LMB, Menu: RMB, Rotate item: Drag + Left Shift, Remove item: LMB + Left ctrl"))
                 ]
         ];

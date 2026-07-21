@@ -4,11 +4,12 @@
 #include "CoreMinimal.h"
 #include "Toolkits/IToolkitHost.h"
 #include "Toolkits/AssetEditorToolkit.h"
-#include "SSCSEditor.h"
+#include "SSubobjectEditor.h"
 #include "PropertyEditorDelegates.h"
 
 class IDetailsView;
 class SDockableTab;
+class SSubobjectBlueprintEditor;
 
 class INVENTORYEDITOR_API FInventoryToolKit : public FAssetEditorToolkit {
 
@@ -38,7 +39,7 @@ public:
     TSharedRef<SDockTab> SpawnPropertiesTab(const FSpawnTabArgs& Args);
 
 	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr< class IToolkitHost >& InitToolkitHost, UObject* ObjectsToEdit, FGetDetailsViewObjects GetDetailsViewObjects);
-    void OnSelectionComponent(const TArray<FSCSEditorTreeNodePtrType>& SelectComponents);
+    void OnSelectionComponent(const TArray<FSubobjectEditorTreeNodePtrType>& SelectComponents);
     TSharedRef<FTabManager::FLayout> CreateLayout() const;
     void OnChangingProperties(const FPropertyChangedEvent& Property);
     void HandleAssetPostImport(UFactory* InFactory, UObject* InObject);
@@ -49,13 +50,14 @@ public:
 private:
 
     FDelegateHandle HandleChangeTabWorld;
+	FDelegateHandle Handle_OnObjectsReplaced;
     class UBlueprintGeneratedClass* BPClass;
     class UInventoryComponent* SelectComponent;
     TWeakObjectPtr<class UEditorInventoryWidget> InventoryTab;
     TWeakObjectPtr<class UBrowserAssetsWidget> BrowserAssetsTab;
 
     TSharedPtr<SDockableTab> PropertiesTab;
-    TSharedPtr<SSCSEditor> SCSEditorTab;
+    TSharedPtr<SSubobjectBlueprintEditor> SCSEditorTab;
     TSharedPtr<IDetailsView> DetailsView;
     TArray<UObject*> EditingObjects;
 };

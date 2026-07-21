@@ -1,7 +1,14 @@
 //Copyright(c) 2022 - 2025, Viktor.F.P
 #pragma once
 #include "Inventory.h"
+#include "Misc/EngineVersionComparison.h"
 #include "InventorySettings.generated.h"
+
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
+    #define UE_SETTINGS_PROPERTY UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", meta = (BitmaskEnum = "EInventoryFlag"))
+#else
+    #define UE_SETTINGS_PROPERTY UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", meta = (BitmaskEnum = "/Script/Inventory.EInventoryFlag"))
+#endif
 
 UENUM(BlueprintType, meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 enum class EInventoryFlag : uint8
@@ -30,7 +37,7 @@ class INVENTORY_API UInventorySettings : public UObject {
 
 public:
 
-    UPROPERTY(config, EditAnywhere, BlueprintReadOnly, Category = "InventorySettings", meta = (Bitmask, BitmaskEnum = "EInventoryFlag"))
+	UE_SETTINGS_PROPERTY
         int32 InventoryFlags;
 
     static UInventorySettings* Get() {

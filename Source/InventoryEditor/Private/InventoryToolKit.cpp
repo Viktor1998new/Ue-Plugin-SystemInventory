@@ -2,14 +2,53 @@
 
 #include "InventoryToolKit.h"
 #include "Components/InventoryComponent.h"
-#include "Engine/SCS_Node.h"
 #include "UMGEditor/EditorInventoryWidget.h"
 #include "UMGEditor/BrowserAssetsWidget.h"
+#include "InventoryEditor.h"
+#include "Editor.h"
+#include "EditorStyleSet.h"
+#include "Engine/SCS_Node.h"
 #include "FileHelpers.h"
-#include "SSCSEditor.h"
+#include "ClassViewerFilter.h"
 #include "LevelEditor.h"
+#include "SSubobjectBlueprintEditor.h"
 
 #define LOCTEXT_NAMESPACE "GenericEditor"
+
+
+class FComponentsFilter : public IClassViewerFilter
+{
+public:
+
+	FComponentsFilter()
+		: DisallowedClassFlags(CLASS_None), bDisallowBlueprintBase(false)
+	{
+		AllowedChildrenOfClasses.Add(UInventoryComponent::StaticClass());
+	}
+
+	TSet< const UClass* > AllowedChildrenOfClasses;
+	EClassFlags DisallowedClassFlags;
+	bool bDisallowBlueprintBase;
+
+	virtual bool IsClassAllowed(const FClassViewerInitializationOptions& InInitOptions, const UClass* InClass, TSharedRef< FClassViewerFilterFuncs > InFilterFuncs) override
+	{
+		bool bAllowed = InFilterFuncs->IfInChildOfClassesSet(AllowedChildrenOfClasses, InClass) != EFilterReturn::Failed;
+
+		return bAllowed;
+	}
+
+	virtual bool IsUnloadedClassAllowed(const FClassViewerInitializationOptions& InInitOptions, const TSharedRef< const IUnloadedBlueprintData > InUnloadedClassData, TSharedRef< FClassViewerFilterFuncs > InFilterFuncs) override
+	{
+		if (bDisallowBlueprintBase)
+		{
+			return false;
+		}
+
+		return !InUnloadedClassData->HasAnyClassFlags(DisallowedClassFlags)
+			&& InFilterFuncs->IfInChildOfClassesSet(AllowedChildrenOfClasses, InUnloadedClassData) != EFilterReturn::Failed;
+	}
+};
+
 
 const FName PropertiesTabId(TEXT("GenericEditor_Properties"));
 const FName BrowserAssetsTabId(TEXT("BrowserAssets"));
@@ -40,6 +79,7 @@ FInventoryToolKit::~FInventoryToolKit()
 	}
 
 	LevelEditor.OnMapChanged().Remove(HandleChangeTabWorld);
+	FCoreUObjectDelegates::OnObjectsReplaced.Remove(Handle_OnObjectsReplaced);
 }
 
 FName FInventoryToolKit::GetToolkitFName() const
@@ -137,7 +177,7 @@ TSharedRef<SDockTab> FInventoryToolKit::SpawnBrowserAssetsTab(const FSpawnTabArg
 			BrowserAssetsTab->TakeWidget()
 		];
 
-	Tab->SetTabIcon(FEditorStyle::GetBrush("ContentBrowser.AssetTreeFolderOpen"));
+	Tab->SetTabIcon(FAppStyle::Get().GetBrush("ContentBrowser.AssetTreeFolderOpen"));
 
 	return Tab;
 }
@@ -162,7 +202,7 @@ TSharedRef<SDockTab> FInventoryToolKit::SpawnInventoryTab(const FSpawnTabArgs& A
 			InventoryTab->TakeWidget()
 		];
 
-	Tab->SetTabIcon(FEditorStyle::GetBrush("Kismet.AllClasses.ArrayVariableIcon"));
+	Tab->SetTabIcon(FAppStyle::Get().GetBrush("Kismet.AllClasses.ArrayVariableIcon"));
 	if (EditingObjects.Num() == 1) {
 		SelectComponent = Cast<UInventoryComponent>(EditingObjects[0]);
 		InventoryTab->SetInventory(SelectComponent);
@@ -183,7 +223,7 @@ TSharedRef<SDockTab> FInventoryToolKit::SpawnComponentsTab(const FSpawnTabArgs& 
 			SCSEditorTab.ToSharedRef()
 		];
 
-	Tab->SetTabIcon(FEditorStyle::GetBrush("FullBlueprintEditor.SwitchToComponentsMode.Small"));
+	Tab->SetTabIcon(FAppStyle::Get().GetBrush("FullBlueprintEditor.SwitchToComponentsMode"));
 
 	return Tab;
 }
@@ -199,7 +239,7 @@ TSharedRef<SDockTab> FInventoryToolKit::SpawnPropertiesTab(const FSpawnTabArgs& 
 			DetailsView.ToSharedRef()
 		];
 
-	Tab->SetTabIcon(FEditorStyle::GetBrush("GenericEditor.Tabs.Properties"));
+	Tab->SetTabIcon(FAppStyle::Get().GetBrush("GenericEditor.Tabs.Properties"));
 
 	return Tab;
 }
@@ -263,7 +303,7 @@ void FInventoryToolKit::InitEditor(const EToolkitMode::Type Mode, const TSharedP
 	}
 
 	GEditor->GetEditorSubsystem<UImportSubsystem>()->OnAssetPostImport.AddSP(this, &FInventoryToolKit::HandleAssetPostImport);
-	GEditor->OnObjectsReplaced().AddSP(this, &FInventoryToolKit::OnObjectsReplaced);
+	Handle_OnObjectsReplaced = FCoreUObjectDelegates::OnObjectsReplaced.AddSP(this, &FInventoryToolKit::OnObjectsReplaced);
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs;
@@ -276,11 +316,13 @@ void FInventoryToolKit::InitEditor(const EToolkitMode::Type Mode, const TSharedP
 
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = CreateLayout();
 
-	SAssignNew(SCSEditorTab, SSCSEditor)
+	TSharedPtr<FComponentsFilter> Filter = MakeShareable(new FComponentsFilter);
+
+	SAssignNew(SCSEditorTab, SSubobjectBlueprintEditor)
 		.AllowEditing(false)
-		.ActorContext(BPClass->ClassDefaultObject)
-		.ComponentTypeFilter(UInventoryComponent::StaticClass())
-		.OnSelectionUpdated(SSCSEditor::FOnSelectionUpdated::CreateRaw(this, &FInventoryToolKit::OnSelectionComponent));
+		.ObjectContext(BPClass->GetDefaultObject())
+		.SubobjectClassListFilters({ Filter.ToSharedRef() })
+		.OnSelectionUpdated(SSubobjectBlueprintEditor::FOnSelectionUpdated::CreateRaw(this, &FInventoryToolKit::OnSelectionComponent));
 
 	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, SimpleEditorAppIdentifier, StandaloneDefaultLayout, true, true, ObjectsToEdit);
 
@@ -290,18 +332,20 @@ void FInventoryToolKit::InitEditor(const EToolkitMode::Type Mode, const TSharedP
 	}
 }
 
-void FInventoryToolKit::OnSelectionComponent(const TArray<FSCSEditorTreeNodePtrType>& SelectComponents) {
+void FInventoryToolKit::OnSelectionComponent(const TArray<FSubobjectEditorTreeNodePtrType>& SelectComponents) {
 
 	if (SelectComponents.IsValidIndex(0))
 	{
-		DetailsView->SetObject(SelectComponents[0]->GetComponentTemplate());
-		SelectComponent = Cast<UInventoryComponent>(SelectComponents[0]->GetComponentTemplate());
-		InventoryTab->SetInventory(Cast<UInventoryComponent>(SelectComponents[0]->GetComponentTemplate()));
+		UActorComponent* L_Component = (UActorComponent*)SelectComponents[0]->GetComponentTemplate();
+		DetailsView->SetObject(L_Component);
+		SelectComponent = Cast<UInventoryComponent>(L_Component);
+		InventoryTab->SetInventory(Cast<UInventoryComponent>(L_Component));
 		return;
 	}
 
 	SelectComponent = nullptr;
 	InventoryTab->SetInventory(nullptr);
+
 }
 
  TSharedRef<FTabManager::FLayout> FInventoryToolKit::CreateLayout() const {
@@ -404,7 +448,11 @@ TSharedRef<FInventoryToolKit> FInventoryToolKit::CreateEditor(const EToolkitMode
 
 void FInventoryToolKit::ChangeTabWorld(UWorld* World, EMapChangeType MapChangeType)
 {
-	CloseWindow();
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION <= 2
+    CloseWindow();
+#else
+    CloseWindow(EAssetEditorCloseReason::EditorRefreshRequested);
+#endif
 }
 
 #undef LOCTEXT_NAMESPACE

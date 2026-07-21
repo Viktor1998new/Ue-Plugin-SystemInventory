@@ -89,8 +89,14 @@ FReply USlotAssetWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 }
 
 TSharedRef<SWidget> USlotAssetWidget::RebuildWidget() {
-		
-	bIsFocusable = true;
+	
+
+	
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION <= 1
+    bIsFocusable = true; 
+#else
+    SetIsFocusable(true); 
+#endif
 
 	FSlateColorBrush* Brush = new  FSlateColorBrush(FLinearColor(0.0f, 0.0f, 0.0f, 0.6f));
 	FSlateFontInfo NumderFont = FCoreStyle::GetDefaultFontStyle("Roboto", 9);

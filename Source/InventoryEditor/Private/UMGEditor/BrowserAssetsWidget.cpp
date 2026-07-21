@@ -69,14 +69,14 @@ TSharedRef<SWidget> UBrowserAssetsWidget::RebuildWidget()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Bottom)[
             SNew(SButton)
-                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ButtonStyle(FAppStyle::Get(), "FlatButton.Success")
                 .ContentPadding(FMargin(12, 2))
                 .OnClicked_UObject(this, &UBrowserAssetsWidget::OoClickUpData)
                 .HAlign(HAlign_Center)
                 .VAlign(VAlign_Center)
                 [
                     SNew(STextBlock)
-                        .TextStyle( FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .TextStyle( FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                         .Text(FText::FromString("Up Assets"))
                 ]
         ]

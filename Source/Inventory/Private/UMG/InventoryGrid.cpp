@@ -100,7 +100,7 @@ void UInventoryGrid::OnChangeSlot(int32 Index, FInventorySlot NewData, ETypeSetI
 {	
 	if(GetOwningPlayer()){
 		if (Inventory->GetIsReplicated()) {
-			float TimePing = GetOwningPlayer()->PlayerState->GetPing() * GetWorld()->GetDeltaSeconds();
+			float TimePing = GetOwningPlayer()->PlayerState->GetPingInMilliseconds() * GetWorld()->GetDeltaSeconds();
 
 			if (TimePing == 0.0f) {
 				ChangeSlots(Index, NewData, Type);

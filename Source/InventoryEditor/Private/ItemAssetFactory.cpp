@@ -66,9 +66,9 @@ bool UItemAssetFactory::ConfigureProperties() {
 
 	TSharedPtr<FItemAssetParentFilter> Filter = MakeShareable(new FItemAssetParentFilter);
 	
-#if UE_VERSION_OLDER_THAN(5, 0, 3)
+#if ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION == 0
 	Options.ClassFilter = Filter;
-#elif UE_VERSION_NEWER_THAN(5, 0, 3)
+#else
 	Options.ClassFilters.Add(Filter.ToSharedRef());
 #endif
 	

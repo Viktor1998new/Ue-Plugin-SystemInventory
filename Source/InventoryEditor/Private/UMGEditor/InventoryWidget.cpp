@@ -173,7 +173,7 @@ TSharedRef<SWidget> UInventoryWidget::GetListInventors()
     {
         ListButtoms->AddSlot()[
             SNew(SButton)
-                .ButtonStyle(FEditorStyle::Get(), "FlatButton")
+                .ButtonStyle(FAppStyle::Get(), "FlatButton")
                 .ContentPadding(FMargin(12, 2))
                 .IsEnabled(CurrentActive != i)
                 .OnClicked_Lambda([this, i]()-> FReply {
@@ -186,7 +186,7 @@ TSharedRef<SWidget> UInventoryWidget::GetListInventors()
                     SNew(SScaleBox)[
 
                         SNew(STextBlock)
-                            .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                            .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                             .Text(FText::FromString( Inventors[i]->GetFName().ToString()))
                     ].HAlign(HAlign_Left)
                 ]
@@ -213,7 +213,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SAssignNew(MassText, STextBlock)
-                .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                 .Text(FText::FromString(""))
         ]
         + SHorizontalBox::Slot()
@@ -221,12 +221,12 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SNew(SButton)
-                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ButtonStyle(FAppStyle::Get(), "FlatButton.Success")
                 .ContentPadding(FMargin(12, 2))
                 .OnClicked_UObject(this, &UInventoryWidget::RecalculationMass)
                 .Content()[
                     SNew(STextBlock)
-                        .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                         .Text(FText::FromString("Recalculation Mass"))
                     ]
          ];
@@ -242,7 +242,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         .VAlign(VAlign_Center)[
 
             SAssignNew(ListInventoryButtons, SComboButton)
-                .ButtonStyle(FEditorStyle::Get(), "FlatButton.Success")
+                .ButtonStyle(FAppStyle::Get(), "FlatButton.Success")
                 .ForegroundColor(FLinearColor::White)
                 .OnGetMenuContent_UObject(this, &UInventoryWidget::GetListInventors)
                 .HasDownArrow(true)
@@ -250,7 +250,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
                 .ButtonContent()
                 [
                     SNew(STextBlock)
-                        .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                        .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
                         .Text(FText::FromString("Components"))
                 ]
         ]
@@ -260,7 +260,7 @@ TSharedRef<SWidget> UInventoryWidget::RebuildWidget()
         .HAlign(HAlign_Fill)
         .VAlign(VAlign_Center)[
             SAssignNew(TextNameActor, STextBlock)
-                .TextStyle(FEditorStyle::Get(), "ContentBrowser.TopBar.Font")
+                .TextStyle(FAppStyle::Get(), "ContentBrowser.TopBar.Font")
         ]
         + SHorizontalBox::Slot()
         .AutoWidth()
