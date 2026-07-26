@@ -8,7 +8,7 @@ class UInventorySettings;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogInventory, Log, All);
 
-class FInventoryModule : public IModuleInterface
+class INVENTORY_API FInventoryModule : public IModuleInterface
 {
 public:
 
